@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ViewCrachasTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputText value="#{bundle.ViewCrachasLabel_idcracha}"/>
+                    <h:outputText value="#{crachasController.selected.idcracha}" title="#{bundle.ViewCrachasTitle_idcracha}"/>
+                    <h:outputText value="#{bundle.ViewCrachasLabel_url}"/>
+                    <h:outputText value="#{crachasController.selected.url}" title="#{bundle.ViewCrachasTitle_url}"/>
+                    <h:outputText value="#{bundle.ViewCrachasLabel_eventos}"/>
+                    <h:outputText value="#{crachasController.selected.eventos}" title="#{bundle.ViewCrachasTitle_eventos}"/>
+                    <h:outputText value="#{bundle.ViewCrachasLabel_participantes}"/>
+                    <h:outputText value="#{crachasController.selected.participantes}" title="#{bundle.ViewCrachasTitle_participantes}"/>
+                    <h:outputText value="#{bundle.ViewCrachasLabel_status}"/>
+                    <h:outputText value="#{crachasController.selected.status}" title="#{bundle.ViewCrachasTitle_status}"/>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{crachasController.destroyAndView}" value="#{bundle.ViewCrachasDestroyLink}"/>
+                <br />
+                <br />
+                <h:link outcome="Edit" value="#{bundle.ViewCrachasEditLink}"/>
+                <br />
+                <h:commandLink action="#{crachasController.prepareCreate}" value="#{bundle.ViewCrachasCreateLink}" />
+                <br />
+                <h:commandLink action="#{crachasController.prepareList}" value="#{bundle.ViewCrachasShowAllLink}"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.ViewCrachasIndexLink}"/>
+
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ViewParticipantesTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputText value="#{bundle.ViewParticipantesLabel_idparticipante}"/>
+                    <h:outputText value="#{participantesController.selected.idparticipante}" title="#{bundle.ViewParticipantesTitle_idparticipante}"/>
+                    <h:outputText value="#{bundle.ViewParticipantesLabel_eventos}"/>
+                    <h:outputText value="#{participantesController.selected.eventos}" title="#{bundle.ViewParticipantesTitle_eventos}"/>
+                    <h:outputText value="#{bundle.ViewParticipantesLabel_usuarios}"/>
+                    <h:outputText value="#{participantesController.selected.usuarios}" title="#{bundle.ViewParticipantesTitle_usuarios}"/>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{participantesController.destroyAndView}" value="#{bundle.ViewParticipantesDestroyLink}"/>
+                <br />
+                <br />
+                <h:link outcome="Edit" value="#{bundle.ViewParticipantesEditLink}"/>
+                <br />
+                <h:commandLink action="#{participantesController.prepareCreate}" value="#{bundle.ViewParticipantesCreateLink}" />
+                <br />
+                <h:commandLink action="#{participantesController.prepareList}" value="#{bundle.ViewParticipantesShowAllLink}"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.ViewParticipantesIndexLink}"/>
+
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

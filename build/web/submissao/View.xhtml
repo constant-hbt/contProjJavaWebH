@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ViewSubmissaoTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputText value="#{bundle.ViewSubmissaoLabel_idsubmissao}"/>
+                    <h:outputText value="#{submissaoController.selected.idsubmissao}" title="#{bundle.ViewSubmissaoTitle_idsubmissao}"/>
+                    <h:outputText value="#{bundle.ViewSubmissaoLabel_descricaosubmissao}"/>
+                    <h:outputText value="#{submissaoController.selected.descricaosubmissao}" title="#{bundle.ViewSubmissaoTitle_descricaosubmissao}"/>
+                    <h:outputText value="#{bundle.ViewSubmissaoLabel_priavaliador}"/>
+                    <h:outputText value="#{submissaoController.selected.priavaliador}" title="#{bundle.ViewSubmissaoTitle_priavaliador}"/>
+                    <h:outputText value="#{bundle.ViewSubmissaoLabel_segavaliador}"/>
+                    <h:outputText value="#{submissaoController.selected.segavaliador}" title="#{bundle.ViewSubmissaoTitle_segavaliador}"/>
+                    <h:outputText value="#{bundle.ViewSubmissaoLabel_subeventos}"/>
+                    <h:outputText value="#{submissaoController.selected.subeventos}" title="#{bundle.ViewSubmissaoTitle_subeventos}"/>
+                    <h:outputText value="#{bundle.ViewSubmissaoLabel_usuarios}"/>
+                    <h:outputText value="#{submissaoController.selected.usuarios}" title="#{bundle.ViewSubmissaoTitle_usuarios}"/>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{submissaoController.destroyAndView}" value="#{bundle.ViewSubmissaoDestroyLink}"/>
+                <br />
+                <br />
+                <h:link outcome="Edit" value="#{bundle.ViewSubmissaoEditLink}"/>
+                <br />
+                <h:commandLink action="#{submissaoController.prepareCreate}" value="#{bundle.ViewSubmissaoCreateLink}" />
+                <br />
+                <h:commandLink action="#{submissaoController.prepareList}" value="#{bundle.ViewSubmissaoShowAllLink}"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.ViewSubmissaoIndexLink}"/>
+
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

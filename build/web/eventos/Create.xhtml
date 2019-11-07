@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.CreateEventosTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.CreateEventosLabel_idevento}" for="idevento" />
+                    <h:inputText id="idevento" value="#{eventosController.selected.idevento}" title="#{bundle.CreateEventosTitle_idevento}" required="true" requiredMessage="#{bundle.CreateEventosRequiredMessage_idevento}"/>
+                    <h:outputLabel value="#{bundle.CreateEventosLabel_nome}" for="nome" />
+                    <h:inputText id="nome" value="#{eventosController.selected.nome}" title="#{bundle.CreateEventosTitle_nome}" required="true" requiredMessage="#{bundle.CreateEventosRequiredMessage_nome}"/>
+                    <h:outputLabel value="#{bundle.CreateEventosLabel_descricao}" for="descricao" />
+                    <h:inputText id="descricao" value="#{eventosController.selected.descricao}" title="#{bundle.CreateEventosTitle_descricao}" required="true" requiredMessage="#{bundle.CreateEventosRequiredMessage_descricao}"/>
+                    <h:outputLabel value="#{bundle.CreateEventosLabel_local}" for="local" />
+                    <h:inputText id="local" value="#{eventosController.selected.local}" title="#{bundle.CreateEventosTitle_local}" required="true" requiredMessage="#{bundle.CreateEventosRequiredMessage_local}"/>
+                    <h:outputLabel value="#{bundle.CreateEventosLabel_datainicio}" for="datainicio" />
+                    <h:inputText id="datainicio" value="#{eventosController.selected.datainicio}" title="#{bundle.CreateEventosTitle_datainicio}" required="true" requiredMessage="#{bundle.CreateEventosRequiredMessage_datainicio}">
+                        <f:convertDateTime pattern="MM/dd/yyyy" />
+                    </h:inputText>
+                    <h:outputLabel value="#{bundle.CreateEventosLabel_datafim}" for="datafim" />
+                    <h:inputText id="datafim" value="#{eventosController.selected.datafim}" title="#{bundle.CreateEventosTitle_datafim}" required="true" requiredMessage="#{bundle.CreateEventosRequiredMessage_datafim}">
+                        <f:convertDateTime pattern="MM/dd/yyyy" />
+                    </h:inputText>
+                    <h:outputLabel value="#{bundle.CreateEventosLabel_datainicioinsc}" for="datainicioinsc" />
+                    <h:inputText id="datainicioinsc" value="#{eventosController.selected.datainicioinsc}" title="#{bundle.CreateEventosTitle_datainicioinsc}" required="true" requiredMessage="#{bundle.CreateEventosRequiredMessage_datainicioinsc}">
+                        <f:convertDateTime pattern="MM/dd/yyyy" />
+                    </h:inputText>
+                    <h:outputLabel value="#{bundle.CreateEventosLabel_datafiminsc}" for="datafiminsc" />
+                    <h:inputText id="datafiminsc" value="#{eventosController.selected.datafiminsc}" title="#{bundle.CreateEventosTitle_datafiminsc}" required="true" requiredMessage="#{bundle.CreateEventosRequiredMessage_datafiminsc}">
+                        <f:convertDateTime pattern="MM/dd/yyyy" />
+                    </h:inputText>
+                    <h:outputLabel value="#{bundle.CreateEventosLabel_status}" for="status" />
+                    <h:selectOneMenu id="status" value="#{eventosController.selected.status}" title="#{bundle.CreateEventosTitle_status}" required="true" requiredMessage="#{bundle.CreateEventosRequiredMessage_status}">
+                        <f:selectItems value="#{statusController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{eventosController.create}" value="#{bundle.CreateEventosSaveLink}" />
+                <br />
+                <br />
+                <h:commandLink action="#{eventosController.prepareList}" value="#{bundle.CreateEventosShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.CreateEventosIndexLink}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

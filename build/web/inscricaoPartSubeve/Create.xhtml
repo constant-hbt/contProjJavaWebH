@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.CreateInscricaoPartSubeveTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.CreateInscricaoPartSubeveLabel_idinscricao}" for="idinscricao" />
+                    <h:inputText id="idinscricao" value="#{inscricaoPartSubeveController.selected.idinscricao}" title="#{bundle.CreateInscricaoPartSubeveTitle_idinscricao}" required="true" requiredMessage="#{bundle.CreateInscricaoPartSubeveRequiredMessage_idinscricao}"/>
+                    <h:outputLabel value="#{bundle.CreateInscricaoPartSubeveLabel_datahora}" for="datahora" />
+                    <h:inputText id="datahora" value="#{inscricaoPartSubeveController.selected.datahora}" title="#{bundle.CreateInscricaoPartSubeveTitle_datahora}" required="true" requiredMessage="#{bundle.CreateInscricaoPartSubeveRequiredMessage_datahora}">
+                        <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                    </h:inputText>
+                    <h:outputLabel value="#{bundle.CreateInscricaoPartSubeveLabel_participantes}" for="participantes" />
+                    <h:selectOneMenu id="participantes" value="#{inscricaoPartSubeveController.selected.participantes}" title="#{bundle.CreateInscricaoPartSubeveTitle_participantes}" required="true" requiredMessage="#{bundle.CreateInscricaoPartSubeveRequiredMessage_participantes}">
+                        <f:selectItems value="#{participantesController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="#{bundle.CreateInscricaoPartSubeveLabel_status}" for="status" />
+                    <h:selectOneMenu id="status" value="#{inscricaoPartSubeveController.selected.status}" title="#{bundle.CreateInscricaoPartSubeveTitle_status}" required="true" requiredMessage="#{bundle.CreateInscricaoPartSubeveRequiredMessage_status}">
+                        <f:selectItems value="#{statusController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="#{bundle.CreateInscricaoPartSubeveLabel_subeventos}" for="subeventos" />
+                    <h:selectOneMenu id="subeventos" value="#{inscricaoPartSubeveController.selected.subeventos}" title="#{bundle.CreateInscricaoPartSubeveTitle_subeventos}" required="true" requiredMessage="#{bundle.CreateInscricaoPartSubeveRequiredMessage_subeventos}">
+                        <f:selectItems value="#{subeventosController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{inscricaoPartSubeveController.create}" value="#{bundle.CreateInscricaoPartSubeveSaveLink}" />
+                <br />
+                <br />
+                <h:commandLink action="#{inscricaoPartSubeveController.prepareList}" value="#{bundle.CreateInscricaoPartSubeveShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.CreateInscricaoPartSubeveIndexLink}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

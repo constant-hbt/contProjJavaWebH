@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.CreateUsuariosTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.CreateUsuariosLabel_idusuario}" for="idusuario" />
+                    <h:inputText id="idusuario" value="#{usuariosController.selected.idusuario}" title="#{bundle.CreateUsuariosTitle_idusuario}" required="true" requiredMessage="#{bundle.CreateUsuariosRequiredMessage_idusuario}"/>
+                    <h:outputLabel value="#{bundle.CreateUsuariosLabel_nome}" for="nome" />
+                    <h:inputText id="nome" value="#{usuariosController.selected.nome}" title="#{bundle.CreateUsuariosTitle_nome}" required="true" requiredMessage="#{bundle.CreateUsuariosRequiredMessage_nome}"/>
+                    <h:outputLabel value="#{bundle.CreateUsuariosLabel_rg}" for="rg" />
+                    <h:inputText id="rg" value="#{usuariosController.selected.rg}" title="#{bundle.CreateUsuariosTitle_rg}" />
+                    <h:outputLabel value="#{bundle.CreateUsuariosLabel_cpf}" for="cpf" />
+                    <h:inputText id="cpf" value="#{usuariosController.selected.cpf}" title="#{bundle.CreateUsuariosTitle_cpf}" required="true" requiredMessage="#{bundle.CreateUsuariosRequiredMessage_cpf}"/>
+                    <h:outputLabel value="#{bundle.CreateUsuariosLabel_email}" for="email" />
+                    <h:inputText id="email" value="#{usuariosController.selected.email}" title="#{bundle.CreateUsuariosTitle_email}" required="true" requiredMessage="#{bundle.CreateUsuariosRequiredMessage_email}"/>
+                    <h:outputLabel value="#{bundle.CreateUsuariosLabel_senha}" for="senha" />
+                    <h:inputText id="senha" value="#{usuariosController.selected.senha}" title="#{bundle.CreateUsuariosTitle_senha}" required="true" requiredMessage="#{bundle.CreateUsuariosRequiredMessage_senha}"/>
+                    <h:outputLabel value="#{bundle.CreateUsuariosLabel_telefone}" for="telefone" />
+                    <h:inputText id="telefone" value="#{usuariosController.selected.telefone}" title="#{bundle.CreateUsuariosTitle_telefone}" />
+                    <h:outputLabel value="#{bundle.CreateUsuariosLabel_datanascimento}" for="datanascimento" />
+                    <h:inputText id="datanascimento" value="#{usuariosController.selected.datanascimento}" title="#{bundle.CreateUsuariosTitle_datanascimento}" required="true" requiredMessage="#{bundle.CreateUsuariosRequiredMessage_datanascimento}">
+                        <f:convertDateTime pattern="MM/dd/yyyy" />
+                    </h:inputText>
+                    <h:outputLabel value="#{bundle.CreateUsuariosLabel_endereco}" for="endereco" />
+                    <h:inputText id="endereco" value="#{usuariosController.selected.endereco}" title="#{bundle.CreateUsuariosTitle_endereco}" required="true" requiredMessage="#{bundle.CreateUsuariosRequiredMessage_endereco}"/>
+                    <h:outputLabel value="#{bundle.CreateUsuariosLabel_status}" for="status" />
+                    <h:selectOneMenu id="status" value="#{usuariosController.selected.status}" title="#{bundle.CreateUsuariosTitle_status}" required="true" requiredMessage="#{bundle.CreateUsuariosRequiredMessage_status}">
+                        <f:selectItems value="#{statusController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{usuariosController.create}" value="#{bundle.CreateUsuariosSaveLink}" />
+                <br />
+                <br />
+                <h:commandLink action="#{usuariosController.prepareList}" value="#{bundle.CreateUsuariosShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.CreateUsuariosIndexLink}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

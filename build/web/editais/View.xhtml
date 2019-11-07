@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ViewEditaisTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputText value="#{bundle.ViewEditaisLabel_idedital}"/>
+                    <h:outputText value="#{editaisController.selected.idedital}" title="#{bundle.ViewEditaisTitle_idedital}"/>
+                    <h:outputText value="#{bundle.ViewEditaisLabel_descricao}"/>
+                    <h:outputText value="#{editaisController.selected.descricao}" title="#{bundle.ViewEditaisTitle_descricao}"/>
+                    <h:outputText value="#{bundle.ViewEditaisLabel_dataabertura}"/>
+                    <h:outputText value="#{editaisController.selected.dataabertura}" title="#{bundle.ViewEditaisTitle_dataabertura}">
+                        <f:convertDateTime pattern="MM/dd/yyyy" />
+                    </h:outputText>
+                    <h:outputText value="#{bundle.ViewEditaisLabel_dataencerramento}"/>
+                    <h:outputText value="#{editaisController.selected.dataencerramento}" title="#{bundle.ViewEditaisTitle_dataencerramento}">
+                        <f:convertDateTime pattern="MM/dd/yyyy" />
+                    </h:outputText>
+                    <h:outputText value="#{bundle.ViewEditaisLabel_urlarquivo}"/>
+                    <h:outputText value="#{editaisController.selected.urlarquivo}" title="#{bundle.ViewEditaisTitle_urlarquivo}"/>
+                    <h:outputText value="#{bundle.ViewEditaisLabel_eventos}"/>
+                    <h:outputText value="#{editaisController.selected.eventos}" title="#{bundle.ViewEditaisTitle_eventos}"/>
+                    <h:outputText value="#{bundle.ViewEditaisLabel_status}"/>
+                    <h:outputText value="#{editaisController.selected.status}" title="#{bundle.ViewEditaisTitle_status}"/>
+                    <h:outputText value="#{bundle.ViewEditaisLabel_usuarios}"/>
+                    <h:outputText value="#{editaisController.selected.usuarios}" title="#{bundle.ViewEditaisTitle_usuarios}"/>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{editaisController.destroyAndView}" value="#{bundle.ViewEditaisDestroyLink}"/>
+                <br />
+                <br />
+                <h:link outcome="Edit" value="#{bundle.ViewEditaisEditLink}"/>
+                <br />
+                <h:commandLink action="#{editaisController.prepareCreate}" value="#{bundle.ViewEditaisCreateLink}" />
+                <br />
+                <h:commandLink action="#{editaisController.prepareList}" value="#{bundle.ViewEditaisShowAllLink}"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.ViewEditaisIndexLink}"/>
+
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

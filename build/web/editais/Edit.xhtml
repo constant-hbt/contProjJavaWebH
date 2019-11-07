@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.EditEditaisTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.EditEditaisLabel_idedital}" for="idedital" />
+                    <h:inputText id="idedital" value="#{editaisController.selected.idedital}" title="#{bundle.EditEditaisTitle_idedital}" required="true" requiredMessage="#{bundle.EditEditaisRequiredMessage_idedital}"/>
+                    <h:outputLabel value="#{bundle.EditEditaisLabel_descricao}" for="descricao" />
+                    <h:inputText id="descricao" value="#{editaisController.selected.descricao}" title="#{bundle.EditEditaisTitle_descricao}" required="true" requiredMessage="#{bundle.EditEditaisRequiredMessage_descricao}"/>
+                    <h:outputLabel value="#{bundle.EditEditaisLabel_dataabertura}" for="dataabertura" />
+                    <h:inputText id="dataabertura" value="#{editaisController.selected.dataabertura}" title="#{bundle.EditEditaisTitle_dataabertura}" required="true" requiredMessage="#{bundle.EditEditaisRequiredMessage_dataabertura}">
+                        <f:convertDateTime pattern="MM/dd/yyyy" />
+                    </h:inputText>
+                    <h:outputLabel value="#{bundle.EditEditaisLabel_dataencerramento}" for="dataencerramento" />
+                    <h:inputText id="dataencerramento" value="#{editaisController.selected.dataencerramento}" title="#{bundle.EditEditaisTitle_dataencerramento}" required="true" requiredMessage="#{bundle.EditEditaisRequiredMessage_dataencerramento}">
+                        <f:convertDateTime pattern="MM/dd/yyyy" />
+                    </h:inputText>
+                    <h:outputLabel value="#{bundle.EditEditaisLabel_urlarquivo}" for="urlarquivo" />
+                    <h:inputText id="urlarquivo" value="#{editaisController.selected.urlarquivo}" title="#{bundle.EditEditaisTitle_urlarquivo}" required="true" requiredMessage="#{bundle.EditEditaisRequiredMessage_urlarquivo}"/>
+                    <h:outputLabel value="#{bundle.EditEditaisLabel_eventos}" for="eventos" />
+                    <h:selectOneMenu id="eventos" value="#{editaisController.selected.eventos}" title="#{bundle.EditEditaisTitle_eventos}" required="true" requiredMessage="#{bundle.EditEditaisRequiredMessage_eventos}">
+                        <f:selectItems value="#{eventosController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="#{bundle.EditEditaisLabel_status}" for="status" />
+                    <h:selectOneMenu id="status" value="#{editaisController.selected.status}" title="#{bundle.EditEditaisTitle_status}" required="true" requiredMessage="#{bundle.EditEditaisRequiredMessage_status}">
+                        <f:selectItems value="#{statusController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="#{bundle.EditEditaisLabel_usuarios}" for="usuarios" />
+                    <h:selectOneMenu id="usuarios" value="#{editaisController.selected.usuarios}" title="#{bundle.EditEditaisTitle_usuarios}" required="true" requiredMessage="#{bundle.EditEditaisRequiredMessage_usuarios}">
+                        <f:selectItems value="#{usuariosController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                </h:panelGrid>
+                <h:commandLink action="#{editaisController.update}" value="#{bundle.EditEditaisSaveLink}"/>
+                <br />
+                <br />
+                <h:link outcome="View" value="#{bundle.EditEditaisViewLink}"/>
+                <br />
+                <h:commandLink action="#{editaisController.prepareList}" value="#{bundle.EditEditaisShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.EditEditaisIndexLink}" />
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

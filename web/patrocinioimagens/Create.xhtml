@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.CreatePatrocinioimagensTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.CreatePatrocinioimagensLabel_idpatrocinioimagens}" for="idpatrocinioimagens" />
+                    <h:inputText id="idpatrocinioimagens" value="#{patrocinioimagensController.selected.idpatrocinioimagens}" title="#{bundle.CreatePatrocinioimagensTitle_idpatrocinioimagens}" required="true" requiredMessage="#{bundle.CreatePatrocinioimagensRequiredMessage_idpatrocinioimagens}"/>
+                    <h:outputLabel value="#{bundle.CreatePatrocinioimagensLabel_pathimagem}" for="pathimagem" />
+                    <h:inputText id="pathimagem" value="#{patrocinioimagensController.selected.pathimagem}" title="#{bundle.CreatePatrocinioimagensTitle_pathimagem}" required="true" requiredMessage="#{bundle.CreatePatrocinioimagensRequiredMessage_pathimagem}"/>
+                    <h:outputLabel value="#{bundle.CreatePatrocinioimagensLabel_patrocinios}" for="patrocinios" />
+                    <h:selectOneMenu id="patrocinios" value="#{patrocinioimagensController.selected.patrocinios}" title="#{bundle.CreatePatrocinioimagensTitle_patrocinios}" required="true" requiredMessage="#{bundle.CreatePatrocinioimagensRequiredMessage_patrocinios}">
+                        <f:selectItems value="#{patrociniosController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="#{bundle.CreatePatrocinioimagensLabel_status}" for="status" />
+                    <h:selectOneMenu id="status" value="#{patrocinioimagensController.selected.status}" title="#{bundle.CreatePatrocinioimagensTitle_status}" required="true" requiredMessage="#{bundle.CreatePatrocinioimagensRequiredMessage_status}">
+                        <f:selectItems value="#{statusController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{patrocinioimagensController.create}" value="#{bundle.CreatePatrocinioimagensSaveLink}" />
+                <br />
+                <br />
+                <h:commandLink action="#{patrocinioimagensController.prepareList}" value="#{bundle.CreatePatrocinioimagensShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.CreatePatrocinioimagensIndexLink}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

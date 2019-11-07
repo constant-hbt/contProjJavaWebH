@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.EditPatrociniosTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.EditPatrociniosLabel_idpatrocinio}" for="idpatrocinio" />
+                    <h:inputText id="idpatrocinio" value="#{patrociniosController.selected.idpatrocinio}" title="#{bundle.EditPatrociniosTitle_idpatrocinio}" required="true" requiredMessage="#{bundle.EditPatrociniosRequiredMessage_idpatrocinio}"/>
+                    <h:outputLabel value="#{bundle.EditPatrociniosLabel_nome}" for="nome" />
+                    <h:inputText id="nome" value="#{patrociniosController.selected.nome}" title="#{bundle.EditPatrociniosTitle_nome}" required="true" requiredMessage="#{bundle.EditPatrociniosRequiredMessage_nome}"/>
+                    <h:outputLabel value="#{bundle.EditPatrociniosLabel_documento}" for="documento" />
+                    <h:inputText id="documento" value="#{patrociniosController.selected.documento}" title="#{bundle.EditPatrociniosTitle_documento}" required="true" requiredMessage="#{bundle.EditPatrociniosRequiredMessage_documento}"/>
+                    <h:outputLabel value="#{bundle.EditPatrociniosLabel_descricao}" for="descricao" />
+                    <h:inputText id="descricao" value="#{patrociniosController.selected.descricao}" title="#{bundle.EditPatrociniosTitle_descricao}" required="true" requiredMessage="#{bundle.EditPatrociniosRequiredMessage_descricao}"/>
+                    <h:outputLabel value="#{bundle.EditPatrociniosLabel_segmento}" for="segmento" />
+                    <h:inputText id="segmento" value="#{patrociniosController.selected.segmento}" title="#{bundle.EditPatrociniosTitle_segmento}" required="true" requiredMessage="#{bundle.EditPatrociniosRequiredMessage_segmento}"/>
+                    <h:outputLabel value="#{bundle.EditPatrociniosLabel_endereco}" for="endereco" />
+                    <h:inputText id="endereco" value="#{patrociniosController.selected.endereco}" title="#{bundle.EditPatrociniosTitle_endereco}" required="true" requiredMessage="#{bundle.EditPatrociniosRequiredMessage_endereco}"/>
+                    <h:outputLabel value="#{bundle.EditPatrociniosLabel_site}" for="site" />
+                    <h:inputText id="site" value="#{patrociniosController.selected.site}" title="#{bundle.EditPatrociniosTitle_site}" required="true" requiredMessage="#{bundle.EditPatrociniosRequiredMessage_site}"/>
+                    <h:outputLabel value="#{bundle.EditPatrociniosLabel_valor}" for="valor" />
+                    <h:inputText id="valor" value="#{patrociniosController.selected.valor}" title="#{bundle.EditPatrociniosTitle_valor}" required="true" requiredMessage="#{bundle.EditPatrociniosRequiredMessage_valor}"/>
+                    <h:outputLabel value="#{bundle.EditPatrociniosLabel_eventos}" for="eventos" />
+                    <h:selectOneMenu id="eventos" value="#{patrociniosController.selected.eventos}" title="#{bundle.EditPatrociniosTitle_eventos}" required="true" requiredMessage="#{bundle.EditPatrociniosRequiredMessage_eventos}">
+                        <f:selectItems value="#{eventosController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="#{bundle.EditPatrociniosLabel_status}" for="status" />
+                    <h:selectOneMenu id="status" value="#{patrociniosController.selected.status}" title="#{bundle.EditPatrociniosTitle_status}" required="true" requiredMessage="#{bundle.EditPatrociniosRequiredMessage_status}">
+                        <f:selectItems value="#{statusController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                </h:panelGrid>
+                <h:commandLink action="#{patrociniosController.update}" value="#{bundle.EditPatrociniosSaveLink}"/>
+                <br />
+                <br />
+                <h:link outcome="View" value="#{bundle.EditPatrociniosViewLink}"/>
+                <br />
+                <h:commandLink action="#{patrociniosController.prepareList}" value="#{bundle.EditPatrociniosShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.EditPatrociniosIndexLink}" />
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.EditSalasTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.EditSalasLabel_idsala}" for="idsala" />
+                    <h:inputText id="idsala" value="#{salasController.selected.idsala}" title="#{bundle.EditSalasTitle_idsala}" required="true" requiredMessage="#{bundle.EditSalasRequiredMessage_idsala}"/>
+                    <h:outputLabel value="#{bundle.EditSalasLabel_descricao}" for="descricao" />
+                    <h:inputText id="descricao" value="#{salasController.selected.descricao}" title="#{bundle.EditSalasTitle_descricao}" required="true" requiredMessage="#{bundle.EditSalasRequiredMessage_descricao}"/>
+                    <h:outputLabel value="#{bundle.EditSalasLabel_capacidadetotal}" for="capacidadetotal" />
+                    <h:inputText id="capacidadetotal" value="#{salasController.selected.capacidadetotal}" title="#{bundle.EditSalasTitle_capacidadetotal}" required="true" requiredMessage="#{bundle.EditSalasRequiredMessage_capacidadetotal}"/>
+                    <h:outputLabel value="#{bundle.EditSalasLabel_capacidadeocupada}" for="capacidadeocupada" />
+                    <h:inputText id="capacidadeocupada" value="#{salasController.selected.capacidadeocupada}" title="#{bundle.EditSalasTitle_capacidadeocupada}" required="true" requiredMessage="#{bundle.EditSalasRequiredMessage_capacidadeocupada}"/>
+                    <h:outputLabel value="#{bundle.EditSalasLabel_status}" for="status" />
+                    <h:selectOneMenu id="status" value="#{salasController.selected.status}" title="#{bundle.EditSalasTitle_status}" required="true" requiredMessage="#{bundle.EditSalasRequiredMessage_status}">
+                        <f:selectItems value="#{statusController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                </h:panelGrid>
+                <h:commandLink action="#{salasController.update}" value="#{bundle.EditSalasSaveLink}"/>
+                <br />
+                <br />
+                <h:link outcome="View" value="#{bundle.EditSalasViewLink}"/>
+                <br />
+                <h:commandLink action="#{salasController.prepareList}" value="#{bundle.EditSalasShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.EditSalasIndexLink}" />
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

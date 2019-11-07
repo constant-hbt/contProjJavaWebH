@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.CreateCrachasTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.CreateCrachasLabel_idcracha}" for="idcracha" />
+                    <h:inputText id="idcracha" value="#{crachasController.selected.idcracha}" title="#{bundle.CreateCrachasTitle_idcracha}" required="true" requiredMessage="#{bundle.CreateCrachasRequiredMessage_idcracha}"/>
+                    <h:outputLabel value="#{bundle.CreateCrachasLabel_url}" for="url" />
+                    <h:inputText id="url" value="#{crachasController.selected.url}" title="#{bundle.CreateCrachasTitle_url}" required="true" requiredMessage="#{bundle.CreateCrachasRequiredMessage_url}"/>
+                    <h:outputLabel value="#{bundle.CreateCrachasLabel_eventos}" for="eventos" />
+                    <h:selectOneMenu id="eventos" value="#{crachasController.selected.eventos}" title="#{bundle.CreateCrachasTitle_eventos}" required="true" requiredMessage="#{bundle.CreateCrachasRequiredMessage_eventos}">
+                        <f:selectItems value="#{eventosController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="#{bundle.CreateCrachasLabel_participantes}" for="participantes" />
+                    <h:selectOneMenu id="participantes" value="#{crachasController.selected.participantes}" title="#{bundle.CreateCrachasTitle_participantes}" required="true" requiredMessage="#{bundle.CreateCrachasRequiredMessage_participantes}">
+                        <f:selectItems value="#{participantesController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="#{bundle.CreateCrachasLabel_status}" for="status" />
+                    <h:selectOneMenu id="status" value="#{crachasController.selected.status}" title="#{bundle.CreateCrachasTitle_status}" required="true" requiredMessage="#{bundle.CreateCrachasRequiredMessage_status}">
+                        <f:selectItems value="#{statusController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{crachasController.create}" value="#{bundle.CreateCrachasSaveLink}" />
+                <br />
+                <br />
+                <h:commandLink action="#{crachasController.prepareList}" value="#{bundle.CreateCrachasShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.CreateCrachasIndexLink}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

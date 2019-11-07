@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ListParticipanteEquipeTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:form styleClass="jsfcrud_list_form">
+                <h:panelGroup id="messagePanel" layout="block">
+                    <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+                </h:panelGroup>
+                <h:outputText escape="false" value="#{bundle.ListParticipanteEquipeEmpty}" rendered="#{participanteEquipeController.items.rowCount == 0}"/>
+                <h:panelGroup rendered="#{participanteEquipeController.items.rowCount > 0}">
+                    <h:outputText value="#{participanteEquipeController.pagination.pageFirstItem + 1}..#{participanteEquipeController.pagination.pageLastItem + 1}/#{participanteEquipeController.pagination.itemsCount}"/>&nbsp;
+                    <h:commandLink action="#{participanteEquipeController.previous}" value="#{bundle.Previous} #{participanteEquipeController.pagination.pageSize}" rendered="#{participanteEquipeController.pagination.hasPreviousPage}"/>&nbsp;
+                    <h:commandLink action="#{participanteEquipeController.next}" value="#{bundle.Next} #{participanteEquipeController.pagination.pageSize}" rendered="#{participanteEquipeController.pagination.hasNextPage}"/>&nbsp;
+                    <h:dataTable value="#{participanteEquipeController.items}" var="item" border="0" cellpadding="2" cellspacing="0" rowClasses="jsfcrud_odd_row,jsfcrud_even_row" rules="all" style="border:solid 1px">
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListParticipanteEquipeTitle_idpartequipe}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.idpartequipe}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListParticipanteEquipeTitle_equipes}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.equipes}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListParticipanteEquipeTitle_participantes}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.participantes}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListParticipanteEquipeTitle_status}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.status}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="&nbsp;"/>
+                            </f:facet>
+                            <h:commandLink action="#{participanteEquipeController.prepareView}" value="#{bundle.ListParticipanteEquipeViewLink}"/>
+                            <h:outputText value=" "/>
+                            <h:commandLink action="#{participanteEquipeController.prepareEdit}" value="#{bundle.ListParticipanteEquipeEditLink}"/>
+                            <h:outputText value=" "/>
+                            <h:commandLink action="#{participanteEquipeController.destroy}" value="#{bundle.ListParticipanteEquipeDestroyLink}"/>
+                        </h:column>
+                    </h:dataTable>
+                </h:panelGroup>
+                <br />
+                <h:commandLink action="#{participanteEquipeController.prepareCreate}" value="#{bundle.ListParticipanteEquipeCreateLink}"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.ListParticipanteEquipeIndexLink}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

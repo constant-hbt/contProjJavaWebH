@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.CreateParticipantesTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.CreateParticipantesLabel_idparticipante}" for="idparticipante" />
+                    <h:inputText id="idparticipante" value="#{participantesController.selected.idparticipante}" title="#{bundle.CreateParticipantesTitle_idparticipante}" required="true" requiredMessage="#{bundle.CreateParticipantesRequiredMessage_idparticipante}"/>
+                    <h:outputLabel value="#{bundle.CreateParticipantesLabel_eventos}" for="eventos" />
+                    <h:selectOneMenu id="eventos" value="#{participantesController.selected.eventos}" title="#{bundle.CreateParticipantesTitle_eventos}" required="true" requiredMessage="#{bundle.CreateParticipantesRequiredMessage_eventos}">
+                        <f:selectItems value="#{eventosController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="#{bundle.CreateParticipantesLabel_usuarios}" for="usuarios" />
+                    <h:selectOneMenu id="usuarios" value="#{participantesController.selected.usuarios}" title="#{bundle.CreateParticipantesTitle_usuarios}" required="true" requiredMessage="#{bundle.CreateParticipantesRequiredMessage_usuarios}">
+                        <f:selectItems value="#{usuariosController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{participantesController.create}" value="#{bundle.CreateParticipantesSaveLink}" />
+                <br />
+                <br />
+                <h:commandLink action="#{participantesController.prepareList}" value="#{bundle.CreateParticipantesShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.CreateParticipantesIndexLink}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

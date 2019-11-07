@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.CreateSalasTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.CreateSalasLabel_idsala}" for="idsala" />
+                    <h:inputText id="idsala" value="#{salasController.selected.idsala}" title="#{bundle.CreateSalasTitle_idsala}" required="true" requiredMessage="#{bundle.CreateSalasRequiredMessage_idsala}"/>
+                    <h:outputLabel value="#{bundle.CreateSalasLabel_descricao}" for="descricao" />
+                    <h:inputText id="descricao" value="#{salasController.selected.descricao}" title="#{bundle.CreateSalasTitle_descricao}" required="true" requiredMessage="#{bundle.CreateSalasRequiredMessage_descricao}"/>
+                    <h:outputLabel value="#{bundle.CreateSalasLabel_capacidadetotal}" for="capacidadetotal" />
+                    <h:inputText id="capacidadetotal" value="#{salasController.selected.capacidadetotal}" title="#{bundle.CreateSalasTitle_capacidadetotal}" required="true" requiredMessage="#{bundle.CreateSalasRequiredMessage_capacidadetotal}"/>
+                    <h:outputLabel value="#{bundle.CreateSalasLabel_capacidadeocupada}" for="capacidadeocupada" />
+                    <h:inputText id="capacidadeocupada" value="#{salasController.selected.capacidadeocupada}" title="#{bundle.CreateSalasTitle_capacidadeocupada}" required="true" requiredMessage="#{bundle.CreateSalasRequiredMessage_capacidadeocupada}"/>
+                    <h:outputLabel value="#{bundle.CreateSalasLabel_status}" for="status" />
+                    <h:selectOneMenu id="status" value="#{salasController.selected.status}" title="#{bundle.CreateSalasTitle_status}" required="true" requiredMessage="#{bundle.CreateSalasRequiredMessage_status}">
+                        <f:selectItems value="#{statusController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{salasController.create}" value="#{bundle.CreateSalasSaveLink}" />
+                <br />
+                <br />
+                <h:commandLink action="#{salasController.prepareList}" value="#{bundle.CreateSalasShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.CreateSalasIndexLink}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

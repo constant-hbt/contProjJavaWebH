@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ViewParticipanteEquipeTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputText value="#{bundle.ViewParticipanteEquipeLabel_idpartequipe}"/>
+                    <h:outputText value="#{participanteEquipeController.selected.idpartequipe}" title="#{bundle.ViewParticipanteEquipeTitle_idpartequipe}"/>
+                    <h:outputText value="#{bundle.ViewParticipanteEquipeLabel_equipes}"/>
+                    <h:outputText value="#{participanteEquipeController.selected.equipes}" title="#{bundle.ViewParticipanteEquipeTitle_equipes}"/>
+                    <h:outputText value="#{bundle.ViewParticipanteEquipeLabel_participantes}"/>
+                    <h:outputText value="#{participanteEquipeController.selected.participantes}" title="#{bundle.ViewParticipanteEquipeTitle_participantes}"/>
+                    <h:outputText value="#{bundle.ViewParticipanteEquipeLabel_status}"/>
+                    <h:outputText value="#{participanteEquipeController.selected.status}" title="#{bundle.ViewParticipanteEquipeTitle_status}"/>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{participanteEquipeController.destroyAndView}" value="#{bundle.ViewParticipanteEquipeDestroyLink}"/>
+                <br />
+                <br />
+                <h:link outcome="Edit" value="#{bundle.ViewParticipanteEquipeEditLink}"/>
+                <br />
+                <h:commandLink action="#{participanteEquipeController.prepareCreate}" value="#{bundle.ViewParticipanteEquipeCreateLink}" />
+                <br />
+                <h:commandLink action="#{participanteEquipeController.prepareList}" value="#{bundle.ViewParticipanteEquipeShowAllLink}"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.ViewParticipanteEquipeIndexLink}"/>
+
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

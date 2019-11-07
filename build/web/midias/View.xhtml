@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ViewMidiasTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputText value="#{bundle.ViewMidiasLabel_idmidia}"/>
+                    <h:outputText value="#{midiasController.selected.idmidia}" title="#{bundle.ViewMidiasTitle_idmidia}"/>
+                    <h:outputText value="#{bundle.ViewMidiasLabel_legenda}"/>
+                    <h:outputText value="#{midiasController.selected.legenda}" title="#{bundle.ViewMidiasTitle_legenda}"/>
+                    <h:outputText value="#{bundle.ViewMidiasLabel_pathmidia}"/>
+                    <h:outputText value="#{midiasController.selected.pathmidia}" title="#{bundle.ViewMidiasTitle_pathmidia}"/>
+                    <h:outputText value="#{bundle.ViewMidiasLabel_categoriamidia}"/>
+                    <h:outputText value="#{midiasController.selected.categoriamidia}" title="#{bundle.ViewMidiasTitle_categoriamidia}"/>
+                    <h:outputText value="#{bundle.ViewMidiasLabel_eventos}"/>
+                    <h:outputText value="#{midiasController.selected.eventos}" title="#{bundle.ViewMidiasTitle_eventos}"/>
+                    <h:outputText value="#{bundle.ViewMidiasLabel_status}"/>
+                    <h:outputText value="#{midiasController.selected.status}" title="#{bundle.ViewMidiasTitle_status}"/>
+                    <h:outputText value="#{bundle.ViewMidiasLabel_subeventos}"/>
+                    <h:outputText value="#{midiasController.selected.subeventos}" title="#{bundle.ViewMidiasTitle_subeventos}"/>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{midiasController.destroyAndView}" value="#{bundle.ViewMidiasDestroyLink}"/>
+                <br />
+                <br />
+                <h:link outcome="Edit" value="#{bundle.ViewMidiasEditLink}"/>
+                <br />
+                <h:commandLink action="#{midiasController.prepareCreate}" value="#{bundle.ViewMidiasCreateLink}" />
+                <br />
+                <h:commandLink action="#{midiasController.prepareList}" value="#{bundle.ViewMidiasShowAllLink}"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.ViewMidiasIndexLink}"/>
+
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

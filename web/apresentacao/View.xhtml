@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ViewApresentacaoTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputText value="#{bundle.ViewApresentacaoLabel_idapresentacao}"/>
+                    <h:outputText value="#{apresentacaoController.selected.idapresentacao}" title="#{bundle.ViewApresentacaoTitle_idapresentacao}"/>
+                    <h:outputText value="#{bundle.ViewApresentacaoLabel_descricaoapresentacao}"/>
+                    <h:outputText value="#{apresentacaoController.selected.descricaoapresentacao}" title="#{bundle.ViewApresentacaoTitle_descricaoapresentacao}"/>
+                    <h:outputText value="#{bundle.ViewApresentacaoLabel_priavaliador}"/>
+                    <h:outputText value="#{apresentacaoController.selected.priavaliador}" title="#{bundle.ViewApresentacaoTitle_priavaliador}"/>
+                    <h:outputText value="#{bundle.ViewApresentacaoLabel_segavaliador}"/>
+                    <h:outputText value="#{apresentacaoController.selected.segavaliador}" title="#{bundle.ViewApresentacaoTitle_segavaliador}"/>
+                    <h:outputText value="#{bundle.ViewApresentacaoLabel_subeventos}"/>
+                    <h:outputText value="#{apresentacaoController.selected.subeventos}" title="#{bundle.ViewApresentacaoTitle_subeventos}"/>
+                    <h:outputText value="#{bundle.ViewApresentacaoLabel_usuarios}"/>
+                    <h:outputText value="#{apresentacaoController.selected.usuarios}" title="#{bundle.ViewApresentacaoTitle_usuarios}"/>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{apresentacaoController.destroyAndView}" value="#{bundle.ViewApresentacaoDestroyLink}"/>
+                <br />
+                <br />
+                <h:link outcome="Edit" value="#{bundle.ViewApresentacaoEditLink}"/>
+                <br />
+                <h:commandLink action="#{apresentacaoController.prepareCreate}" value="#{bundle.ViewApresentacaoCreateLink}" />
+                <br />
+                <h:commandLink action="#{apresentacaoController.prepareList}" value="#{bundle.ViewApresentacaoShowAllLink}"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.ViewApresentacaoIndexLink}"/>
+
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

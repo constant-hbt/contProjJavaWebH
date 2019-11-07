@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ListSubmissaoTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:form styleClass="jsfcrud_list_form">
+                <h:panelGroup id="messagePanel" layout="block">
+                    <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+                </h:panelGroup>
+                <h:outputText escape="false" value="#{bundle.ListSubmissaoEmpty}" rendered="#{submissaoController.items.rowCount == 0}"/>
+                <h:panelGroup rendered="#{submissaoController.items.rowCount > 0}">
+                    <h:outputText value="#{submissaoController.pagination.pageFirstItem + 1}..#{submissaoController.pagination.pageLastItem + 1}/#{submissaoController.pagination.itemsCount}"/>&nbsp;
+                    <h:commandLink action="#{submissaoController.previous}" value="#{bundle.Previous} #{submissaoController.pagination.pageSize}" rendered="#{submissaoController.pagination.hasPreviousPage}"/>&nbsp;
+                    <h:commandLink action="#{submissaoController.next}" value="#{bundle.Next} #{submissaoController.pagination.pageSize}" rendered="#{submissaoController.pagination.hasNextPage}"/>&nbsp;
+                    <h:dataTable value="#{submissaoController.items}" var="item" border="0" cellpadding="2" cellspacing="0" rowClasses="jsfcrud_odd_row,jsfcrud_even_row" rules="all" style="border:solid 1px">
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListSubmissaoTitle_idsubmissao}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.idsubmissao}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListSubmissaoTitle_descricaosubmissao}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.descricaosubmissao}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListSubmissaoTitle_priavaliador}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.priavaliador}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListSubmissaoTitle_segavaliador}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.segavaliador}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListSubmissaoTitle_subeventos}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.subeventos}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListSubmissaoTitle_usuarios}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.usuarios}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="&nbsp;"/>
+                            </f:facet>
+                            <h:commandLink action="#{submissaoController.prepareView}" value="#{bundle.ListSubmissaoViewLink}"/>
+                            <h:outputText value=" "/>
+                            <h:commandLink action="#{submissaoController.prepareEdit}" value="#{bundle.ListSubmissaoEditLink}"/>
+                            <h:outputText value=" "/>
+                            <h:commandLink action="#{submissaoController.destroy}" value="#{bundle.ListSubmissaoDestroyLink}"/>
+                        </h:column>
+                    </h:dataTable>
+                </h:panelGroup>
+                <br />
+                <h:commandLink action="#{submissaoController.prepareCreate}" value="#{bundle.ListSubmissaoCreateLink}"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.ListSubmissaoIndexLink}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

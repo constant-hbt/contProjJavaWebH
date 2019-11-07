@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ListMidiasTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:form styleClass="jsfcrud_list_form">
+                <h:panelGroup id="messagePanel" layout="block">
+                    <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+                </h:panelGroup>
+                <h:outputText escape="false" value="#{bundle.ListMidiasEmpty}" rendered="#{midiasController.items.rowCount == 0}"/>
+                <h:panelGroup rendered="#{midiasController.items.rowCount > 0}">
+                    <h:outputText value="#{midiasController.pagination.pageFirstItem + 1}..#{midiasController.pagination.pageLastItem + 1}/#{midiasController.pagination.itemsCount}"/>&nbsp;
+                    <h:commandLink action="#{midiasController.previous}" value="#{bundle.Previous} #{midiasController.pagination.pageSize}" rendered="#{midiasController.pagination.hasPreviousPage}"/>&nbsp;
+                    <h:commandLink action="#{midiasController.next}" value="#{bundle.Next} #{midiasController.pagination.pageSize}" rendered="#{midiasController.pagination.hasNextPage}"/>&nbsp;
+                    <h:dataTable value="#{midiasController.items}" var="item" border="0" cellpadding="2" cellspacing="0" rowClasses="jsfcrud_odd_row,jsfcrud_even_row" rules="all" style="border:solid 1px">
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListMidiasTitle_idmidia}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.idmidia}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListMidiasTitle_legenda}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.legenda}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListMidiasTitle_pathmidia}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.pathmidia}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListMidiasTitle_categoriamidia}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.categoriamidia}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListMidiasTitle_eventos}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.eventos}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListMidiasTitle_status}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.status}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListMidiasTitle_subeventos}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.subeventos}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="&nbsp;"/>
+                            </f:facet>
+                            <h:commandLink action="#{midiasController.prepareView}" value="#{bundle.ListMidiasViewLink}"/>
+                            <h:outputText value=" "/>
+                            <h:commandLink action="#{midiasController.prepareEdit}" value="#{bundle.ListMidiasEditLink}"/>
+                            <h:outputText value=" "/>
+                            <h:commandLink action="#{midiasController.destroy}" value="#{bundle.ListMidiasDestroyLink}"/>
+                        </h:column>
+                    </h:dataTable>
+                </h:panelGroup>
+                <br />
+                <h:commandLink action="#{midiasController.prepareCreate}" value="#{bundle.ListMidiasCreateLink}"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.ListMidiasIndexLink}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

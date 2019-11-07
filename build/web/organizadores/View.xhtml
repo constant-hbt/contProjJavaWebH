@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ViewOrganizadoresTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputText value="#{bundle.ViewOrganizadoresLabel_idorganizador}"/>
+                    <h:outputText value="#{organizadoresController.selected.idorganizador}" title="#{bundle.ViewOrganizadoresTitle_idorganizador}"/>
+                    <h:outputText value="#{bundle.ViewOrganizadoresLabel_funcao}"/>
+                    <h:outputText value="#{organizadoresController.selected.funcao}" title="#{bundle.ViewOrganizadoresTitle_funcao}"/>
+                    <h:outputText value="#{bundle.ViewOrganizadoresLabel_eventos}"/>
+                    <h:outputText value="#{organizadoresController.selected.eventos}" title="#{bundle.ViewOrganizadoresTitle_eventos}"/>
+                    <h:outputText value="#{bundle.ViewOrganizadoresLabel_usuarios}"/>
+                    <h:outputText value="#{organizadoresController.selected.usuarios}" title="#{bundle.ViewOrganizadoresTitle_usuarios}"/>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{organizadoresController.destroyAndView}" value="#{bundle.ViewOrganizadoresDestroyLink}"/>
+                <br />
+                <br />
+                <h:link outcome="Edit" value="#{bundle.ViewOrganizadoresEditLink}"/>
+                <br />
+                <h:commandLink action="#{organizadoresController.prepareCreate}" value="#{bundle.ViewOrganizadoresCreateLink}" />
+                <br />
+                <h:commandLink action="#{organizadoresController.prepareList}" value="#{bundle.ViewOrganizadoresShowAllLink}"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.ViewOrganizadoresIndexLink}"/>
+
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

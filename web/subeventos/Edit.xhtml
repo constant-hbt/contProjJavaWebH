@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.EditSubeventosTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.EditSubeventosLabel_idsubevento}" for="idsubevento" />
+                    <h:inputText id="idsubevento" value="#{subeventosController.selected.idsubevento}" title="#{bundle.EditSubeventosTitle_idsubevento}" required="true" requiredMessage="#{bundle.EditSubeventosRequiredMessage_idsubevento}"/>
+                    <h:outputLabel value="#{bundle.EditSubeventosLabel_nome}" for="nome" />
+                    <h:inputText id="nome" value="#{subeventosController.selected.nome}" title="#{bundle.EditSubeventosTitle_nome}" required="true" requiredMessage="#{bundle.EditSubeventosRequiredMessage_nome}"/>
+                    <h:outputLabel value="#{bundle.EditSubeventosLabel_descricao}" for="descricao" />
+                    <h:inputText id="descricao" value="#{subeventosController.selected.descricao}" title="#{bundle.EditSubeventosTitle_descricao}" required="true" requiredMessage="#{bundle.EditSubeventosRequiredMessage_descricao}"/>
+                    <h:outputLabel value="#{bundle.EditSubeventosLabel_datahorainicio}" for="datahorainicio" />
+                    <h:inputText id="datahorainicio" value="#{subeventosController.selected.datahorainicio}" title="#{bundle.EditSubeventosTitle_datahorainicio}" required="true" requiredMessage="#{bundle.EditSubeventosRequiredMessage_datahorainicio}"/>
+                    <h:outputLabel value="#{bundle.EditSubeventosLabel_datahorafim}" for="datahorafim" />
+                    <h:inputText id="datahorafim" value="#{subeventosController.selected.datahorafim}" title="#{bundle.EditSubeventosTitle_datahorafim}" required="true" requiredMessage="#{bundle.EditSubeventosRequiredMessage_datahorafim}"/>
+                    <h:outputLabel value="#{bundle.EditSubeventosLabel_datafiminsc}" for="datafiminsc" />
+                    <h:inputText id="datafiminsc" value="#{subeventosController.selected.datafiminsc}" title="#{bundle.EditSubeventosTitle_datafiminsc}" required="true" requiredMessage="#{bundle.EditSubeventosRequiredMessage_datafiminsc}">
+                        <f:convertDateTime pattern="MM/dd/yyyy" />
+                    </h:inputText>
+                    <h:outputLabel value="#{bundle.EditSubeventosLabel_datainicioinsc}" for="datainicioinsc" />
+                    <h:inputText id="datainicioinsc" value="#{subeventosController.selected.datainicioinsc}" title="#{bundle.EditSubeventosTitle_datainicioinsc}" required="true" requiredMessage="#{bundle.EditSubeventosRequiredMessage_datainicioinsc}">
+                        <f:convertDateTime pattern="MM/dd/yyyy" />
+                    </h:inputText>
+                    <h:outputLabel value="#{bundle.EditSubeventosLabel_qtdemin}" for="qtdemin" />
+                    <h:inputText id="qtdemin" value="#{subeventosController.selected.qtdemin}" title="#{bundle.EditSubeventosTitle_qtdemin}" required="true" requiredMessage="#{bundle.EditSubeventosRequiredMessage_qtdemin}"/>
+                    <h:outputLabel value="#{bundle.EditSubeventosLabel_qtdemax}" for="qtdemax" />
+                    <h:inputText id="qtdemax" value="#{subeventosController.selected.qtdemax}" title="#{bundle.EditSubeventosTitle_qtdemax}" required="true" requiredMessage="#{bundle.EditSubeventosRequiredMessage_qtdemax}"/>
+                    <h:outputLabel value="#{bundle.EditSubeventosLabel_qtdemaxequipes}" for="qtdemaxequipes" />
+                    <h:inputText id="qtdemaxequipes" value="#{subeventosController.selected.qtdemaxequipes}" title="#{bundle.EditSubeventosTitle_qtdemaxequipes}" />
+                    <h:outputLabel value="#{bundle.EditSubeventosLabel_eventos}" for="eventos" />
+                    <h:selectOneMenu id="eventos" value="#{subeventosController.selected.eventos}" title="#{bundle.EditSubeventosTitle_eventos}" required="true" requiredMessage="#{bundle.EditSubeventosRequiredMessage_eventos}">
+                        <f:selectItems value="#{eventosController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="#{bundle.EditSubeventosLabel_salas}" for="salas" />
+                    <h:selectOneMenu id="salas" value="#{subeventosController.selected.salas}" title="#{bundle.EditSubeventosTitle_salas}" required="true" requiredMessage="#{bundle.EditSubeventosRequiredMessage_salas}">
+                        <f:selectItems value="#{salasController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="#{bundle.EditSubeventosLabel_status}" for="status" />
+                    <h:selectOneMenu id="status" value="#{subeventosController.selected.status}" title="#{bundle.EditSubeventosTitle_status}" required="true" requiredMessage="#{bundle.EditSubeventosRequiredMessage_status}">
+                        <f:selectItems value="#{statusController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                </h:panelGrid>
+                <h:commandLink action="#{subeventosController.update}" value="#{bundle.EditSubeventosSaveLink}"/>
+                <br />
+                <br />
+                <h:link outcome="View" value="#{bundle.EditSubeventosViewLink}"/>
+                <br />
+                <h:commandLink action="#{subeventosController.prepareList}" value="#{bundle.EditSubeventosShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.EditSubeventosIndexLink}" />
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

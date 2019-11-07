@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.CreateMidiasTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.CreateMidiasLabel_idmidia}" for="idmidia" />
+                    <h:inputText id="idmidia" value="#{midiasController.selected.idmidia}" title="#{bundle.CreateMidiasTitle_idmidia}" required="true" requiredMessage="#{bundle.CreateMidiasRequiredMessage_idmidia}"/>
+                    <h:outputLabel value="#{bundle.CreateMidiasLabel_legenda}" for="legenda" />
+                    <h:inputText id="legenda" value="#{midiasController.selected.legenda}" title="#{bundle.CreateMidiasTitle_legenda}" required="true" requiredMessage="#{bundle.CreateMidiasRequiredMessage_legenda}"/>
+                    <h:outputLabel value="#{bundle.CreateMidiasLabel_pathmidia}" for="pathmidia" />
+                    <h:inputText id="pathmidia" value="#{midiasController.selected.pathmidia}" title="#{bundle.CreateMidiasTitle_pathmidia}" required="true" requiredMessage="#{bundle.CreateMidiasRequiredMessage_pathmidia}"/>
+                    <h:outputLabel value="#{bundle.CreateMidiasLabel_categoriamidia}" for="categoriamidia" />
+                    <h:selectOneMenu id="categoriamidia" value="#{midiasController.selected.categoriamidia}" title="#{bundle.CreateMidiasTitle_categoriamidia}" required="true" requiredMessage="#{bundle.CreateMidiasRequiredMessage_categoriamidia}">
+                        <f:selectItems value="#{categoriamidiaController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="#{bundle.CreateMidiasLabel_eventos}" for="eventos" />
+                    <h:selectOneMenu id="eventos" value="#{midiasController.selected.eventos}" title="#{bundle.CreateMidiasTitle_eventos}" >
+                        <f:selectItems value="#{eventosController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="#{bundle.CreateMidiasLabel_status}" for="status" />
+                    <h:selectOneMenu id="status" value="#{midiasController.selected.status}" title="#{bundle.CreateMidiasTitle_status}" required="true" requiredMessage="#{bundle.CreateMidiasRequiredMessage_status}">
+                        <f:selectItems value="#{statusController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="#{bundle.CreateMidiasLabel_subeventos}" for="subeventos" />
+                    <h:selectOneMenu id="subeventos" value="#{midiasController.selected.subeventos}" title="#{bundle.CreateMidiasTitle_subeventos}" >
+                        <f:selectItems value="#{subeventosController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{midiasController.create}" value="#{bundle.CreateMidiasSaveLink}" />
+                <br />
+                <br />
+                <h:commandLink action="#{midiasController.prepareList}" value="#{bundle.CreateMidiasShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.CreateMidiasIndexLink}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.EditApresentacaoTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.EditApresentacaoLabel_idapresentacao}" for="idapresentacao" />
+                    <h:inputText id="idapresentacao" value="#{apresentacaoController.selected.idapresentacao}" title="#{bundle.EditApresentacaoTitle_idapresentacao}" required="true" requiredMessage="#{bundle.EditApresentacaoRequiredMessage_idapresentacao}"/>
+                    <h:outputLabel value="#{bundle.EditApresentacaoLabel_descricaoapresentacao}" for="descricaoapresentacao" />
+                    <h:inputText id="descricaoapresentacao" value="#{apresentacaoController.selected.descricaoapresentacao}" title="#{bundle.EditApresentacaoTitle_descricaoapresentacao}" required="true" requiredMessage="#{bundle.EditApresentacaoRequiredMessage_descricaoapresentacao}"/>
+                    <h:outputLabel value="#{bundle.EditApresentacaoLabel_priavaliador}" for="priavaliador" />
+                    <h:inputText id="priavaliador" value="#{apresentacaoController.selected.priavaliador}" title="#{bundle.EditApresentacaoTitle_priavaliador}" />
+                    <h:outputLabel value="#{bundle.EditApresentacaoLabel_segavaliador}" for="segavaliador" />
+                    <h:inputText id="segavaliador" value="#{apresentacaoController.selected.segavaliador}" title="#{bundle.EditApresentacaoTitle_segavaliador}" />
+                    <h:outputLabel value="#{bundle.EditApresentacaoLabel_subeventos}" for="subeventos" />
+                    <h:selectOneMenu id="subeventos" value="#{apresentacaoController.selected.subeventos}" title="#{bundle.EditApresentacaoTitle_subeventos}" required="true" requiredMessage="#{bundle.EditApresentacaoRequiredMessage_subeventos}">
+                        <f:selectItems value="#{subeventosController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="#{bundle.EditApresentacaoLabel_usuarios}" for="usuarios" />
+                    <h:selectOneMenu id="usuarios" value="#{apresentacaoController.selected.usuarios}" title="#{bundle.EditApresentacaoTitle_usuarios}" required="true" requiredMessage="#{bundle.EditApresentacaoRequiredMessage_usuarios}">
+                        <f:selectItems value="#{usuariosController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                </h:panelGrid>
+                <h:commandLink action="#{apresentacaoController.update}" value="#{bundle.EditApresentacaoSaveLink}"/>
+                <br />
+                <br />
+                <h:link outcome="View" value="#{bundle.EditApresentacaoViewLink}"/>
+                <br />
+                <h:commandLink action="#{apresentacaoController.prepareList}" value="#{bundle.EditApresentacaoShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.EditApresentacaoIndexLink}" />
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

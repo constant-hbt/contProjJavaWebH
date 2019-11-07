@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ListEditaisTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:form styleClass="jsfcrud_list_form">
+                <h:panelGroup id="messagePanel" layout="block">
+                    <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+                </h:panelGroup>
+                <h:outputText escape="false" value="#{bundle.ListEditaisEmpty}" rendered="#{editaisController.items.rowCount == 0}"/>
+                <h:panelGroup rendered="#{editaisController.items.rowCount > 0}">
+                    <h:outputText value="#{editaisController.pagination.pageFirstItem + 1}..#{editaisController.pagination.pageLastItem + 1}/#{editaisController.pagination.itemsCount}"/>&nbsp;
+                    <h:commandLink action="#{editaisController.previous}" value="#{bundle.Previous} #{editaisController.pagination.pageSize}" rendered="#{editaisController.pagination.hasPreviousPage}"/>&nbsp;
+                    <h:commandLink action="#{editaisController.next}" value="#{bundle.Next} #{editaisController.pagination.pageSize}" rendered="#{editaisController.pagination.hasNextPage}"/>&nbsp;
+                    <h:dataTable value="#{editaisController.items}" var="item" border="0" cellpadding="2" cellspacing="0" rowClasses="jsfcrud_odd_row,jsfcrud_even_row" rules="all" style="border:solid 1px">
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListEditaisTitle_idedital}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.idedital}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListEditaisTitle_descricao}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.descricao}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListEditaisTitle_dataabertura}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.dataabertura}">
+                                <f:convertDateTime pattern="MM/dd/yyyy" />
+                            </h:outputText>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListEditaisTitle_dataencerramento}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.dataencerramento}">
+                                <f:convertDateTime pattern="MM/dd/yyyy" />
+                            </h:outputText>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListEditaisTitle_urlarquivo}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.urlarquivo}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListEditaisTitle_eventos}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.eventos}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListEditaisTitle_status}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.status}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListEditaisTitle_usuarios}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.usuarios}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="&nbsp;"/>
+                            </f:facet>
+                            <h:commandLink action="#{editaisController.prepareView}" value="#{bundle.ListEditaisViewLink}"/>
+                            <h:outputText value=" "/>
+                            <h:commandLink action="#{editaisController.prepareEdit}" value="#{bundle.ListEditaisEditLink}"/>
+                            <h:outputText value=" "/>
+                            <h:commandLink action="#{editaisController.destroy}" value="#{bundle.ListEditaisDestroyLink}"/>
+                        </h:column>
+                    </h:dataTable>
+                </h:panelGroup>
+                <br />
+                <h:commandLink action="#{editaisController.prepareCreate}" value="#{bundle.ListEditaisCreateLink}"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.ListEditaisIndexLink}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

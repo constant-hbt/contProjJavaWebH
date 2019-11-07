@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.CreateOrganizadoresTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.CreateOrganizadoresLabel_idorganizador}" for="idorganizador" />
+                    <h:inputText id="idorganizador" value="#{organizadoresController.selected.idorganizador}" title="#{bundle.CreateOrganizadoresTitle_idorganizador}" required="true" requiredMessage="#{bundle.CreateOrganizadoresRequiredMessage_idorganizador}"/>
+                    <h:outputLabel value="#{bundle.CreateOrganizadoresLabel_funcao}" for="funcao" />
+                    <h:inputText id="funcao" value="#{organizadoresController.selected.funcao}" title="#{bundle.CreateOrganizadoresTitle_funcao}" required="true" requiredMessage="#{bundle.CreateOrganizadoresRequiredMessage_funcao}"/>
+                    <h:outputLabel value="#{bundle.CreateOrganizadoresLabel_eventos}" for="eventos" />
+                    <h:selectOneMenu id="eventos" value="#{organizadoresController.selected.eventos}" title="#{bundle.CreateOrganizadoresTitle_eventos}" required="true" requiredMessage="#{bundle.CreateOrganizadoresRequiredMessage_eventos}">
+                        <f:selectItems value="#{eventosController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="#{bundle.CreateOrganizadoresLabel_usuarios}" for="usuarios" />
+                    <h:selectOneMenu id="usuarios" value="#{organizadoresController.selected.usuarios}" title="#{bundle.CreateOrganizadoresTitle_usuarios}" required="true" requiredMessage="#{bundle.CreateOrganizadoresRequiredMessage_usuarios}">
+                        <f:selectItems value="#{usuariosController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{organizadoresController.create}" value="#{bundle.CreateOrganizadoresSaveLink}" />
+                <br />
+                <br />
+                <h:commandLink action="#{organizadoresController.prepareList}" value="#{bundle.CreateOrganizadoresShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.CreateOrganizadoresIndexLink}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

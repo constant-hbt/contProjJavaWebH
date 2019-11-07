@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ViewEventosTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputText value="#{bundle.ViewEventosLabel_idevento}"/>
+                    <h:outputText value="#{eventosController.selected.idevento}" title="#{bundle.ViewEventosTitle_idevento}"/>
+                    <h:outputText value="#{bundle.ViewEventosLabel_nome}"/>
+                    <h:outputText value="#{eventosController.selected.nome}" title="#{bundle.ViewEventosTitle_nome}"/>
+                    <h:outputText value="#{bundle.ViewEventosLabel_descricao}"/>
+                    <h:outputText value="#{eventosController.selected.descricao}" title="#{bundle.ViewEventosTitle_descricao}"/>
+                    <h:outputText value="#{bundle.ViewEventosLabel_local}"/>
+                    <h:outputText value="#{eventosController.selected.local}" title="#{bundle.ViewEventosTitle_local}"/>
+                    <h:outputText value="#{bundle.ViewEventosLabel_datainicio}"/>
+                    <h:outputText value="#{eventosController.selected.datainicio}" title="#{bundle.ViewEventosTitle_datainicio}">
+                        <f:convertDateTime pattern="MM/dd/yyyy" />
+                    </h:outputText>
+                    <h:outputText value="#{bundle.ViewEventosLabel_datafim}"/>
+                    <h:outputText value="#{eventosController.selected.datafim}" title="#{bundle.ViewEventosTitle_datafim}">
+                        <f:convertDateTime pattern="MM/dd/yyyy" />
+                    </h:outputText>
+                    <h:outputText value="#{bundle.ViewEventosLabel_datainicioinsc}"/>
+                    <h:outputText value="#{eventosController.selected.datainicioinsc}" title="#{bundle.ViewEventosTitle_datainicioinsc}">
+                        <f:convertDateTime pattern="MM/dd/yyyy" />
+                    </h:outputText>
+                    <h:outputText value="#{bundle.ViewEventosLabel_datafiminsc}"/>
+                    <h:outputText value="#{eventosController.selected.datafiminsc}" title="#{bundle.ViewEventosTitle_datafiminsc}">
+                        <f:convertDateTime pattern="MM/dd/yyyy" />
+                    </h:outputText>
+                    <h:outputText value="#{bundle.ViewEventosLabel_status}"/>
+                    <h:outputText value="#{eventosController.selected.status}" title="#{bundle.ViewEventosTitle_status}"/>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{eventosController.destroyAndView}" value="#{bundle.ViewEventosDestroyLink}"/>
+                <br />
+                <br />
+                <h:link outcome="Edit" value="#{bundle.ViewEventosEditLink}"/>
+                <br />
+                <h:commandLink action="#{eventosController.prepareCreate}" value="#{bundle.ViewEventosCreateLink}" />
+                <br />
+                <h:commandLink action="#{eventosController.prepareList}" value="#{bundle.ViewEventosShowAllLink}"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.ViewEventosIndexLink}"/>
+
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

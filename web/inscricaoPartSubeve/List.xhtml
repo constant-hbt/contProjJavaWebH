@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ListInscricaoPartSubeveTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:form styleClass="jsfcrud_list_form">
+                <h:panelGroup id="messagePanel" layout="block">
+                    <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+                </h:panelGroup>
+                <h:outputText escape="false" value="#{bundle.ListInscricaoPartSubeveEmpty}" rendered="#{inscricaoPartSubeveController.items.rowCount == 0}"/>
+                <h:panelGroup rendered="#{inscricaoPartSubeveController.items.rowCount > 0}">
+                    <h:outputText value="#{inscricaoPartSubeveController.pagination.pageFirstItem + 1}..#{inscricaoPartSubeveController.pagination.pageLastItem + 1}/#{inscricaoPartSubeveController.pagination.itemsCount}"/>&nbsp;
+                    <h:commandLink action="#{inscricaoPartSubeveController.previous}" value="#{bundle.Previous} #{inscricaoPartSubeveController.pagination.pageSize}" rendered="#{inscricaoPartSubeveController.pagination.hasPreviousPage}"/>&nbsp;
+                    <h:commandLink action="#{inscricaoPartSubeveController.next}" value="#{bundle.Next} #{inscricaoPartSubeveController.pagination.pageSize}" rendered="#{inscricaoPartSubeveController.pagination.hasNextPage}"/>&nbsp;
+                    <h:dataTable value="#{inscricaoPartSubeveController.items}" var="item" border="0" cellpadding="2" cellspacing="0" rowClasses="jsfcrud_odd_row,jsfcrud_even_row" rules="all" style="border:solid 1px">
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListInscricaoPartSubeveTitle_idinscricao}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.idinscricao}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListInscricaoPartSubeveTitle_datahora}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.datahora}">
+                                <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                            </h:outputText>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListInscricaoPartSubeveTitle_participantes}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.participantes}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListInscricaoPartSubeveTitle_status}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.status}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListInscricaoPartSubeveTitle_subeventos}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.subeventos}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="&nbsp;"/>
+                            </f:facet>
+                            <h:commandLink action="#{inscricaoPartSubeveController.prepareView}" value="#{bundle.ListInscricaoPartSubeveViewLink}"/>
+                            <h:outputText value=" "/>
+                            <h:commandLink action="#{inscricaoPartSubeveController.prepareEdit}" value="#{bundle.ListInscricaoPartSubeveEditLink}"/>
+                            <h:outputText value=" "/>
+                            <h:commandLink action="#{inscricaoPartSubeveController.destroy}" value="#{bundle.ListInscricaoPartSubeveDestroyLink}"/>
+                        </h:column>
+                    </h:dataTable>
+                </h:panelGroup>
+                <br />
+                <h:commandLink action="#{inscricaoPartSubeveController.prepareCreate}" value="#{bundle.ListInscricaoPartSubeveCreateLink}"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.ListInscricaoPartSubeveIndexLink}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

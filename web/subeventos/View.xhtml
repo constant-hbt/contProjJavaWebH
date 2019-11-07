@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ViewSubeventosTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputText value="#{bundle.ViewSubeventosLabel_idsubevento}"/>
+                    <h:outputText value="#{subeventosController.selected.idsubevento}" title="#{bundle.ViewSubeventosTitle_idsubevento}"/>
+                    <h:outputText value="#{bundle.ViewSubeventosLabel_nome}"/>
+                    <h:outputText value="#{subeventosController.selected.nome}" title="#{bundle.ViewSubeventosTitle_nome}"/>
+                    <h:outputText value="#{bundle.ViewSubeventosLabel_descricao}"/>
+                    <h:outputText value="#{subeventosController.selected.descricao}" title="#{bundle.ViewSubeventosTitle_descricao}"/>
+                    <h:outputText value="#{bundle.ViewSubeventosLabel_datahorainicio}"/>
+                    <h:outputText value="#{subeventosController.selected.datahorainicio}" title="#{bundle.ViewSubeventosTitle_datahorainicio}"/>
+                    <h:outputText value="#{bundle.ViewSubeventosLabel_datahorafim}"/>
+                    <h:outputText value="#{subeventosController.selected.datahorafim}" title="#{bundle.ViewSubeventosTitle_datahorafim}"/>
+                    <h:outputText value="#{bundle.ViewSubeventosLabel_datafiminsc}"/>
+                    <h:outputText value="#{subeventosController.selected.datafiminsc}" title="#{bundle.ViewSubeventosTitle_datafiminsc}">
+                        <f:convertDateTime pattern="MM/dd/yyyy" />
+                    </h:outputText>
+                    <h:outputText value="#{bundle.ViewSubeventosLabel_datainicioinsc}"/>
+                    <h:outputText value="#{subeventosController.selected.datainicioinsc}" title="#{bundle.ViewSubeventosTitle_datainicioinsc}">
+                        <f:convertDateTime pattern="MM/dd/yyyy" />
+                    </h:outputText>
+                    <h:outputText value="#{bundle.ViewSubeventosLabel_qtdemin}"/>
+                    <h:outputText value="#{subeventosController.selected.qtdemin}" title="#{bundle.ViewSubeventosTitle_qtdemin}"/>
+                    <h:outputText value="#{bundle.ViewSubeventosLabel_qtdemax}"/>
+                    <h:outputText value="#{subeventosController.selected.qtdemax}" title="#{bundle.ViewSubeventosTitle_qtdemax}"/>
+                    <h:outputText value="#{bundle.ViewSubeventosLabel_qtdemaxequipes}"/>
+                    <h:outputText value="#{subeventosController.selected.qtdemaxequipes}" title="#{bundle.ViewSubeventosTitle_qtdemaxequipes}"/>
+                    <h:outputText value="#{bundle.ViewSubeventosLabel_eventos}"/>
+                    <h:outputText value="#{subeventosController.selected.eventos}" title="#{bundle.ViewSubeventosTitle_eventos}"/>
+                    <h:outputText value="#{bundle.ViewSubeventosLabel_salas}"/>
+                    <h:outputText value="#{subeventosController.selected.salas}" title="#{bundle.ViewSubeventosTitle_salas}"/>
+                    <h:outputText value="#{bundle.ViewSubeventosLabel_status}"/>
+                    <h:outputText value="#{subeventosController.selected.status}" title="#{bundle.ViewSubeventosTitle_status}"/>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{subeventosController.destroyAndView}" value="#{bundle.ViewSubeventosDestroyLink}"/>
+                <br />
+                <br />
+                <h:link outcome="Edit" value="#{bundle.ViewSubeventosEditLink}"/>
+                <br />
+                <h:commandLink action="#{subeventosController.prepareCreate}" value="#{bundle.ViewSubeventosCreateLink}" />
+                <br />
+                <h:commandLink action="#{subeventosController.prepareList}" value="#{bundle.ViewSubeventosShowAllLink}"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.ViewSubeventosIndexLink}"/>
+
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>
