@@ -3,12 +3,20 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/henrique/NetBeansProjects/Excluir2/src/java/controller/InscricaoPartEventoJpaController.java</file>
-            <file>file:/home/henrique/NetBeansProjects/Excluir2/src/java/model/Status.java</file>
-            <file>file:/home/henrique/NetBeansProjects/Excluir2/web/welcomePrimefaces.xhtml</file>
-            <file>file:/home/henrique/NetBeansProjects/Excluir2/web/index.xhtml</file>
-            <file>file:/home/henrique/NetBeansProjects/Excluir2/src/java/hibernate.cfg.xml</file>
             <file>file:/home/henrique/NetBeansProjects/Excluir2/src/java/controller/StatusJpaController.java</file>
+            <file>file:/home/henrique/NetBeansProjects/Excluir2/src/java/controller/Inscricoes.java</file>
+            <file>file:/home/henrique/NetBeansProjects/Excluir2/src/java/servlets/InscEvento.java</file>
+            <file>file:/home/henrique/NetBeansProjects/Excluir2/web/cadastro.jsp</file>
+            <file>file:/home/henrique/NetBeansProjects/Excluir2/src/java/hibernate.cfg.xml</file>
+            <file>file:/home/henrique/NetBeansProjects/Excluir2/web/index.xhtml</file>
+            <file>file:/home/henrique/NetBeansProjects/Excluir2/src/java/controller/Conexao.java</file>
+            <file>file:/home/henrique/NetBeansProjects/Excluir2/web/welcomePrimefaces.xhtml</file>
+            <file>file:/home/henrique/NetBeansProjects/Excluir2/src/java/servlets/Cadastro.java</file>
+            <file>file:/home/henrique/NetBeansProjects/Excluir2/src/java/controller/UsuariosControllerH.java</file>
+            <file>file:/home/henrique/NetBeansProjects/Excluir2/src/java/model/Usuarios.java</file>
+            <file>file:/home/henrique/NetBeansProjects/Excluir2/web/inscricoes.jsp</file>
+            <file>file:/home/henrique/NetBeansProjects/Excluir2/src/java/model/Status.java</file>
+            <file>file:/home/henrique/NetBeansProjects/Excluir2/src/java/controller/InscricaoPartEventoJpaController.java</file>
         </group>
     </open-files>
 </project-private>
