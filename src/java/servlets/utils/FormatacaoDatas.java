@@ -6,6 +6,7 @@
 package servlets.utils;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -40,7 +41,23 @@ public class FormatacaoDatas {
 
          return data;         
 
-    } 
+    }
+    
+    public static java.util.Date formataDataBr(Date dataEn) throws Exception{
+        if(dataEn == null || dataEn.equals("")){
+            return null;
+        }
+        
+        try{
+            SimpleDateFormat f = new SimpleDateFormat("dd/MM/yyyy");
+            String dataBr = null;
+            dataBr = f.format(dataEn);
+            java.util.Date dataBrf = formataData(dataBr);
+            return dataBrf;
+        }catch(ParseException e){
+            throw e;
+        }
+    }
 }
 
 

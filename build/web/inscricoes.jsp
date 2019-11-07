@@ -36,9 +36,7 @@
                             idEvento : inscEvento
                         },
                         success: function(responseText){
-                            $("#modal_titulo").text(responseText);
-                            document.getElementById("modal_titulo_div").class = "modal-header text-success";
-                            $('#modalInscricao').modal('show');
+                            alert(responseText);
                         },
                         error: function (jqXHR, textStatus, errorThrown) {
                             $("#modal_titulo").text("Erro ao se inscrever!");

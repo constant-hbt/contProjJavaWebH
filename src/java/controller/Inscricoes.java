@@ -9,6 +9,7 @@ import model.Eventos;
 import model.Salas;
 import model.Status;
 import model.Subeventos;
+import servlets.utils.FormatacaoDatas;
 
 
 public class Inscricoes extends Conexao{
@@ -25,10 +26,10 @@ public class Inscricoes extends Conexao{
             evento.setNome(rs.getString("nome"));
             evento.setDescricao(rs.getString("descricao"));
             evento.setLocal(rs.getString("local"));
-            evento.setDatainicio(rs.getDate("dataInicio"));
-            evento.setDatafim(rs.getDate("dataFim"));
-            evento.setDatainicioinsc(rs.getDate("datainicioinsc"));
-            evento.setDatafiminsc(rs.getDate("dataFimInsc"));
+            evento.setDatainicio(FormatacaoDatas.formataDataBr(rs.getDate("dataInicio")));
+            evento.setDatafim(FormatacaoDatas.formataDataBr(rs.getDate("dataFim")));
+            evento.setDatainicioinsc(FormatacaoDatas.formataDataBr(rs.getDate("datainicioinsc")));
+            evento.setDatafiminsc(FormatacaoDatas.formataDataBr(rs.getDate("dataFimInsc")));
             
             Status status = new Status();
             status.setIdstatus(rs.getInt("idStatus"));
@@ -59,8 +60,8 @@ public class Inscricoes extends Conexao{
             subevento.setDescricao(rs.getString("descricao"));
             subevento.setDatahorainicio(rs.getString("datahorainicio"));
             subevento.setDatahorafim(rs.getString("datahorafim"));
-            subevento.setDatainicioinsc(rs.getDate("datainicioinsc"));
-            subevento.setDatafiminsc(rs.getDate("datafiminsc"));
+            subevento.setDatainicioinsc(FormatacaoDatas.formataDataBr(rs.getDate("datainicioinsc")));
+            subevento.setDatafiminsc(FormatacaoDatas.formataDataBr(rs.getDate("datafiminsc")));
             subevento.setQtdemin(rs.getInt("qtdemin"));
             subevento.setQtdemax(rs.getInt("qtdemax"));
             subevento.setQtdemaxequipes(rs.getInt("qtdemaxequipes"));

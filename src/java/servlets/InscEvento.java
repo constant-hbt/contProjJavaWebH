@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author henrique
  */
+@WebServlet("/InscEvento")
 public class InscEvento extends HttpServlet {
 
     /**
@@ -75,11 +77,15 @@ public class InscEvento extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
-        try{
+        //response.setContentType("text/html;charset=UTF-8");
+        
+        //try{
             
             int idUsuario = Integer.parseInt(request.getParameter("idUsuario"));
             int idEvento = Integer.parseInt(request.getParameter("idEvento"));
-            
+            PrintWriter out = response.getWriter();
+            out.print("idEvento: " + idEvento + "id usuario: " + idUsuario);
+          /*  
             Inscricoes DAO = new Inscricoes();
             ArrayList<Integer> ids = DAO.verificarInscEvento(idUsuario);
             String msg = "";
@@ -110,6 +116,7 @@ public class InscEvento extends HttpServlet {
         }catch(Exception e){
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
+            */
     }
 
     /**
