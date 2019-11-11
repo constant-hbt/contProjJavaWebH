@@ -38,12 +38,11 @@ public class InscEvento extends HttpServlet {
         PrintWriter out = response.getWriter();
             /* TODO output your page here. You may use following sample code. */
         
-        //try{
+        try{
             
             int idUsuario = Integer.parseInt(request.getParameter("idUsuario"));
             int idEvento = Integer.parseInt(request.getParameter("idEvento"));
-            out.println("idEvento: " + idEvento + "id usuario: " + idUsuario);
-          /*  
+          
             Inscricoes DAO = new Inscricoes();
             ArrayList<Integer> ids = DAO.verificarInscEvento(idUsuario);
             String msg = "";
@@ -51,30 +50,27 @@ public class InscEvento extends HttpServlet {
             if(ids.get(0) == 0){
                 if(DAO.inscreverEvento(idUsuario, idEvento)){
                     msg = "Inscrição realizada com sucesso!";
-                    response.getWriter().write(msg);
                     response.setStatus(HttpServletResponse.SC_CREATED);
                 }else{
                     msg = "Erro ao realizar a inscrição!";
-                    response.getWriter().write(msg);
                     response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 }
             }else{
                 if(ids.get(0) > 0 && ids.get(1) > 0){
                     if(DAO.atualizarInscEvento(ids.get(0), idEvento)){
                         response.setStatus(HttpServletResponse.SC_OK);
-                        msg = "Inscrito no evento com sucesso! Sua outra inscrição foi inativada!";
-                        response.getWriter().write(msg);
+                        msg = "Inscrito no evento com sucesso! \nSua outra inscrição foi inativada!";
                     }else{
                         msg = "Erro ao realizar a inscrição!";
-                        response.getWriter().write(msg);
                         response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                     }
                 }
             }
+            out.println(msg);
         }catch(Exception e){
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
-            */
+            
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -107,13 +103,14 @@ public class InscEvento extends HttpServlet {
         processRequest(request, response);
         //response.setContentType("text/html;charset=UTF-8");
         
-        //try{
+        /*
+        try{
             
             int idUsuario = Integer.parseInt(request.getParameter("idUsuario"));
             int idEvento = Integer.parseInt(request.getParameter("idEvento"));
             PrintWriter out = response.getWriter();
             out.println("idEvento: " + idEvento + "id usuario: " + idUsuario);
-          /*  
+            
             Inscricoes DAO = new Inscricoes();
             ArrayList<Integer> ids = DAO.verificarInscEvento(idUsuario);
             String msg = "";

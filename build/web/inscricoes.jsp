@@ -43,7 +43,8 @@
                             idEvento : inscEvento
                         },
                         success: function(responseText){
-                            alert(responseText);
+                            $("#modal_titulo").text(responseText);
+                            $('#modalInscricao').modal('show');
                         },
                         error: function (jqXHR, textStatus, errorThrown) {
                             $("#modal_titulo").text("Erro ao se inscrever!");
@@ -188,13 +189,10 @@
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div id="modal_titulo_div" class="modal-header text-success">
-                            <h5 class="modal-title" id="modal_titulo">Inscrição realizada com sucesso</h5>
+                            <h5 class="modal-title" id="modal_titulo"></h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                             </button>
-                        </div>
-                        <div class="modal-body" id="modal_conteudo">
-
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-success" id="modal_btn" data-dismiss="modal">Voltar</button>
