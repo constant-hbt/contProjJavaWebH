@@ -28,6 +28,13 @@
             $('document').ready(function(){
                 $(".insc-evento").click(function() {
                     var inscEvento = $(this).data("idevento");
+                    /*
+                    $.post("inscEvento", {
+                        idUsuario : 1,
+                        idEvento : inscEvento
+                    },function(msg){
+                        alert(msg);
+                    }); */
                     $.ajax({
                         url: "InscEvento",
                         type: "POST",

@@ -34,19 +34,47 @@ public class InscEvento extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
+        response.setContentType("text;charset=UTF-8");
+        PrintWriter out = response.getWriter();
             /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet InscEvento</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet InscEvento at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+        
+        //try{
+            
+            int idUsuario = Integer.parseInt(request.getParameter("idUsuario"));
+            int idEvento = Integer.parseInt(request.getParameter("idEvento"));
+            out.println("idEvento: " + idEvento + "id usuario: " + idUsuario);
+          /*  
+            Inscricoes DAO = new Inscricoes();
+            ArrayList<Integer> ids = DAO.verificarInscEvento(idUsuario);
+            String msg = "";
+            
+            if(ids.get(0) == 0){
+                if(DAO.inscreverEvento(idUsuario, idEvento)){
+                    msg = "Inscrição realizada com sucesso!";
+                    response.getWriter().write(msg);
+                    response.setStatus(HttpServletResponse.SC_CREATED);
+                }else{
+                    msg = "Erro ao realizar a inscrição!";
+                    response.getWriter().write(msg);
+                    response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                }
+            }else{
+                if(ids.get(0) > 0 && ids.get(1) > 0){
+                    if(DAO.atualizarInscEvento(ids.get(0), idEvento)){
+                        response.setStatus(HttpServletResponse.SC_OK);
+                        msg = "Inscrito no evento com sucesso! Sua outra inscrição foi inativada!";
+                        response.getWriter().write(msg);
+                    }else{
+                        msg = "Erro ao realizar a inscrição!";
+                        response.getWriter().write(msg);
+                        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                    }
+                }
+            }
+        }catch(Exception e){
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
+            */
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -84,7 +112,7 @@ public class InscEvento extends HttpServlet {
             int idUsuario = Integer.parseInt(request.getParameter("idUsuario"));
             int idEvento = Integer.parseInt(request.getParameter("idEvento"));
             PrintWriter out = response.getWriter();
-            out.print("idEvento: " + idEvento + "id usuario: " + idUsuario);
+            out.println("idEvento: " + idEvento + "id usuario: " + idUsuario);
           /*  
             Inscricoes DAO = new Inscricoes();
             ArrayList<Integer> ids = DAO.verificarInscEvento(idUsuario);
