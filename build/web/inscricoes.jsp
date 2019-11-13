@@ -83,8 +83,57 @@
                 });
                 
                 $(".insc-sub").click(function() {
-                    var inscSubeve = $(this).data("idsubevento");
-                    alert(inscSubeve);
+                    var botaoSub = this;
+                    var idSub = $(this).data("idsubevento");
+                    
+                    if($(botaoSub).data("statussub") == 2){
+                        $.ajax({
+                            url: "InscSubevento",
+                            type: "POST",
+                            data: {
+                                idUsuario : 3,
+                                idSubevento : idSub,
+                                acao: "inscrever"
+                            },
+                            success: function(responseText){
+                                $("#modal_titulo_div").attr("class", "modal-header text-info");
+                                $("#modal_titulo").text(responseText);
+                                $('#modalInscricao').modal('show');
+                                $(botao).attr("data-statussub", "1");
+                                $(botao).text("Desinscrever-se");
+                                $(botao).attr("class", "btn btn-outline-danger");
+                            },
+                            error: function (jqXHR, textStatus, errorThrown) {
+                                $("#modal_titulo").text("Erro ao se inscrever no subevento!" + errorThrown);
+                                $('#modalInscricao').modal('show');
+                            }
+                        });
+                    }else{
+                        $.ajax({
+                            url: "InscSubevento",
+                            type: "POST",
+                            data: {
+                                idUsuario : 3,
+                                idSubevento : idSub,
+                                acao : "desinscrever"
+                            },
+                            success: function(responseText){
+                                $("#modal_titulo").text(responseText);
+                                $("#modal_titulo_div").attr("class", "modal-header text-info");
+                                $("#modal_btn").attr("class", "btn btn-success");
+                                $(botao).text("Inscrever-se");
+                                $(botao).attr("class", "btn btn-outline-success");
+                                $(botao).attr("data-inscritoev", "2");
+                                $('#modalInscricao').modal('show');
+                            },
+                            error: function (jqXHR, textStatus, errorThrown) {
+                                $("#modal_titulo").text("Erro ao se desinscrever do evento!");
+                                $("#modal_titulo_div").attr("class", "modal-header text-danger");
+                                $("#modal_btn").attr("class", "btn btn-danger");
+                                $('#modalInscricao').modal('show');
+                            }
+                        });
+                    }
                 });  
             });
         </script>

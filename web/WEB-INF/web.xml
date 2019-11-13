@@ -19,7 +19,7 @@
     </servlet>
     <servlet>
         <servlet-name>InscricaoSub</servlet-name>
-        <servlet-class>servlets.InscricaoSub</servlet-class>
+        <servlet-class>servlets.InscSubevento</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>Faces Servlet</servlet-name>

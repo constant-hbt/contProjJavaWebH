@@ -5,9 +5,11 @@
  */
 package servlets;
 
+import controller.Inscricoes;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,7 +18,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author henrique
  */
-public class InscricaoSub extends HttpServlet {
+@WebServlet("/InscSubevento")
+public class InscSubevento extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -29,20 +32,38 @@ public class InscricaoSub extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
+        response.setContentType("text;charset=UTF-8");
         PrintWriter out = response.getWriter();
-                
+        
         try{
-            int idPart = Integer.parseInt(request.getParameter("idPart"));
+            
+            int idUsuario = Integer.parseInt(request.getParameter("idUsuario"));
             int idSubevento = Integer.parseInt(request.getParameter("idSubevento"));
-            int acao = Integer.parseInt(request.getParameter("acao"));
-            InscricaoSub DAO = new InscricaoSub();
+            String acao = request.getParameter("acao");
             
-            if(acao == 1){
+            
+            String msg = "";
+            Inscricoes DAO = new Inscricoes();
+            int idp = DAO.pegarIdParticipante(idUsuario);
+            int idsub = DAO.verificarSubPertEvento(idSubevento, idp);
+            
+            if(acao.equals("inscrever")){
+                if(idsub == idSubevento){
+                    if(DAO.inscreverSubEvento(idp, idSubevento)){
+                        msg = "Inscrição no sub-evento realizada com sucesso!";
+                    }else{
+                        msg = "Erro ao realizar a inscrição";
+                    }
+                }else{
+                    msg = "Você precisa estar inscrito(a) no evento para conseguir participar de um subevento dele" + idsub + ", " + idSubevento;
+                }
+            }else{
+                msg = "Ainda não esta feito o desisncrever";
             }
-            
+            out.println(msg);
         }catch(Exception e){
-            System.out.println("Erro:" + e.getMessage());
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            out.println("Erro");
         }
     }
 
