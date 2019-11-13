@@ -13,6 +13,14 @@
         <servlet-name>InscricaoEvento</servlet-name>
         <servlet-class>servlets.InscricaoEvento</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DesinscEvento</servlet-name>
+        <servlet-class>servlets.DesinscEvento</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>InscricaoSub</servlet-name>
+        <servlet-class>servlets.InscricaoSub</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Faces Servlet</servlet-name>
         <url-pattern>/faces/*</url-pattern>
@@ -20,6 +28,14 @@
     <servlet-mapping>
         <servlet-name>InscricaoEvento</servlet-name>
         <url-pattern>/InscricaoEvento</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DesinscEvento</servlet-name>
+        <url-pattern>/DesinscEvento</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>InscricaoSub</servlet-name>
+        <url-pattern>/InscricaoSub</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

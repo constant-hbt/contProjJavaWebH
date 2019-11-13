@@ -20,8 +20,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author henrique
  */
-@WebServlet("/InscEvento")
-public class InscEvento extends HttpServlet {
+@WebServlet("/DesEvento")
+public class DesEvento extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -44,24 +44,19 @@ public class InscEvento extends HttpServlet {
             int idEvento = Integer.parseInt(request.getParameter("idEvento"));
           
             Inscricoes DAO = new Inscricoes();
-            ArrayList<Integer> ids = DAO.verificarInscEvento(idUsuario);
+            ArrayList<Integer> ids = DAO.verificarInscTodosEventos(idUsuario);
             String msg = "";
             
             if(ids.get(0) == 0){
-                if(DAO.inscreverEvento(idUsuario, idEvento)){
-                    msg = "Inscrição realizada com sucesso!";
-                    response.setStatus(HttpServletResponse.SC_CREATED);
-                }else{
-                    msg = "Erro ao realizar a inscrição!";
-                    response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                }
+                msg = "Não está inscrito no evento!";
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             }else{
                 if(ids.get(0) > 0 && ids.get(1) > 0){
-                    if(DAO.atualizarInscEvento(ids.get(0), idEvento)){
+                    if(DAO.desinscPartEvento(ids.get(0), idEvento)){
                         response.setStatus(HttpServletResponse.SC_OK);
-                        msg = "Inscrito no evento com sucesso! \nSua outra inscrição foi inativada!";
+                        msg = "Desinscrito do evento com sucesso!";
                     }else{
-                        msg = "Erro ao realizar a inscrição!";
+                        msg = "Erro ao se desisncrever do evento!";
                         response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                     }
                 }
@@ -101,47 +96,37 @@ public class InscEvento extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
-        //response.setContentType("text/html;charset=UTF-8");
+        response.setContentType("text;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+            /* TODO output your page here. You may use following sample code. */
         
-        /*
         try{
             
             int idUsuario = Integer.parseInt(request.getParameter("idUsuario"));
             int idEvento = Integer.parseInt(request.getParameter("idEvento"));
-            PrintWriter out = response.getWriter();
-            out.println("idEvento: " + idEvento + "id usuario: " + idUsuario);
-            
+          
             Inscricoes DAO = new Inscricoes();
-            ArrayList<Integer> ids = DAO.verificarInscEvento(idUsuario);
+            ArrayList<Integer> ids = DAO.verificarInscTodosEventos(idUsuario);
             String msg = "";
             
             if(ids.get(0) == 0){
-                if(DAO.inscreverEvento(idUsuario, idEvento)){
-                    msg = "Inscrição realizada com sucesso!";
-                    response.getWriter().write(msg);
-                    response.setStatus(HttpServletResponse.SC_CREATED);
-                }else{
-                    msg = "Erro ao realizar a inscrição!";
-                    response.getWriter().write(msg);
-                    response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                }
+                msg = "Não está inscrito no evento!";
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             }else{
                 if(ids.get(0) > 0 && ids.get(1) > 0){
-                    if(DAO.atualizarInscEvento(ids.get(0), idEvento)){
+                    if(DAO.desinscPartEvento(ids.get(0), idEvento)){
                         response.setStatus(HttpServletResponse.SC_OK);
-                        msg = "Inscrito no evento com sucesso! Sua outra inscrição foi inativada!";
-                        response.getWriter().write(msg);
+                        msg = "Desinscrito do evento com sucesso!";
                     }else{
-                        msg = "Erro ao realizar a inscrição!";
-                        response.getWriter().write(msg);
+                        msg = "Erro ao se desisncrever do evento!";
                         response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                     }
                 }
             }
+            out.println(msg);
         }catch(Exception e){
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
-            */
     }
 
     /**
