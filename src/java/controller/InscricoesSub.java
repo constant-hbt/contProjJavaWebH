@@ -7,6 +7,7 @@ package controller;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -15,15 +16,20 @@ public class InscricoesSub extends Conexao{
     public InscricoesSub(){}
     
     public boolean verificaInscSub(int idPart, int idSubevento) throws Exception{
-        String sql = "Select idstatus from inscricao_part_subeve where idparticipante = ? and idsubevento = ?";
-        PreparedStatement ps = getConexao().prepareStatement(sql);
-        ps.setInt(1, idPart);
-        ps.setInt(2, idSubevento);
-        ResultSet rs = ps.executeQuery();
-        while(rs.next()){
-            if(rs.getInt("idstatus") == 1){
-                return true;
+        try{
+            String sql = "Select idstatus from inscricao_part_subeve where idparticipante = ? and idsubevento = ?";
+            PreparedStatement ps = getConexao().prepareStatement(sql);
+            ps.setInt(1, idPart);
+            ps.setInt(2, idSubevento);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                if(rs.getInt("idstatus") == 1){
+                    return true;
+                }
             }
+            
+        }catch(SQLException e){
+            e.printStackTrace();
         }
         return false;
     }

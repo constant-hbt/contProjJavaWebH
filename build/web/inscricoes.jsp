@@ -189,9 +189,12 @@
                                                             <div class="col-md-12">
                                                                 <p class="card-text">Local: sala<%= subevento.getSalas().getIdsala()%>, descrição: <%= subevento.getSalas().getDescricao() %></p>
                                                             </div>
-                                                            <% %>
                                                             <div class="col-md-2">
-                                                                <button class="btn btn-outline-primary insc-sub" id="inscSub<%=subevento.getIdsubevento() %>" data-idsubevento="<%=subevento.getIdsubevento() %>" href="">Inscrever-se</button>
+                                                                <% if(DAO.verificaInscSub(idUsuario, subevento.getIdsubevento())){ %>
+                                                                    <button class="btn btn-outline-danger insc-sub" id="inscSub<%=subevento.getIdsubevento() %>" data-idsubevento="<%=subevento.getIdsubevento() %>" data-statussub = "1">Desinscrever-se</button>
+                                                                <% }else{ %>
+                                                                    <button class="btn btn-outline-primary insc-sub" id="inscSub<%=subevento.getIdsubevento() %>" data-idsubevento="<%=subevento.getIdsubevento() %>" data-statussub = "2">Inscrever-se</button>
+                                                                <%}%>
                                                             </div>
                                                         </div>
                                                     </div>
