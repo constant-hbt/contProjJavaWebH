@@ -49,16 +49,36 @@ public class InscSubevento extends HttpServlet {
             
             if(acao.equals("inscrever")){
                 if(idsub == idSubevento){
-                    if(DAO.inscreverSubEvento(idp, idSubevento)){
-                        msg = "Inscrição no sub-evento realizada com sucesso!";
+                    if(DAO.verificarHistInscSubevento(idp, idSubevento)){
+                        if(DAO.atualizarInscSubevento(idp, idSubevento)){
+                            msg = "Inscrição no sub-evento realizada com sucesso!";
+                        }else{
+                            throw new Exception("Erro ao realizar a inscrição");
+                        }
                     }else{
-                        msg = "Erro ao realizar a inscrição";
+                        if(DAO.inscreverSubEvento(idp, idSubevento)){
+                            msg = "Inscrição no sub-evento realizada com sucesso!";
+                        }else{
+                            throw new Exception("Erro ao realizar a inscrição");
+                        }
                     }
                 }else{
-                    msg = "Você precisa estar inscrito(a) no evento para conseguir participar de um subevento dele" + idsub + ", " + idSubevento;
+                    throw new Exception("Você precisa estar inscrito(a) no evento para conseguir participar de um subevento dele" + idsub + ", " + idSubevento);
                 }
             }else{
-                msg = "Ainda não esta feito o desisncrever";
+                if(idsub == idSubevento){
+                    if(DAO.verificarInscSubevento(idp, idSubevento)){
+                        if(DAO.desinscreverSubevento(idp, idSubevento)){
+                            msg = "Desisncrito do sub-evento com sucesso!";
+                        }else{
+                            throw new Exception();
+                        }
+                    }else{
+                        throw new Exception("Erro, você não está inscrito no sub-evento");
+                    }
+                }else{
+                    throw new Exception("Você não está inscrito no evento! Inscreva-se nele primeiramente.");
+                }
             }
             out.println(msg);
         }catch(Exception e){

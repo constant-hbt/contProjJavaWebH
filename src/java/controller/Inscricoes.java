@@ -220,13 +220,15 @@ public class Inscricoes extends Conexao{
         }
         return false;
     }
-    
+    //TODO - erro
     public boolean atualizarInscEvento(int idPart, int ide_antigo, int idEvento) throws Exception{
         try{
             getConexao().setAutoCommit(false);
             if(verificarFoiInscEvento(idPart, idEvento)){
                 String sqlup = "Update inscricao_part_evento set idstatus = 1 where idevento = ? and idparticipante = ?";
                 PreparedStatement psup = getConexao().prepareStatement(sqlup);
+                psup.setInt(1, idEvento);
+                psup.setInt(2, idPart);
                 if(psup.executeUpdate() > 0){
                     String sqlup2 = "Update participante set idevento = ? where idparticipante = ?";
                     PreparedStatement psup2 = getConexao().prepareStatement(sqlup2);
@@ -397,6 +399,44 @@ public class Inscricoes extends Conexao{
         return false;
     }
     
+    public boolean verificarHistInscSubevento(int idPart, int idSubevento) throws Exception{
+        getConexao().setAutoCommit(false);
+        try{
+            String sql = "select idstatus from inscricao_part_subeve where idparticipante = ? and idsubevento = ?";
+            PreparedStatement ps = getConexao().prepareStatement(sql);
+            ps.setInt(1, idPart);
+            ps.setInt(2, idSubevento);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+                if(rs.getInt("idstatus") == 2){
+                    return true;
+                }
+            }
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+    
+    public boolean atualizarInscSubevento(int idp, int idSubevento) throws Exception{
+        try{
+            String sql = "update inscricao_part_subeve set idstatus = 1, datahora = CURRENT_TIMESTAMP where idparticipante = ? and idsubevento = ? and idstatus = 2";
+            PreparedStatement ps = getConexao().prepareStatement(sql);
+            ps.setInt(1, idp);
+            ps.setInt(2, idSubevento);
+            if(ps.executeUpdate() > 0){
+                getConexao().commit();
+                getConexao().setAutoCommit(true);
+                return true;
+            }
+            getConexao().rollback();
+            getConexao().setAutoCommit(true);
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+    
     public boolean desisncSubevento(int idPart, int idSubevento) throws Exception{
         getConexao().setAutoCommit(false);
         String sql = "update inscricao_part_subeve set idstatus = 2 where idparticipante = ? and idsubevento = ?";
@@ -407,6 +447,44 @@ public class Inscricoes extends Conexao{
             getConexao().commit();
             getConexao().setAutoCommit(true);
             return true;
+        }
+        getConexao().rollback();
+        getConexao().setAutoCommit(true);
+        return false;
+    }
+    
+    public boolean verificarInscSubevento(int idp, int idSubevento) throws Exception{
+        try{
+            String sql = "Select idstatus from inscricao_part_subeve where idparticipante = ? and idsubevento = ?";
+            PreparedStatement ps = getConexao().prepareStatement(sql);
+            ps.setInt(1, idp);
+            ps.setInt(2, idSubevento);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+                if(rs.getInt("idstatus") == 1){
+                    return true;
+                }
+            }
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+    
+    public boolean desinscreverSubevento(int idp, int idSubevento) throws Exception{
+        getConexao().setAutoCommit(false);
+        try{
+            String sql = "Update inscricao_part_subeve set idstatus = 2 where idparticipante = ? and idsubevento = ?";
+            PreparedStatement ps = getConexao().prepareStatement(sql);
+            ps.setInt(1, idp);
+            ps.setInt(2, idSubevento);
+            if(ps.executeUpdate() > 0){
+                getConexao().commit();
+                getConexao().setAutoCommit(true);
+                return true;
+            }
+        }catch(SQLException e){
+            e.printStackTrace();
         }
         getConexao().rollback();
         getConexao().setAutoCommit(true);
