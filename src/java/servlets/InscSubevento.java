@@ -8,11 +8,16 @@ package servlets;
 import controller.Inscricoes;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Timestamp;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.Subeventos;
+import servlets.utils.FormatacaoDatas;
+import static servlets.utils.FormatacaoDatas.converterStringParaTimestamp;
 
 /**
  *
@@ -30,6 +35,27 @@ public class InscSubevento extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    public boolean compararInicioFimSubeventos(List<Subeventos> subeventos, Subeventos subeventoAtual) throws Exception{
+        boolean flag = true;
+        try{
+            Timestamp datahoraInicio;
+            Timestamp datahoraInicioSubA = converterStringParaTimestamp(subeventoAtual.getDatahorainicio());
+            Timestamp datahoraFim;
+            Timestamp datahoraFimSubA = converterStringParaTimestamp(subeventoAtual.getDatahorafim());
+            for(Subeventos subevento: subeventos){
+                datahoraInicio = converterStringParaTimestamp(subevento.getDatahorainicio());
+                datahoraFim = converterStringParaTimestamp(subevento.getDatahorainicio());
+                if((datahoraInicioSubA.compareTo(datahoraFim) <= 0 && datahoraInicioSubA.compareTo(datahoraInicio) >= 0) || 
+                        (datahoraFimSubA.compareTo(datahoraInicio) >= 0 && datahoraFimSubA.compareTo(datahoraFim) <= 0)){
+                    flag = false;
+                }
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return flag;
+    }
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text;charset=UTF-8");
@@ -39,6 +65,7 @@ public class InscSubevento extends HttpServlet {
             
             int idUsuario = Integer.parseInt(request.getParameter("idUsuario"));
             int idSubevento = Integer.parseInt(request.getParameter("idSubevento"));
+            int idEvento = Integer.parseInt(request.getParameter("idEvento"));
             String acao = request.getParameter("acao");
             
             
@@ -49,18 +76,24 @@ public class InscSubevento extends HttpServlet {
             
             if(acao.equals("inscrever")){
                 if(idsub == idSubevento){
-                    if(DAO.verificarHistInscSubevento(idp, idSubevento)){
-                        if(DAO.atualizarInscSubevento(idp, idSubevento)){
-                            msg = "Inscrição no sub-evento realizada com sucesso!";
+                    Subeventos subeveAtual = DAO.pegarSubevento(idSubevento, idEvento);
+                    List<Subeventos> subeventos = DAO.listarSubeventosPart(idp);
+                    if(compararInicioFimSubeventos(subeventos, subeveAtual)){
+                        if(DAO.verificarHistInscSubevento(idp, idSubevento)){
+                            if(DAO.atualizarInscSubevento(idp, idSubevento)){
+                                msg = "Inscrição no sub-evento realizada com sucesso!";
+                            }else{
+                                throw new Exception("Erro ao realizar a inscrição");
+                            }
                         }else{
-                            throw new Exception("Erro ao realizar a inscrição");
+                            if(DAO.inscreverSubEvento(idp, idSubevento)){
+                                msg = "Inscrição no sub-evento realizada com sucesso!";
+                            }else{
+                                throw new Exception("Erro ao realizar a inscrição");
+                            }
                         }
                     }else{
-                        if(DAO.inscreverSubEvento(idp, idSubevento)){
-                            msg = "Inscrição no sub-evento realizada com sucesso!";
-                        }else{
-                            throw new Exception("Erro ao realizar a inscrição");
-                        }
+                        msg = "Você já está inscrito em um sub-evento que tem data/horários que entram em conflito";
                     }
                 }else{
                     throw new Exception("Você precisa estar inscrito(a) no evento para conseguir participar de um subevento dele" + idsub + ", " + idSubevento);
@@ -80,6 +113,9 @@ public class InscSubevento extends HttpServlet {
                     throw new Exception("Você não está inscrito no evento! Inscreva-se nele primeiramente.");
                 }
             }
+            String datahoraa = "16/10/2019 14:30";
+            //Timestamp datahoraaa = converterStringParaTimestamp(datahoraa);
+            //msg = "datahora no timestamp: " + datahoraaa;
             out.println(msg);
         }catch(Exception e){
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);

@@ -5,11 +5,14 @@
  */
 package servlets.utils;
 
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+import model.Subeventos;
 
 
 public class FormatacaoDatas {
@@ -58,6 +61,39 @@ public class FormatacaoDatas {
         }catch(ParseException e){
             throw e;
         }
+    }
+    
+    public static Timestamp converterStringParaTimestamp(String datahora) throws Exception{
+        Timestamp datahoraF;
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
+            Date parsedDate = dateFormat.parse(datahora);
+            datahoraF = new java.sql.Timestamp(parsedDate.getTime());
+        } catch(Exception e) { 
+            throw e;
+        }
+        return datahoraF;
+    }
+    
+    public boolean compararInicioFimSubeventos(List<Subeventos> subeventos, Subeventos subeventoAtual) throws Exception{
+        boolean flag = true;
+        try{
+            Timestamp datahoraInicio;
+            Timestamp datahoraInicioSubA = converterStringParaTimestamp(subeventoAtual.getDatahorainicio());
+            Timestamp datahoraFim;
+            Timestamp datahoraFimSubA = converterStringParaTimestamp(subeventoAtual.getDatahorafim());
+            for(Subeventos subevento: subeventos){
+                datahoraInicio = converterStringParaTimestamp(subevento.getDatahorainicio());
+                datahoraFim = converterStringParaTimestamp(subevento.getDatahorainicio());
+                if((datahoraInicioSubA.compareTo(datahoraFim) <= 0 && datahoraInicioSubA.compareTo(datahoraInicio) >= 0) || 
+                        (datahoraFimSubA.compareTo(datahoraInicio) >= 0 && datahoraFimSubA.compareTo(datahoraFim) <= 0)){
+                    flag = false;
+                }
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return flag;
     }
 }
 

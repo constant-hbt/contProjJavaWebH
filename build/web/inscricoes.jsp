@@ -85,6 +85,7 @@
                 $(".insc-sub").click(function() {
                     var botaoSub = this;
                     var idSub = $(botaoSub).data("idsubevento");
+                    var subIdEvento = $(botaoSub).data("subidevento");
                     
                     if($(botaoSub).text() == "Inscrever-se"){
                         $.ajax({
@@ -93,6 +94,7 @@
                             data: {
                                 idUsuario : 3,
                                 idSubevento : idSub,
+                                idEvento : subIdEvento,
                                 acao: "inscrever"
                             },
                             success: function(responseText){
@@ -115,6 +117,7 @@
                             data: {
                                 idUsuario : 3,
                                 idSubevento : idSub,
+                                idEvento : subIdEvento,
                                 acao : "desinscrever"
                             },
                             success: function(responseText){
@@ -240,9 +243,9 @@
                                                             </div>
                                                             <div class="col-md-2">
                                                                 <% if(DAO.verificaInscSub(idUsuario, subevento.getIdsubevento())){ %>
-                                                                    <button class="btn btn-outline-danger insc-sub" id="inscSub<%=subevento.getIdsubevento() %>" data-idsubevento="<%=subevento.getIdsubevento() %>" data-statussub = "1">Desinscrever-se</button>
+                                                                    <button class="btn btn-outline-danger insc-sub" id="inscSub<%=subevento.getIdsubevento() %>" data-idsubevento="<%=subevento.getIdsubevento() %>" data-statussub = "1" data-subidevento="<%= evento.getIdevento() %>" >Desinscrever-se</button>
                                                                 <% }else{ %>
-                                                                    <button class="btn btn-outline-primary insc-sub" id="inscSub<%=subevento.getIdsubevento() %>" data-idsubevento="<%=subevento.getIdsubevento() %>" data-statussub = "2">Inscrever-se</button>
+                                                                    <button class="btn btn-outline-primary insc-sub" id="inscSub<%=subevento.getIdsubevento() %>" data-idsubevento="<%=subevento.getIdsubevento() %>" data-statussub = "2" data-subidevento="<%= evento.getIdevento() %>" >Inscrever-se</button>
                                                                 <%}%>
                                                             </div>
                                                         </div>
