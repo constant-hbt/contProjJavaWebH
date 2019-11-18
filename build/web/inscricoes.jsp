@@ -34,7 +34,7 @@
                     var botao = this;
                     var idEvento = $(botao).data("idevento");
                     
-                    if($(botao).data("inscritoev") == 2){
+                    if($(botao).text() == "Inscrever-se"){
                         $.ajax({
                             url: "InscEvento",
                             type: "POST",
