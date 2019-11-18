@@ -376,21 +376,24 @@ public class Inscricoes extends Conexao{
     
     public boolean inscreverSubEvento(int idPart, int idSubevento) throws Exception{
         getConexao().setAutoCommit(false);
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-        String string  = dateFormat.format(new Date().getTime());
-        String sql = "Insert into inscricao_part_subeve (datahora, idparticipante, idsubevento, idstatus)"
-                + " values (?,?,?,1)";
-        PreparedStatement ps = getConexao().prepareStatement(sql);
-        ps.setString(1, string);
-        ps.setInt(2, idPart);
-        ps.setInt(3, idSubevento);
-        if(ps.executeUpdate() > 0){
-            getConexao().commit();
+        try{
+            /*SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+            String dataString  = dateFormat.format(new Date().getTime());*/
+            String sql = "Insert into inscricao_part_subeve (datahora, idparticipante, idsubevento, idstatus)"
+                    + " values (CURRENT_TIMESTAMP,?,?,1)";
+            PreparedStatement ps = getConexao().prepareStatement(sql);
+            ps.setInt(1, idPart);
+            ps.setInt(2, idSubevento);
+            if(ps.executeUpdate() > 0){
+                getConexao().commit();
+                getConexao().setAutoCommit(true);
+                return true;
+            }
+            getConexao().rollback();
             getConexao().setAutoCommit(true);
-            return true;
+        }catch(SQLException e){
+            e.printStackTrace();
         }
-        getConexao().rollback();
-        getConexao().setAutoCommit(true);
         return false;
     }
     
@@ -419,7 +422,7 @@ public class Inscricoes extends Conexao{
             ps.setInt(2, idp);
             ResultSet rs = ps.executeQuery();
             if(rs.next()){
-                ide = rs.getInt("idevento");
+                ide = rs.getInt("idsubevento");
             }
         }catch(SQLException e){
             e.printStackTrace();

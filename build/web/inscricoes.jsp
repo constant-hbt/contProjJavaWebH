@@ -84,9 +84,9 @@
                 
                 $(".insc-sub").click(function() {
                     var botaoSub = this;
-                    var idSub = $(this).data("idsubevento");
+                    var idSub = $(botaoSub).data("idsubevento");
                     
-                    if($(botaoSub).data("statussub") == 2){
+                    if($(botaoSub).text() == "Inscrever-se"){
                         $.ajax({
                             url: "InscSubevento",
                             type: "POST",
@@ -99,9 +99,9 @@
                                 $("#modal_titulo_div").attr("class", "modal-header text-info");
                                 $("#modal_titulo").text(responseText);
                                 $('#modalInscricao').modal('show');
-                                $(botao).attr("data-statussub", "1");
-                                $(botao).text("Desinscrever-se");
-                                $(botao).attr("class", "btn btn-outline-danger");
+                                $(botaoSub).attr("data-statussub", "1");
+                                $(botaoSub).text("Desinscrever-se");
+                                $(botaoSub).attr("class", "btn btn-outline-danger");
                             },
                             error: function (jqXHR, textStatus, errorThrown) {
                                 $("#modal_titulo").text("Erro ao se inscrever no subevento!" + errorThrown);
@@ -121,9 +121,9 @@
                                 $("#modal_titulo").text(responseText);
                                 $("#modal_titulo_div").attr("class", "modal-header text-info");
                                 $("#modal_btn").attr("class", "btn btn-success");
-                                $(botao).text("Inscrever-se");
-                                $(botao).attr("class", "btn btn-outline-success");
-                                $(botao).attr("data-inscritoev", "2");
+                                $(botaoSub).text("Inscrever-se");
+                                $(botaoSub).attr("class", "btn btn-outline-success");
+                                $(botaoSub).attr("data-inscritoev", "2");
                                 $('#modalInscricao').modal('show');
                             },
                             error: function (jqXHR, textStatus, errorThrown) {
