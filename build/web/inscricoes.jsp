@@ -4,6 +4,7 @@
     Author     : henrique
 --%>
 
+<%@page import="java.util.Date"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="model.Subeventos"%>
 <%@page import="model.Eventos"%>
@@ -106,7 +107,9 @@
                                 $(botaoSub).attr("class", "btn btn-outline-danger");
                             },
                             error: function (jqXHR, textStatus, errorThrown) {
-                                $("#modal_titulo").text("Erro ao se inscrever no subevento!" + errorThrown);
+                                $("#modal_titulo").text(errorThrown);
+                                $("#modal_titulo_div").attr("class", "modal-header text-danger");
+                                $("#modal_btn").attr("class", "btn btn-danger");
                                 $('#modalInscricao').modal('show');
                             }
                         });
@@ -137,7 +140,13 @@
                             }
                         });
                     }
-                });  
+                });
+                
+                $(".insc-subexpirada").click(function() {
+                    $("#modal_titulo_div").attr("class", "modal-header text-secondary");
+                    $("#modal_titulo").text("Não é permitido se inscrever/desinscrever fora do período definido!");
+                    $('#modalInscricao').modal('show');
+                });
             });
         </script>
     </head>
@@ -242,11 +251,21 @@
                                                                 <p class="card-text">Local: sala<%= subevento.getSalas().getIdsala()%>, descrição: <%= subevento.getSalas().getDescricao() %></p>
                                                             </div>
                                                             <div class="col-md-2">
-                                                                <% if(DAO.verificaInscSub(idUsuario, subevento.getIdsubevento())){ %>
+                                                                <% Date dataHoje = new Date();
+                                                                if(dataHoje.compareTo(subevento.getDatainicioinsc()) >= 0 && dataHoje.compareTo(subevento.getDatafiminsc()) <= 0){
+                                                                    if(DAO.verificaInscSub(idUsuario, subevento.getIdsubevento())){ 
+                                                                %>
                                                                     <button class="btn btn-outline-danger insc-sub" id="inscSub<%=subevento.getIdsubevento() %>" data-idsubevento="<%=subevento.getIdsubevento() %>" data-statussub = "1" data-subidevento="<%= evento.getIdevento() %>" >Desinscrever-se</button>
                                                                 <% }else{ %>
                                                                     <button class="btn btn-outline-primary insc-sub" id="inscSub<%=subevento.getIdsubevento() %>" data-idsubevento="<%=subevento.getIdsubevento() %>" data-statussub = "2" data-subidevento="<%= evento.getIdevento() %>" >Inscrever-se</button>
-                                                                <%}%>
+                                                                <%  }
+                                                                }else{
+                                                                    if(DAO.verificaInscSub(idUsuario, subevento.getIdsubevento())){ %>
+                                                                        <button class="btn btn-outline-secondary insc-subexpirada" id="inscSub<%=subevento.getIdsubevento() %>" data-idsubevento="<%=subevento.getIdsubevento() %>" data-statussub = "1" data-subidevento="<%= evento.getIdevento() %>" >Desinscrever-se</button>
+                                                                    <% }else{ %>
+                                                                        <button class="btn btn-outline-secondary insc-subexpirada" id="inscSub<%=subevento.getIdsubevento() %>" data-idsubevento="<%=subevento.getIdsubevento() %>" data-statussub = "2" data-subidevento="<%= evento.getIdevento() %>" >Inscrever-se</button>
+                                                                <%  } 
+                                                                }%>
                                                             </div>
                                                         </div>
                                                     </div>

@@ -45,13 +45,13 @@ public class InscSubevento extends HttpServlet {
             for(Subeventos subevento: subeventos){
                 datahoraInicio = converterStringParaTimestamp(subevento.getDatahorainicio());
                 datahoraFim = converterStringParaTimestamp(subevento.getDatahorainicio());
-                //if(!((datahoraInicioSubA.compareTo(datahoraFim) <= 0 && datahoraInicioSubA.compareTo(datahoraInicio) >= 0) || 
-                //        (datahoraFimSubA.compareTo(datahoraInicio) >= 0 && datahoraFimSubA.compareTo(datahoraFim) <= 0))){
-                //    flag = false;
-                //}
-                if(!((datahoraFimSubA.before(datahoraFim) && datahoraFimSubA.after(datahoraInicio)) || (datahoraInicioSubA.after(datahoraInicio) && datahoraInicioSubA.before(datahoraFim)))){
+                if(!((datahoraInicioSubA.compareTo(datahoraFim) <= 0 && datahoraInicioSubA.compareTo(datahoraInicio) >= 0) || 
+                        (datahoraFimSubA.compareTo(datahoraInicio) >= 0 && datahoraFimSubA.compareTo(datahoraFim) <= 0))){
                     flag = false;
                 }
+                //if(!((datahoraFimSubA.before(datahoraFim) && datahoraFimSubA.after(datahoraInicio)) || (datahoraInicioSubA.after(datahoraInicio) && datahoraInicioSubA.before(datahoraFim)))){
+                //    flag = false;
+                //}
             }
         }catch(Exception e){
             e.printStackTrace();
@@ -81,23 +81,27 @@ public class InscSubevento extends HttpServlet {
                 if(idsub == idSubevento){
                     Subeventos subeveAtual = DAO.pegarSubevento(idSubevento, idEvento);
                     List<Subeventos> subeventos = DAO.listarSubeventosPart(idp);
-                    if(compararInicioFimSubeventos(subeventos, subeveAtual)){
-                        if(DAO.verificarHistInscSubevento(idp, idSubevento)){
-                            if(DAO.atualizarInscSubevento(idp, idSubevento)){
-                                msg = "Inscrição no sub-evento realizada com sucesso!";
+                    if(subeveAtual.getQtdemin() == 1 && subeveAtual.getQtdemax() == 1){
+                        if(compararInicioFimSubeventos(subeventos, subeveAtual)){
+                            if(DAO.verificarHistInscSubevento(idp, idSubevento)){
+                                if(DAO.atualizarInscSubevento(idp, idSubevento)){
+                                    msg = "Inscrição no sub-evento realizada com sucesso!";
+                                }else{
+                                    throw new Exception("Erro ao realizar a inscrição");
+                                }
                             }else{
-                                throw new Exception("Erro ao realizar a inscrição");
+                                if(DAO.inscreverSubEvento(idp, idSubevento)){
+                                    msg = "Inscrição no sub-evento realizada com sucesso!";
+                                }else{
+                                    throw new Exception("Erro ao realizar a inscrição");
+                                }
                             }
                         }else{
-                            if(DAO.inscreverSubEvento(idp, idSubevento)){
-                                msg = "Inscrição no sub-evento realizada com sucesso!";
-                            }else{
-                                throw new Exception("Erro ao realizar a inscrição");
-                            }
+                            throw new Exception("Você já está inscrito em um sub-evento que tem data/horários que entram em conflito");
                         }
                     }else{
-                        msg = "Você já está inscrito em um sub-evento que tem data/horários que entram em conflito";
-                    }
+                        throw new Exception("Este sub-evento precisa que você faça parte de uma equipe!");
+                    } 
                 }else{
                     throw new Exception("Você precisa estar inscrito(a) no evento para conseguir participar de um subevento dele" + idsub + ", " + idSubevento);
                 }

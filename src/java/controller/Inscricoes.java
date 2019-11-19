@@ -632,5 +632,6 @@ public class Inscricoes extends Conexao{
         }
        return subeventos;
     }
+    
 }
 
