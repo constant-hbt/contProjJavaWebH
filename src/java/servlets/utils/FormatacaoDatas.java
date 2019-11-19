@@ -66,7 +66,7 @@ public class FormatacaoDatas {
     public static Timestamp converterStringParaTimestamp(String datahora) throws Exception{
         Timestamp datahoraF;
         try {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
             Date parsedDate = dateFormat.parse(datahora);
             datahoraF = new java.sql.Timestamp(parsedDate.getTime());
         } catch(Exception e) { 

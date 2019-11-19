@@ -45,8 +45,11 @@ public class InscSubevento extends HttpServlet {
             for(Subeventos subevento: subeventos){
                 datahoraInicio = converterStringParaTimestamp(subevento.getDatahorainicio());
                 datahoraFim = converterStringParaTimestamp(subevento.getDatahorainicio());
-                if((datahoraInicioSubA.compareTo(datahoraFim) <= 0 && datahoraInicioSubA.compareTo(datahoraInicio) >= 0) || 
-                        (datahoraFimSubA.compareTo(datahoraInicio) >= 0 && datahoraFimSubA.compareTo(datahoraFim) <= 0)){
+                //if(!((datahoraInicioSubA.compareTo(datahoraFim) <= 0 && datahoraInicioSubA.compareTo(datahoraInicio) >= 0) || 
+                //        (datahoraFimSubA.compareTo(datahoraInicio) >= 0 && datahoraFimSubA.compareTo(datahoraFim) <= 0))){
+                //    flag = false;
+                //}
+                if(!((datahoraFimSubA.before(datahoraFim) && datahoraFimSubA.after(datahoraInicio)) || (datahoraInicioSubA.after(datahoraInicio) && datahoraInicioSubA.before(datahoraFim)))){
                     flag = false;
                 }
             }
@@ -104,7 +107,7 @@ public class InscSubevento extends HttpServlet {
                         if(DAO.desinscreverSubevento(idp, idSubevento)){
                             msg = "Desisncrito do sub-evento com sucesso!";
                         }else{
-                            throw new Exception();
+                            throw new Exception("Erro ao se desinscrever!");
                         }
                     }else{
                         throw new Exception("Erro, você não está inscrito no sub-evento");
@@ -113,13 +116,15 @@ public class InscSubevento extends HttpServlet {
                     throw new Exception("Você não está inscrito no evento! Inscreva-se nele primeiramente.");
                 }
             }
-            String datahoraa = "16/10/2019 14:30";
-            //Timestamp datahoraaa = converterStringParaTimestamp(datahoraa);
-            //msg = "datahora no timestamp: " + datahoraaa;
+            //Timestamp datahoraInicioSubA = converterStringParaTimestamp("16/11/2019 15:00");
+            //Timestamp datahoraInicio = converterStringParaTimestamp("16/11/2019 17:00");
+            //Timestamp datahoraFimSubA = converterStringParaTimestamp("16/11/2019 14:30");
+            //Timestamp datahoraFim = converterStringParaTimestamp("16/11/2019 16:30");
+            //msg = "datahora no timestamp: " + ((datahoraInicioSubA.compareTo(datahoraFim) <= 0 && datahoraInicioSubA.compareTo(datahoraInicio) >= 0) || 
+                        //(datahoraFimSubA.compareTo(datahoraInicio) >= 0 && datahoraFimSubA.compareTo(datahoraFim) <= 0));
             out.println(msg);
         }catch(Exception e){
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            out.println("Erro");
+            out.println(e.getMessage());
         }
     }
 
