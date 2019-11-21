@@ -82,6 +82,22 @@ public class InscricaoEquipeSub implements Serializable {
     public void setDatahora(Date datahora) {
         this.datahora = datahora;
     }
+    
+    public void setIdEquipe(int idEquipe){
+        this.equipes.setIdequipe(idEquipe);
+    }
+    
+    public int getIdEquipe(){
+        return equipes.getIdequipe();
+    }
+    
+    public void setIdSubevento(int idSubevento){
+        this.subeventos.setIdsubevento(idSubevento);
+    }
+    
+    public int getIdSubevento(){
+        return subeventos.getIdsubevento();
+    }
 
     public Equipes getEquipes() {
         return equipes;

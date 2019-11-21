@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import model.Eventos;
+import model.InscricaoEquipeSub;
 import model.Salas;
 import model.Status;
 import model.Subeventos;
@@ -633,5 +634,38 @@ public class Inscricoes extends Conexao{
        return subeventos;
     }
     
+//------------------------------Inscrição-Equipe-Subevento----------------------
+    
+    public List<InscricaoEquipeSub> listarTodasInscEquipeSubAtivas(int idEquipe) throws Exception{
+        List<InscricaoEquipeSub> inscricoes = new ArrayList<>();
+        try{
+            String sql = "Select * from INSCRICAO_EQUIPE_SUB where idequipe = ? and idstatus = 1";
+            PreparedStatement ps = getConexao().prepareStatement(sql);
+            ps.setInt(1, idEquipe);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                InscricaoEquipeSub inscricao = new InscricaoEquipeSub();
+                inscricao.setIdequipesub(rs.getInt("idequipesub"));
+                inscricao.setDatahora(rs.getTimestamp("datahora"));
+                inscricao.setIdEquipe(idEquipe);
+                inscricao.setIdSubevento(rs.getInt(rs.getInt("idsubevento")));
+                
+                Status status = new Status();
+                status.setIdstatus(1);
+                String sqlStatus = "Select descricao FROM STATUS WHERE idstatus = 1";
+                PreparedStatement psSattus = getConexao().prepareStatement(sqlStatus);
+                ResultSet rsStatus = psSattus.executeQuery();
+                if(rsStatus.next()){
+                    status.setDescricao(rsStatus.getString("descricao"));
+                }
+                inscricao.setStatus(status);
+                inscricoes.add(inscricao);
+            }
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        return inscricoes;
+    }
+      
 }
 
