@@ -11,9 +11,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import model.Equipes;
-import model.ParticipanteEquipe;
 import model.Participantes;
 import model.Status;
+import model.Usuarios;
 
 /**
  *
@@ -194,5 +194,44 @@ public class EquipesData extends Conexao{
         getConexao().rollback();
         getConexao().setAutoCommit(true);
         return false;
+    }
+    
+    public List<Usuarios> pesquisarParticipante(String nome, int idEvento) throws Exception{
+        List<Usuarios> usuarios = new ArrayList<>();
+        try{
+            String sql = "Select u.* from participantes p inner join inscricao_part_evento i on (p.idparticipante = i.idparticipante) "
+                    + "inner join usuarios u on(p.idusuario = u.idusuario) where i.idevento = ? and i.idstatus = 1 and u.idstatus = 1 and u.nome like '%" + nome + "%' ORDER BY u.nome";
+            PreparedStatement ps = getConexao().prepareStatement(sql);
+            ps.setInt(1, idEvento);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                Usuarios usuario = new Usuarios();
+                usuario.setIdusuario(rs.getInt("idusuario"));
+                usuario.setNome(rs.getString("nome"));
+                usuario.setEmail(rs.getString("email"));
+                usuarios.add(usuario);
+            }
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        return usuarios;
+    }
+    
+    public List<String> listarPartEvento(int idEvento) throws Exception{
+        List<String> participantes = new ArrayList<>();
+        try{
+            String sql = "Select u.nome, p.idparticipante from participantes p inner join inscricao_part_evento i on (p.idparticipante = i.idparticipante) "
+                    + "inner join usuarios u on(p.idusuario = u.idusuario) where i.idevento = ? and i.idstatus = 1 and u.idstatus = 1";
+            PreparedStatement ps = getConexao().prepareStatement(sql);
+            ps.setInt(1, idEvento);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                String part = rs.getString("nome") + ";" + rs.getInt("idparticipante");
+                participantes.add(part);
+            }
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        return participantes;
     }
 }

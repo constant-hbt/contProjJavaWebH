@@ -6,11 +6,14 @@
             <file>file:/home/henrique/NetBeansProjects/contProjWebH/src/java/servlets/InscEvento.java</file>
             <file>file:/home/henrique/NetBeansProjects/contProjWebH/src/java/servlets/InscSubevento.java</file>
             <file>file:/home/henrique/NetBeansProjects/contProjWebH/src/java/controller/Inscricoes.java</file>
+            <file>file:/home/henrique/NetBeansProjects/contProjWebH/src/java/servlets/Equipe.java</file>
             <file>file:/home/henrique/NetBeansProjects/contProjWebH/web/js/verificacao.js</file>
             <file>file:/home/henrique/NetBeansProjects/contProjWebH/src/java/servlets/utils/FormatacaoDatas.java</file>
             <file>file:/home/henrique/NetBeansProjects/contProjWebH/src/java/servlets/DesinscEvento.java</file>
             <file>file:/home/henrique/NetBeansProjects/contProjWebH/src/java/controller/EquipesData.java</file>
             <file>file:/home/henrique/NetBeansProjects/contProjWebH/src/java/model/Equipes.java</file>
+            <file>file:/home/henrique/NetBeansProjects/contProjWebH/web/equipe.jsp</file>
+            <file>file:/home/henrique/NetBeansProjects/contProjWebH/src/java/model/InscricaoEquipeSub.java</file>
             <file>file:/home/henrique/NetBeansProjects/contProjWebH/web/inscricoes.jsp</file>
         </group>
     </open-files>

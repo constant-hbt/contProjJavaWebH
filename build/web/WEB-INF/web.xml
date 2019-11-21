@@ -21,6 +21,10 @@
         <servlet-name>InscricaoSub</servlet-name>
         <servlet-class>servlets.InscSubevento</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Equipe</servlet-name>
+        <servlet-class>servlets.Equipe</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Faces Servlet</servlet-name>
         <url-pattern>/faces/*</url-pattern>
@@ -36,6 +40,10 @@
     <servlet-mapping>
         <servlet-name>InscricaoSub</servlet-name>
         <url-pattern>/InscricaoSub</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Equipe</servlet-name>
+        <url-pattern>/Equipe</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
