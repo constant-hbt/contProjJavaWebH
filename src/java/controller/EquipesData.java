@@ -52,7 +52,7 @@ public class EquipesData extends Conexao{
         return equipe;
     }
     
-    public boolean criarEquipe(Equipes equipe, List<Participantes> participantes) throws Exception{
+    public boolean criarEquipe(Equipes equipe, List<Integer> membros) throws Exception{
         getConexao().setAutoCommit(false);
         try{
             String sql = "Insert into equipes (nome, descricao, idlider, idstatus) values (?,?,?,1)";
@@ -66,17 +66,20 @@ public class EquipesData extends Conexao{
                 ResultSet rse = pse.executeQuery();
                 if(rse.next()){
                     int idequipe = rse.getInt("max");
-                    for(Participantes part: participantes){
+                    for(Integer membro: membros){
                         String sqlPart = "Insert into PARTICIPANTE_EQUIPE (idstatus, idparticipante, idequipe) values (1,?,?)";
                         PreparedStatement psPart = getConexao().prepareStatement(sqlPart);
-                        psPart.setInt(1, part.getIdparticipante());
+                        psPart.setInt(1, membro);
                         psPart.setInt(2, idequipe);
-                        if(psPart.executeUpdate() > 0){
-                            getConexao().commit();
+                        if(!(psPart.executeUpdate() > 0)){
+                            getConexao().rollback();
                             getConexao().setAutoCommit(true);
-                            return true;
+                            return false;
                         }
                     }
+                    getConexao().commit();
+                    getConexao().setAutoCommit(true);
+                    return true;
                 }  
             }
         }catch(SQLException e){
@@ -217,13 +220,14 @@ public class EquipesData extends Conexao{
         return usuarios;
     }
     
-    public List<String> listarPartEvento(int idEvento) throws Exception{
+    public List<String> listarPartEvento(int idEvento, int idp) throws Exception{
         List<String> participantes = new ArrayList<>();
         try{
             String sql = "Select u.nome, p.idparticipante from participantes p inner join inscricao_part_evento i on (p.idparticipante = i.idparticipante) "
-                    + "inner join usuarios u on(p.idusuario = u.idusuario) where i.idevento = ? and i.idstatus = 1 and u.idstatus = 1";
+                    + "inner join usuarios u on(p.idusuario = u.idusuario) where i.idevento = ? and i.idstatus = 1 and u.idstatus = 1  and i.idparticipante != ?";
             PreparedStatement ps = getConexao().prepareStatement(sql);
             ps.setInt(1, idEvento);
+            ps.setInt(2, idp);
             ResultSet rs = ps.executeQuery();
             while(rs.next()){
                 String part = rs.getString("nome") + ";" + rs.getInt("idparticipante");

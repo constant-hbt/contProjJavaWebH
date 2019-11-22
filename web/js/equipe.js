@@ -41,18 +41,52 @@ $('document').ready(function(){
            .append($("<td>" + nomep + "</td>"))
            .append(td);
            
-        $("#listaMembros tbody").append(row); 
-    });
-    /*
-    $(".botaoM").click(function() {
-        $(this).parents('tr').remove();
+        $("#listaMembros tbody").append(row);
     });
     
-    $('.botaoM').click(function(){
-        deleteRow(this.parentNode.parentNode.rowIndex);
+    $('#salvar').click(function(){
+        var nome = $('#nome').val();
+        var descricao = $('#descricao').val();
+        
+        let elementos = document.getElementsByClassName('botaoM');
+        let ids = [];
+        for(var i=0; i<elementos.length; i++){
+            ids.push($(elementos[i]).data('idp'));
+        }   
+        console.log(ids);
+        let idsMembros = "";
+        for(var i = 0; i<ids.length; i++){
+            idsMembros += ids[i] + " / ";
+        }
+        
+        $.ajax({
+            url: "equipe",
+            type: "POST",
+            data: {
+                idUsuario : 3,
+                nome : nome,
+                descricao : descricao,
+                idsMembros : idsMembros,
+                acao : 2
+            },
+            success: function(responseText){
+                $("#modal_titulo_div").attr("class", "modal-header text-success");
+                $("#modal_titulo").text(responseText);
+                $('#modalInscricao').modal('show');
+                $('#modal_btn').text("OK!");
+                $('#modal_btn').attr("class", "btn btn-success");
+                $('#modal_btn').click({
+                    //$(location).attr('href', 'http://www.google.com');
+                });
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                $("#modal_titulo").text("Erro ao criar a equipe");
+                $("#modal_titulo_div").attr("class", "modal-header text-danger");
+                $("#modal_btn").attr("class", "btn btn-danger");
+                $('#modalInscricao').modal('show');
+            }
+        });
     });
-    */
-    
 });
 
 

@@ -101,84 +101,100 @@
                         </div>
                         <input type="hidden" id="membros" name="membros">
                     </form>
-
-                    <div class="row">
-                        <div class="col">
-                            <table class="table" id="listaMembros">
-                                <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Nome</th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                    
-                                <tbody >
-                                    
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-
-                    
-                    <div class="my-5">
-                        <div class="input-group">
-                            <input class="form-control" type="text" placeholder="Pesquisar" id="pesquisar" name="pesquisar">
-                            <span class="input-group-addon">
-                                <button class="fas fa-search" style="background:transparent;border:none"></button>
-                            </span>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col">
-                            <table class="table" >
-                                <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Nome</th>
-                                        <th></th>
-                                        <!-- <i class="far fa-plus-square"></i>-->
-                                    </tr>
-                                </thead>
-                    
-                                <tbody id="listaParticipantes">
-                                    <% 
-                                        List<String> participantes = new ArrayList();
-                                        participantes = DAOE.listarPartEvento(ide);
-                                        for(String part: participantes){
-                                            String[] pa = part.split(";");
-                                            String nome = pa[0];
-                                            int idparticipante = Integer.parseInt(pa[1]);
-                                    %>
-                                    <tr>
-                                        <td><%=idparticipante%></td>
-                                        <td><%=nome%></td>
-                                        <td style="text-align: right">
-                                            <button type="button" class="btn btn-success botaoP" data-idp="<%=idparticipante%>" data-nomep="<%=nome%>">
-                                                <i class="far fa-plus-square"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <%
-                                        }
-                                    %>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-
-                    <div class="mt-4 mb-3">
-                        <button class="btn btn-success" id="salvar">Salvar</button>
-                        <button class="btn btn-warning" id="cancelar">Cancelar</button>
-                    </div>
-                    
-                </div> <!-- Fim conteúdo -->
-    
-                <div class="col-md-3">
-    
                 </div>
-            </div> <!-- Fim row -->
-        </div> <!-- Fim container -->
+                
+                <div class="col-md-3">
+                    
+                </div>
+            </div>
+            
+            <div class="row my-5">
+                
+                <div class="col-md-6">
+                   
+                    <div class="input-group">
+                        <input class="form-control" type="text" placeholder="Pesquisar" id="pesquisar" name="pesquisar">
+                        <span class="input-group-addon">
+                            <button class="fas fa-search" style="background:transparent;border:none"></button>
+                        </span>
+                    </div>
+                    
+                    <table class="table" >
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nome</th>
+                                <th></th>
+                                <!-- <i class="far fa-plus-square"></i>-->
+                            </tr>
+                        </thead>
+
+                        <tbody id="listaParticipantes">
+                            <% 
+                                List<String> participantes = new ArrayList();
+                                participantes = DAOE.listarPartEvento(ide, idp);
+                                for(String part: participantes){
+                                    String[] pa = part.split(";");
+                                    String nome = pa[0];
+                                    int idparticipante = Integer.parseInt(pa[1]);
+                            %>
+                            <tr>
+                                <td><%=idparticipante%></td>
+                                <td><%=nome%></td>
+                                <td style="text-align: right">
+                                    <button type="button" class="btn btn-success botaoP" data-idp="<%=idparticipante%>" data-nomep="<%=nome%>">
+                                        <i class="far fa-plus-square"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <%
+                                }
+                            %>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="col-md-6">
+                    <table class="table" id="listaMembros">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nome</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+
+                        <tbody >
+
+                        </tbody>
+                    </table>
+                </div>
+                
+            </div>
+            
+            
+
+            <div class="mt-4 mb-3">
+                <button class="btn btn-success" id="salvar">Salvar</button>
+                <button class="btn btn-warning" id="cancelar">Cancelar</button>
+            </div>
+            
+            <!-- Modal -->
+            <div class="modal fade" id="modalInscricao" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div id="modal_titulo_div" class="modal-header text-success">
+                            <h5 class="modal-title" id="modal_titulo"></h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-success" id="modal_btn" data-dismiss="modal">Voltar</button>
+                        </div>
+                    </div>
+                </div>
+            </div> <!-- Fim do modal -->
+        </div> <!-- Fim container-->
     </body>
 </html>

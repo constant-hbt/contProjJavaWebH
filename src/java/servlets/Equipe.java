@@ -16,6 +16,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.Equipes;
 
 /**
  *
@@ -41,6 +42,9 @@ public class Equipe extends HttpServlet {
         try{
             
             int idUsuario = Integer.parseInt(request.getParameter("idUsuario"));
+            String nome = request.getParameter("nome");
+            String descricao = request.getParameter("descricao");
+            String ids = request.getParameter("idsMembros");
             int acao = Integer.parseInt(request.getParameter("acao"));
             
             Inscricoes DAO = new Inscricoes();
@@ -48,12 +52,32 @@ public class Equipe extends HttpServlet {
             int idp = DAO.pegarIdParticipante(idUsuario);
             int ide = DAO.verificarInscTodosEventos(idp);
             String msg = "";
+            String[] idsM = ids.split(" / ");
+            
+            ArrayList<Integer> idsMembros = new ArrayList();
+            int a;
+            for(String id: idsM){
+                idsMembros.add(Integer.parseInt(id));
+            }
+            idsMembros.add(idp);
             
             if(acao == 1){
                 List<String> participantes = new ArrayList<>();
-                participantes = DAOE.listarPartEvento(ide);
+                participantes = DAOE.listarPartEvento(ide, idp);
                 for(String part: participantes){
                     msg += part + "|";
+                }
+            }else if(acao == 2){
+                Equipes equipe = new Equipes();
+                equipe.setNome(nome);
+                equipe.setDescricao(descricao);
+                equipe.setIdlider(idp);
+                
+                
+                if(DAOE.criarEquipe(equipe, idsMembros)){
+                    msg = "Equipe criada com sucesso!";
+                }else{
+                    throw new Exception("Erro ao criar a equipe!");
                 }
             }
             
