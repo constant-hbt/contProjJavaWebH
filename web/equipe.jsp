@@ -25,8 +25,10 @@
     
         <!-- Font Awesome -->
         <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+        <script src="js/equipe.js"></script>
         
         <script>
+            /*
             $('document').ready(function() {
                 $('body').load(function() {
                     let listaParticipantes = $('#listaParticipantes');
@@ -60,7 +62,6 @@
                         }
                     });
                 });
-            /*
                 let idsp = [];
                 $('#salvar').click(function() {
                     
@@ -71,8 +72,8 @@
                         idsp.push($(this).find('.idp').html());
                     });
                 });
-                */
-            });
+                
+            });*/
         </script>
     </head>
 
@@ -103,7 +104,7 @@
 
                     <div class="row">
                         <div class="col">
-                            <table class="table" >
+                            <table class="table" id="listaMembros">
                                 <thead>
                                     <tr>
                                         <th>ID</th>
@@ -112,7 +113,7 @@
                                     </tr>
                                 </thead>
                     
-                                <tbody id="listaMembros">
+                                <tbody >
                                     
                                 </tbody>
                             </table>
@@ -154,7 +155,7 @@
                                         <td><%=idparticipante%></td>
                                         <td><%=nome%></td>
                                         <td style="text-align: right">
-                                            <button type="button" class="btn btn-success" onclick="pesquisarDespesa()">
+                                            <button type="button" class="btn btn-success botaoP" data-idp="<%=idparticipante%>" data-nomep="<%=nome%>">
                                                 <i class="far fa-plus-square"></i>
                                             </button>
                                         </td>
