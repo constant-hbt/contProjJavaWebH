@@ -4,6 +4,10 @@
     Author     : henrique
 --%>
 
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.List"%>
+<%@page import="controller.Inscricoes"%>
+<%@page import="controller.EquipesData"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -44,14 +48,11 @@
                                 linha.insertCell(0).innerHTML = p[0];
                                 linha.insertCell(1).innerHTML = p[1];
 
-                                let btn = document.createElement('button')
-                                btn.className = 'btn btn-success'
+                                let btn = document.createElement('button');
+                                btn.className = 'btn btn-success';
                                 btn.innerHTML = '<i class="far fa-plus-square"></i>';
 
-                                btn.onclick = function(){
-
-                                }
-                                linha.insertCell(2).append(btn)
+                                linha.insertCell(2).append(btn);
                             }
                         },
                         error: function (jqXHR, textStatus, errorThrown) {
@@ -76,6 +77,13 @@
     </head>
 
     <body>
+        <%
+            int idUsuario = 3;
+            Inscricoes DAO = new Inscricoes();
+            EquipesData DAOE = new EquipesData();
+            int idp = DAO.pegarIdParticipante(idUsuario);
+            int ide = DAO.verificarInscTodosEventos(idp);
+        %>
         <div class="container">
             <div class="row mt-5">
                 <div class="col-md-3">
@@ -101,7 +109,6 @@
                                         <th>ID</th>
                                         <th>Nome</th>
                                         <th></th>
-                                        <!-- <i class = "fas fa-times"></i>-->
                                     </tr>
                                 </thead>
                     
@@ -135,7 +142,26 @@
                                 </thead>
                     
                                 <tbody id="listaParticipantes">
-                                    
+                                    <% 
+                                        List<String> participantes = new ArrayList();
+                                        participantes = DAOE.listarPartEvento(ide);
+                                        for(String part: participantes){
+                                            String[] pa = part.split(";");
+                                            String nome = pa[0];
+                                            int idparticipante = Integer.parseInt(pa[1]);
+                                    %>
+                                    <tr>
+                                        <td><%=idparticipante%></td>
+                                        <td><%=nome%></td>
+                                        <td style="text-align: right">
+                                            <button type="button" class="btn btn-success" onclick="pesquisarDespesa()">
+                                                <i class="far fa-plus-square"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <%
+                                        }
+                                    %>
                                 </tbody>
                             </table>
                         </div>
