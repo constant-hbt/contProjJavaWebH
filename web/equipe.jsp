@@ -88,7 +88,7 @@
             EquipesData DAOE = new EquipesData();
             int idp = DAO.pegarIdParticipante(idUsuario);
             int ide = DAO.verificarInscTodosEventos(idp);
-            int idEquipe = 11;
+            int idEquipe = 12;
             Equipes equipe = new Equipes();
             if(idEquipe != 0){
                 equipe = DAOE.getEquipeById(idEquipe);

@@ -84,17 +84,22 @@ public class Equipe extends HttpServlet {
             }else if(acao == 4){
                 int idEquipe = Integer.parseInt(request.getParameter("idEquipe"));
                 msg = "Entrou" + idEquipe;
-                if(DAOE.inativarEquipe(idEquipe)){
-                    msg = "Equipe excluida com sucesso!";
+                if(!DAOE.verificarEquipeInscAlgumSubeventos(idEquipe)){
+                    if(DAOE.inativarEquipe(idEquipe)){
+                        msg = "Equipe excluida com sucesso!";
+                    }else{
+                        throw new Exception("Erro ao excluir a equipe!");
+                    }
                 }else{
-                    throw new Exception("Erro ao excluir a equipe!");
+                    throw new Exception("Sua equipe está inscrita em um ou mais subeventos. "
+                            + "Para excluí-la, a desinscreva do(s) sub-evento(s)");
                 }
+                
             }
             
             out.println(msg);
         }catch(Exception e){
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            out.println("Erro: " + e.getMessage());
+            out.println(e.getMessage());
         }
         
     }

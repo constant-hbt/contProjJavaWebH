@@ -256,4 +256,19 @@ public class EquipesData extends Conexao{
         }
         return membros;
     }
+    
+    public boolean verificarEquipeInscAlgumSubeventos(int idEquipe) throws Exception{
+        try{
+            String sql = "select idsubevento from inscricao_equipe_sub where idequipe = ? and idstatus = 1";
+            PreparedStatement ps = getConexao().prepareStatement(sql);
+            ps.setInt(1, idEquipe);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+                return true;
+            }
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
 }
