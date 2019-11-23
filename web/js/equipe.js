@@ -1,3 +1,5 @@
+
+
 $('document').ready(function(){
     let listaMembros = document.getElementById('listaDespesas');
     $('.botaoP').click(function(){
@@ -81,6 +83,38 @@ $('document').ready(function(){
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 $("#modal_titulo").text("Erro ao criar a equipe");
+                $("#modal_titulo_div").attr("class", "modal-header text-danger");
+                $("#modal_btn").attr("class", "btn btn-danger");
+                $('#modalInscricao').modal('show');
+            }
+        });
+    });
+    
+    
+    $('#inativar').click(function() {
+        $('#modalExcluirEquipe').modal('show');
+    });
+    
+    
+    $('#modal_btn_excluir').click(function (){
+        var idEquipe = $('#idequipe').data('idequipe');
+        $.ajax({
+            url: "equipe",
+            type: "POST",
+            data: {
+                idUsuario : 3,
+                idEquipe: idEquipe,
+                acao : 4
+            },
+            success: function(responseText){
+                $("#modal_titulo_div").attr("class", "modal-header text-info");
+                $("#modal_titulo").text(responseText);
+                $('#modal_btn').text("OK!");
+                $('#modal_btn').attr("class", "btn btn-info");
+                $('#modalInscricao').modal('show');
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                $("#modal_titulo").text("Erro ao excluir equipe");
                 $("#modal_titulo_div").attr("class", "modal-header text-danger");
                 $("#modal_btn").attr("class", "btn btn-danger");
                 $('#modalInscricao').modal('show');

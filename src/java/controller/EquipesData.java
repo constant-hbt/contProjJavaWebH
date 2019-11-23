@@ -224,7 +224,7 @@ public class EquipesData extends Conexao{
         List<String> participantes = new ArrayList<>();
         try{
             String sql = "Select u.nome, p.idparticipante from participantes p inner join inscricao_part_evento i on (p.idparticipante = i.idparticipante) "
-                    + "inner join usuarios u on(p.idusuario = u.idusuario) where i.idevento = ? and i.idstatus = 1 and u.idstatus = 1  and i.idparticipante != ?";
+                    + "inner join usuarios u on(p.idusuario = u.idusuario) where i.idevento = ? and i.idstatus = 1 and u.idstatus = 1  and i.idparticipante != ? order by u.nome";
             PreparedStatement ps = getConexao().prepareStatement(sql);
             ps.setInt(1, idEvento);
             ps.setInt(2, idp);
@@ -237,5 +237,23 @@ public class EquipesData extends Conexao{
             e.printStackTrace();
         }
         return participantes;
+    }
+    
+    public List<String> listarMembrosEquipe(int idEquipe) throws Exception{
+        List<String> membros = new ArrayList<>();
+        try{
+            String sql = "Select u.nome, p.idparticipante from participantes p inner join participante_equipe i on (p.idparticipante = i.idparticipante)" +
+                    "inner join usuarios u on(p.idusuario = u.idusuario) where i.idequipe = ? and i.idstatus = 1 and u.idstatus = 1 order by u.nome";
+            PreparedStatement ps = getConexao().prepareStatement(sql);
+            ps.setInt(1, idEquipe);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                String part = rs.getString("nome") + ";" + rs.getInt("idparticipante");
+                membros.add(part);
+            }
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        return membros;
     }
 }

@@ -4,6 +4,7 @@
     Author     : henrique
 --%>
 
+<%@page import="model.Equipes"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
 <%@page import="controller.Inscricoes"%>
@@ -74,6 +75,9 @@
                 });
                 
             });*/
+            function retirarMembro(botao){
+                $(botao).parents('tr').remove();
+            }
         </script>
     </head>
 
@@ -84,6 +88,11 @@
             EquipesData DAOE = new EquipesData();
             int idp = DAO.pegarIdParticipante(idUsuario);
             int ide = DAO.verificarInscTodosEventos(idp);
+            int idEquipe = 11;
+            Equipes equipe = new Equipes();
+            if(idEquipe != 0){
+                equipe = DAOE.getEquipeById(idEquipe);
+            }
         %>
         <div class="container">
             <div class="row mt-5">
@@ -93,11 +102,16 @@
     
                 <div class="col-md-6">
                     <form action="" method="" name="formEquipe">
-                        <div class="form-group">
-                            <input type="text" id="nome" name="nome" placeholder="Nome da equipe" class="form-control">
+                        <div data-idequipe="<%=idEquipe%>" name="idequipe" id="idequipe">
+                            
                         </div>
                         <div class="form-group">
-                            <textarea name="descricao" id="descricao" placeholder="Descrição" rows="5" class="form-control"></textarea>
+                            <label for="nome" class="control-label">Nome da equipe</label>
+                            <input type="text" id="nome" name="nome" placeholder="Nome da equipe" class="form-control" value="<%if(idEquipe != 0){out.println(equipe.getNome());} %>" />
+                        </div>
+                        <div class="form-group">
+                            <label for="descricao" class="control-label">Descrição da equipe</label>
+                            <textarea name="descricao" id="descricao" placeholder="Descrição" rows="5" class="form-control"><%if(idEquipe != 0){out.println(equipe.getDescricao());} %></textarea>
                         </div>
                         <input type="hidden" id="membros" name="membros">
                     </form>
@@ -165,7 +179,28 @@
                         </thead>
 
                         <tbody >
-
+                            <% 
+                                if(idEquipe != 0){
+                                    List<String> membros = new ArrayList();
+                                    membros = DAOE.listarMembrosEquipe(idEquipe);
+                                    for(String membro: membros){
+                                        String[] m = membro.split(";");
+                                        String nomeMembro = m[0];
+                                        int idMembro = Integer.parseInt(m[1]);
+                            %>
+                            <tr>
+                                <td><%=idMembro%></td>
+                                <td><%=nomeMembro%></td>
+                                <td style="text-align: right">
+                                    <button type="button" class="btn btn-danger botaoM" data-idp="<%=idMembro%>" data-nomep="<%=nomeMembro%>" onclick="retirarMembro(this)">
+                                        <i class="fas fa-minus-square"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <%
+                                }
+                            }
+                            %>
                         </tbody>
                     </table>
                 </div>
@@ -177,6 +212,9 @@
             <div class="mt-4 mb-3">
                 <button class="btn btn-success" id="salvar">Salvar</button>
                 <button class="btn btn-warning" id="cancelar">Cancelar</button>
+                <% if(idEquipe != 0){%>
+                <button class="btn btn-danger" id="inativar">Excluir equipe</button>
+                <%}%>
             </div>
             
             <!-- Modal -->
@@ -190,7 +228,28 @@
                             </button>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-success" id="modal_btn" data-dismiss="modal">Voltar</button>
+                            <button type="button" class="btn btn-success" id="modal_btn" data-dismiss="modal">OK!</button>
+                        </div>
+                    </div>
+                </div>
+            </div> <!-- Fim do modal -->
+            
+            <!-- Modal -->
+            <div class="modal fade" id="modalExcluirEquipe" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div id="modal_titulo_div2" class="modal-header text-danger">
+                            <h5 class="modal-title" id="modal_titulo2">Tem certeza que deseja excluir a equipe?</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body" id="modal_conteudo">
+                            Se sua equipe estiver inscrita em algum sub-evento, desinscreva ela primeiramente!
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" id="modal_btn_excluir" data-dismiss="modal">Excluir</button>
+                            <button type="button" class="btn btn-secondary" id="modal_bt_voltar" data-dismiss="modal">Voltar</button>
                         </div>
                     </div>
                 </div>

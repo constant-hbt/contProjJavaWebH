@@ -40,34 +40,36 @@ public class Equipe extends HttpServlet {
         PrintWriter out = response.getWriter();
             /* TODO output your page here. You may use following sample code. */
         try{
-            
             int idUsuario = Integer.parseInt(request.getParameter("idUsuario"));
-            String nome = request.getParameter("nome");
-            String descricao = request.getParameter("descricao");
-            String ids = request.getParameter("idsMembros");
             int acao = Integer.parseInt(request.getParameter("acao"));
             
             Inscricoes DAO = new Inscricoes();
             EquipesData DAOE = new EquipesData();
             int idp = DAO.pegarIdParticipante(idUsuario);
-            int ide = DAO.verificarInscTodosEventos(idp);
             String msg = "";
-            String[] idsM = ids.split(" / ");
-            
-            ArrayList<Integer> idsMembros = new ArrayList();
-            int a;
-            for(String id: idsM){
-                idsMembros.add(Integer.parseInt(id));
-            }
-            idsMembros.add(idp);
             
             if(acao == 1){
+                int ide = DAO.verificarInscTodosEventos(idp);
                 List<String> participantes = new ArrayList<>();
                 participantes = DAOE.listarPartEvento(ide, idp);
                 for(String part: participantes){
                     msg += part + "|";
                 }
             }else if(acao == 2){
+                String nome = request.getParameter("nome");
+                String descricao = request.getParameter("descricao");
+                String ids = request.getParameter("idsMembros");
+                
+                int ide = DAO.verificarInscTodosEventos(idp);
+                
+                String[] idsM = ids.split(" / ");
+
+                ArrayList<Integer> idsMembros = new ArrayList();
+                for(String id: idsM){
+                    idsMembros.add(Integer.parseInt(id));
+                }
+                idsMembros.add(idp);
+                
                 Equipes equipe = new Equipes();
                 equipe.setNome(nome);
                 equipe.setDescricao(descricao);
@@ -78,6 +80,14 @@ public class Equipe extends HttpServlet {
                     msg = "Equipe criada com sucesso!";
                 }else{
                     throw new Exception("Erro ao criar a equipe!");
+                }
+            }else if(acao == 4){
+                int idEquipe = Integer.parseInt(request.getParameter("idEquipe"));
+                msg = "Entrou" + idEquipe;
+                if(DAOE.inativarEquipe(idEquipe)){
+                    msg = "Equipe excluida com sucesso!";
+                }else{
+                    throw new Exception("Erro ao excluir a equipe!");
                 }
             }
             
