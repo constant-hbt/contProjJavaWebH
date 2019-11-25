@@ -1,5 +1,3 @@
-
-
 $('document').ready(function(){
     let listaMembros = document.getElementById('listaDespesas');
     $('.botaoP').click(function(){
@@ -171,6 +169,10 @@ $('document').ready(function(){
                 $('#modalInscricao').modal('show');
             }
         });
+    });
+    
+    $('#cancelar').click(function(){
+        window.location = "https://www.youtube.com/watch?v=U5vB97L9Aio";
     });
 });
 

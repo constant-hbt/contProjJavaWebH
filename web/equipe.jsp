@@ -29,54 +29,80 @@
         <script src="js/equipe.js"></script>
         
         <script>
-            /*
-            $('document').ready(function() {
-                $('body').load(function() {
-                    let listaParticipantes = $('#listaParticipantes');
-                    listaParticipantes.innerHTML = "";
-                    $.ajax({
-                        url: "equipe",
-                        type: "POST",
-                        data: {
-                            idUsuario : 3,
-                            acao : 1
-                        },
-                        success: function(responseText){
-                            let part = [];
-                            part = responseText.split("|");
-                            for(let i = 0; i < part.size; i++){
-                                let p = [];
-                                p = participante[i].split(";");
-                                let linha = listaParticipantes.insertRow();
-                                linha.insertCell(0).innerHTML = p[0];
-                                linha.insertCell(1).innerHTML = p[1];
-
-                                let btn = document.createElement('button');
-                                btn.className = 'btn btn-success';
-                                btn.innerHTML = '<i class="far fa-plus-square"></i>';
-
-                                linha.insertCell(2).append(btn);
-                            }
-                        },
-                        error: function (jqXHR, textStatus, errorThrown) {
-                            alert("Erro: " + errorThrow);
-                        }
-                    });
-                });
-                let idsp = [];
-                $('#salvar').click(function() {
-                    
-                    var nome = $('#nome').val();
-                    var descricao = $('#descricao').val();
-                    
-                    $('#lista-membros tr').each(function() {
-                        idsp.push($(this).find('.idp').html());
-                    });
-                });
-                
-            });*/
-            function retirarMembro(botao){
+            function removerMembro(botao){
+                console.log("Entrou no remover");
                 $(botao).parents('tr').remove();
+            }
+            
+            function pesquisa(){
+                let nome = document.getElementById("pesquisa").value;
+                console.log(nome);
+                
+                $.ajax({
+                    url: "equipe",
+                    type: "POST",
+                    data: {
+                        idUsuario : 3,
+                        acao : 1,
+                        nome: nome
+                    },
+                    success: function(responseText){
+                        let participantes = [];
+                        participantes = responseText.split(" # ");
+                        
+                        $('#listaParticipantes tr').remove();
+                        
+                        for(let i of participantes){
+                            part = [];
+                            part = i.split(" / ");
+                            console.log("id: " + part[0] + "nome: " + part[1]);
+                            
+                            if(!(part[0] == "" || part[0] == undefined || part[1] == "" || part[1] == undefined)){
+                                var row = $("<tr>");
+                                let btn = document.createElement('button');
+                                let td = document.createElement('td');
+                                btn.className = 'btn btn-success botaoP';
+                                btn.innerHTML = "<i class='far fa-plus-square'></i>";
+                                btn.setAttribute('type', 'button');
+                                btn.setAttribute('data-idp', part[0]);
+                                btn.setAttribute('data-nomep', part[1]);
+                                btn.onclick = function(){
+                                    let idpart = $(this).data('idp');
+                                    let nomepart = $(this).data('nomep');
+                                    var row = $("<tr>");
+                                    let btn = document.createElement('button');
+                                    let td = document.createElement('td');
+                                    btn.className = 'btn btn-danger botaoM';
+                                    btn.innerHTML = "<i class='fas fa-minus-square'></i>";
+                                    btn.setAttribute('type', 'button');
+                                    btn.setAttribute('data-idp', idpart);
+                                    btn.setAttribute('data-nomep', nomepart);
+                                    btn.onclick = function(){
+                                       $(this).parents('tr').remove();
+                                    }
+                                    td.appendChild(btn);
+
+                                    row.append($("<td>" + idpart + "</td>"))
+                                       .append($("<td>" + nomepart + "</td>"))
+                                       .append(td);
+
+                                    $("#listaMembros tbody").append(row);
+                                }
+                                td.appendChild(btn);
+
+                                row.append($("<td>" + part[0] + "</td>"))
+                                   .append($("<td>" + part[1] + "</td>"))
+                                   .append(td);
+
+                                $("#listaParticipantes").append(row);
+                            }
+                        }
+                        
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        alert("Erro");
+                    }
+                });
             }
         </script>
     </head>
@@ -112,7 +138,7 @@
                         </div>
                         <div class="form-group">
                             <label for="descricao" class="control-label">Descrição da equipe</label>
-                            <textarea name="descricao" id="descricao" placeholder="Descrição" rows="5" class="form-control"><%if(idEquipe != 0){out.println(equipe.getDescricao());} %></textarea>
+                            <textarea name="descricao" id="descricao" placeholder="Descrição" rows="3" class="form-control"><%if(idEquipe != 0){out.println(equipe.getDescricao());} %></textarea>
                         </div>
                         <input type="hidden" id="membros" name="membros">
                     </form>
@@ -126,15 +152,15 @@
             <div class="row my-5">
                 
                 <div class="col-md-6">
-                   
+                    <h2 class="h4 my-3 text-center">Lista de participantes do evento</h2>
                     <div class="input-group">
-                        <input class="form-control" type="text" placeholder="Pesquisar" id="pesquisar" name="pesquisar">
+                        <input class="form-control" type="text" placeholder="Pesquisar" id="pesquisa" name="pesquisa" onkeyup="pesquisa()"/>
                         <span class="input-group-addon">
                             <button class="fas fa-search" style="background:transparent;border:none"></button>
                         </span>
                     </div>
                     
-                    <table class="table" >
+                    <table class="table my-3" >
                         <thead>
                             <tr>
                                 <th>ID</th>
@@ -170,6 +196,8 @@
                 </div>
                 
                 <div class="col-md-6">
+                    <h2 class="h4 my-3 text-center">Lista de membros da equipe</h2>
+                    
                     <table class="table" id="listaMembros">
                         <thead>
                             <tr>
@@ -193,7 +221,7 @@
                                 <td><%=idMembro%></td>
                                 <td><%=nomeMembro%></td>
                                 <td style="text-align: right">
-                                    <button type="button" class="btn btn-danger botaoM" data-idp="<%=idMembro%>" data-nomep="<%=nomeMembro%>" onclick="retirarMembro(this)">
+                                    <button type="button" class="btn btn-danger botaoM" data-idp="<%=idMembro%>" data-nomep="<%=nomeMembro%>" onclick="removerMembro(this)"/>
                                         <i class="fas fa-minus-square"></i>
                                     </button>
                                 </td>
@@ -208,13 +236,11 @@
                 
             </div>
             
-            
-
-            <div class="mt-4 mb-3">
-                <button class="btn btn-success" id="salvar" data-acao="<%=acao%>">Salvar</button>
-                <button class="btn btn-warning" id="cancelar">Cancelar</button>
+            <div class="mt-4 d-flex bd-highlight mb-3">
+                <button class="btn btn-success p-2 bd-highlight mr-2" id="salvar" data-acao="<%=acao%>">Salvar</button>
+                <button class="btn btn-warning p-2 bd-highlight mx-2" id="cancelar">Cancelar</button>
                 <% if(idEquipe != 0){%>
-                <button class="btn btn-danger" id="inativar">Excluir equipe</button>
+                <button class="btn btn-danger ml-auto p-2 bd-highlight" id="inativar">Excluir equipe</button>
                 <%}%>
             </div>
             

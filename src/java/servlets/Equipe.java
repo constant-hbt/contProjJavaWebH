@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.Equipes;
 import model.Subeventos;
+import model.Usuarios;
 
 /**
  *
@@ -40,7 +41,7 @@ public class Equipe extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
             /* TODO output your page here. You may use following sample code. */
-        try{
+         try{
             int idUsuario = Integer.parseInt(request.getParameter("idUsuario"));
             int acao = Integer.parseInt(request.getParameter("acao"));
             
@@ -50,11 +51,13 @@ public class Equipe extends HttpServlet {
             String msg = "";
             
             if(acao == 1){
+                String nome = request.getParameter("nome");
                 int ide = DAO.verificarInscTodosEventos(idp);
-                List<String> participantes = new ArrayList<>();
-                participantes = DAOE.listarPartEvento(ide, idp);
-                for(String part: participantes){
-                    msg += part + "|";
+                List<Usuarios> participantesEvento = new ArrayList<>();
+                participantesEvento = DAOE.pesquisarParticipante(nome, ide);
+                for(Usuarios part: participantesEvento){
+                    int idpart = DAO.pegarIdParticipante(part.getIdusuario());
+                    msg += idpart + " / " + part.getNome() + " # ";
                 }
             }else if(acao == 2){
                 String nome = request.getParameter("nome");
