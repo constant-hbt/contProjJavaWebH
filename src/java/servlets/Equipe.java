@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.Equipes;
+import model.Subeventos;
 
 /**
  *
@@ -103,10 +104,22 @@ public class Equipe extends HttpServlet {
                 equipe.setDescricao(descricao);
                 equipe.setIdlider(idp);
                 
+                List<Subeventos> subeventosEquipeinsc = DAOE.listarSubeventosEquipeInsc(idEquipe);
+                for(Subeventos subevento: subeventosEquipeinsc){
+                    if(idsMembros.size() < subevento.getQtdemin()){
+                        throw new Exception("Alteração não permitida, pois sua equipe está inscrita em um ou mais sub-eventos que necessitam de "
+                                + "uma quantidade mínima de " + subevento.getQtdemin() + " membros para participar. Se ainda deseja"
+                                        + "diminuir a quantidade de membros, desinscreva sua equipe do(s) sub-evento(s)");
+                    }
+                    if(idsMembros.size() > subevento.getQtdemax()){
+                        throw new Exception("Alteração não permitida, pois sua equipe está inscrita em um ou mais sub-eventos que é permitida a "
+                                + "quantidade máxima de " + subevento.getQtdemax() + " membros por grupo. Se ainda deseja"
+                                        + " aumentar a quantidade de membros, desinscreva sua equipe do(s) sub-evento(s).");
+                    }
+                }
+                
                 if(DAOE.atualizarEquipe(equipe, idsMembros)){
-                    //msg = DAOE.atualizarEquipe(equipe, idsMembros);
                     msg = "Equipe atualizada com sucesso!";
-                    //msg = "nome: " + nome + ", descricao: " + descricao;
                 }else{
                     throw new Exception("Erro ao atualizar equipe.");
                 }
