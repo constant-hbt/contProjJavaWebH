@@ -84,6 +84,7 @@
     <body>
         <%
             int idUsuario = 3;
+            String acao = "alterar";
             Inscricoes DAO = new Inscricoes();
             EquipesData DAOE = new EquipesData();
             int idp = DAO.pegarIdParticipante(idUsuario);
@@ -210,7 +211,7 @@
             
 
             <div class="mt-4 mb-3">
-                <button class="btn btn-success" id="salvar">Salvar</button>
+                <button class="btn btn-success" id="salvar" data-acao="<%=acao%>">Salvar</button>
                 <button class="btn btn-warning" id="cancelar">Cancelar</button>
                 <% if(idEquipe != 0){%>
                 <button class="btn btn-danger" id="inativar">Excluir equipe</button>

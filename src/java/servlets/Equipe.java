@@ -81,6 +81,36 @@ public class Equipe extends HttpServlet {
                 }else{
                     throw new Exception("Erro ao criar a equipe!");
                 }
+            }else if(acao == 3){
+                int idEquipe = Integer.parseInt(request.getParameter("idEquipe"));
+                String nome = request.getParameter("nome");
+                String descricao = request.getParameter("descricao");
+                String ids = request.getParameter("idsMembros");
+                
+                int ide = DAO.verificarInscTodosEventos(idp);
+                
+                String[] idsM = ids.split(" / ");
+
+                ArrayList<Integer> idsMembros = new ArrayList();
+                for(String id: idsM){
+                    idsMembros.add(Integer.parseInt(id));
+                }
+                idsMembros.add(idp);
+                
+                Equipes equipe = new Equipes();
+                equipe.setIdequipe(idEquipe);
+                equipe.setNome(nome);
+                equipe.setDescricao(descricao);
+                equipe.setIdlider(idp);
+                
+                if(DAOE.atualizarEquipe(equipe, idsMembros)){
+                    //msg = DAOE.atualizarEquipe(equipe, idsMembros);
+                    msg = "Equipe atualizada com sucesso!";
+                    //msg = "nome: " + nome + ", descricao: " + descricao;
+                }else{
+                    throw new Exception("Erro ao atualizar equipe.");
+                }
+                
             }else if(acao == 4){
                 int idEquipe = Integer.parseInt(request.getParameter("idEquipe"));
                 msg = "Entrou" + idEquipe;
@@ -93,8 +123,7 @@ public class Equipe extends HttpServlet {
                 }else{
                     throw new Exception("Sua equipe está inscrita em um ou mais subeventos. "
                             + "Para excluí-la, a desinscreva do(s) sub-evento(s)");
-                }
-                
+                }  
             }
             
             out.println(msg);

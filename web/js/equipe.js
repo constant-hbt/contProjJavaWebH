@@ -47,9 +47,12 @@ $('document').ready(function(){
     });
     
     $('#salvar').click(function(){
+        var acao = $(this).data('acao');
+        console.log(acao);
+        var idEquipe = $('#idequipe').data('idequipe');
         var nome = $('#nome').val();
         var descricao = $('#descricao').val();
-        
+        console.log("idequipe: " + idEquipe + "nome: " + nome + ", descricao: " + descricao);
         let elementos = document.getElementsByClassName('botaoM');
         let ids = [];
         for(var i=0; i<elementos.length; i++){
@@ -61,33 +64,64 @@ $('document').ready(function(){
             idsMembros += ids[i] + " / ";
         }
         
-        $.ajax({
-            url: "equipe",
-            type: "POST",
-            data: {
-                idUsuario : 3,
-                nome : nome,
-                descricao : descricao,
-                idsMembros : idsMembros,
-                acao : 2
-            },
-            success: function(responseText){
-                $("#modal_titulo_div").attr("class", "modal-header text-success");
-                $("#modal_titulo").text(responseText);
-                $('#modalInscricao').modal('show');
-                $('#modal_btn').text("OK!");
-                $('#modal_btn').attr("class", "btn btn-success");
-                $('#modal_btn').click({
-                    //$(location).attr('href', 'http://www.google.com');
-                });
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                $("#modal_titulo").text("Erro ao criar a equipe");
-                $("#modal_titulo_div").attr("class", "modal-header text-danger");
-                $("#modal_btn").attr("class", "btn btn-danger");
-                $('#modalInscricao').modal('show');
-            }
-        });
+        if(acao == "salvar"){
+            $.ajax({
+                url: "equipe",
+                type: "POST",
+                data: {
+                    idUsuario : 3,
+                    nome : nome,
+                    descricao : descricao,
+                    idsMembros : idsMembros,
+                    acao : 2
+                },
+                success: function(responseText){
+                    $("#modal_titulo_div").attr("class", "modal-header text-success");
+                    $("#modal_titulo").text(responseText);
+                    $('#modalInscricao').modal('show');
+                    $('#modal_btn').text("OK!");
+                    $('#modal_btn').attr("class", "btn btn-success");
+                    $('#modal_btn').click({
+                        //$(location).attr('href', 'http://www.google.com');
+                    });
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    $("#modal_titulo").text("Erro ao criar a equipe");
+                    $("#modal_titulo_div").attr("class", "modal-header text-danger");
+                    $("#modal_btn").attr("class", "btn btn-danger");
+                    $('#modalInscricao').modal('show');
+                }
+            });  
+        }else if(acao == "alterar"){
+            $.ajax({
+                url: "equipe",
+                type: "POST",
+                data: {
+                    idUsuario : 3,
+                    idEquipe: idEquipe,
+                    nome : nome,
+                    descricao : descricao,
+                    idsMembros : idsMembros,
+                    acao : 3
+                },
+                success: function(responseText){
+                    $("#modal_titulo_div").attr("class", "modal-header text-success");
+                    $("#modal_titulo").text(responseText);
+                    $('#modalInscricao').modal('show');
+                    $('#modal_btn').text("OK!");
+                    $('#modal_btn').attr("class", "btn btn-success");
+                    $('#modal_btn').click({
+                        //$(location).attr('href', 'http://www.google.com');
+                    });
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    $("#modal_titulo").text("Erro ao criar a equipe");
+                    $("#modal_titulo_div").attr("class", "modal-header text-danger");
+                    $("#modal_btn").attr("class", "btn btn-danger");
+                    $('#modalInscricao').modal('show');
+                }
+            });
+        }
     });
     
     

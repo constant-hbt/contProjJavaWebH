@@ -140,7 +140,7 @@ public class EquipesData extends Conexao{
         return false;
     }
     
-    public boolean atualizarEquipe(Equipes equipe, List<Participantes> participantes) throws Exception{
+    public boolean atualizarEquipe(Equipes equipe, List<Integer> membros) throws Exception{
         getConexao().setAutoCommit(false);
         try{
             String sql = "Update equipes set nome = ?, descricao = ? where idequipe = ?";
@@ -153,36 +153,40 @@ public class EquipesData extends Conexao{
                 PreparedStatement pspa = getConexao().prepareStatement(sqlpa);
                 pspa.setInt(1, equipe.getIdequipe());
                 ResultSet rs = pspa.executeQuery();
-                List<Integer> idpart_continuam = new ArrayList<>();
+                List<Integer> idpart_antigos = new ArrayList<>();
                 while(rs.next()){
-                    idpart_continuam.add(rs.getInt("idparticipante"));
+                    idpart_antigos.add(rs.getInt("idparticipante"));
                 }
                 String sqlp = "Update PARTICIPANTE_EQUIPE set idstatus = 2 where idequipe = ?";
                 PreparedStatement psp = getConexao().prepareStatement(sqlp);
+                String sqla = "Update participante_equipe set idstatus = 1 where idequipe = ? and idparticipante = ?";
+                PreparedStatement psa = getConexao().prepareStatement(sqla);
                 psp.setInt(1, equipe.getIdequipe());
+                
                 if(psp.executeUpdate() > 0){
-                    String sqla = "Update participante_equipe set idstatus = 1 where idequipe = ? and idparticipante = ?";
-                    PreparedStatement psa = getConexao().prepareStatement(sqla);
-                    String sqlpi = "Insert into PARTICIPANTE_EQUIPE (idstatus, idparticipante, idequipe) values (1,?,?)";
-                    PreparedStatement pspi = getConexao().prepareStatement(sqlpi);
-                    for(Integer part: idpart_continuam){
-                        for(Participantes partNovo: participantes){
-                            if(part == partNovo.getIdparticipante()){
+                    for(Integer partNovo: membros){
+                        boolean flag = false;
+                        for(Integer partAntigo: idpart_antigos){
+                            if(partNovo == partAntigo){
+                                flag = true;
                                 psa.setInt(1, equipe.getIdequipe());
-                                psa.setInt(2, part);
+                                psa.setInt(2, partAntigo);
                                 if(!(psa.executeUpdate() > 0)){
                                     getConexao().rollback();
                                     getConexao().setAutoCommit(true);
                                     return false;
                                 }
-                            }else{
-                                pspi.setInt(1, partNovo.getIdparticipante());
-                                pspi.setInt(2, equipe.getIdequipe());
-                                if(!(pspi.executeUpdate() > 0)){
-                                    getConexao().rollback();
-                                    getConexao().setAutoCommit(true);
-                                    return false;
-                                }
+                            }
+                        }
+                        if(flag == false){
+                            String sqlpi = "Insert into PARTICIPANTE_EQUIPE (idstatus, idparticipante, idequipe) values (1,?,?)";
+                            PreparedStatement pspi = getConexao().prepareStatement(sqlpi);
+                            pspi.setInt(1, partNovo);
+                            pspi.setInt(2, equipe.getIdequipe());
+                            if(!(pspi.executeUpdate() > 0)){
+                                getConexao().rollback();
+                                getConexao().setAutoCommit(true);
+                                return false;
                             }
                         }
                     }
