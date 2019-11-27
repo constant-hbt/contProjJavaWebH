@@ -58,43 +58,53 @@
                             console.log("id: " + part[0] + "nome: " + part[1]);
                             
                             if(!(part[0] == "" || part[0] == undefined || part[1] == "" || part[1] == undefined)){
-                                var row = $("<tr>");
-                                let btn = document.createElement('button');
-                                let td = document.createElement('td');
-                                btn.className = 'btn btn-success botaoP';
-                                btn.innerHTML = "<i class='far fa-plus-square'></i>";
-                                btn.setAttribute('type', 'button');
-                                btn.setAttribute('data-idp', part[0]);
-                                btn.setAttribute('data-nomep', part[1]);
-                                btn.onclick = function(){
-                                    let idpart = $(this).data('idp');
-                                    let nomepart = $(this).data('nomep');
+                                let listaM = [];
+                                listaM = document.getElementsByClassName('botaoM');
+                                let naoListaMembros = true;
+                                for(let mem of listaM){
+                                    if($(mem).data('idp') == part[0]){
+                                        naoListaMembros = false;
+                                    }
+                                }
+                                if(naoListaMembros){
                                     var row = $("<tr>");
                                     let btn = document.createElement('button');
                                     let td = document.createElement('td');
-                                    btn.className = 'btn btn-danger botaoM';
-                                    btn.innerHTML = "<i class='fas fa-minus-square'></i>";
+                                    btn.className = 'btn btn-success botaoP';
+                                    btn.innerHTML = "<i class='far fa-plus-square'></i>";
                                     btn.setAttribute('type', 'button');
-                                    btn.setAttribute('data-idp', idpart);
-                                    btn.setAttribute('data-nomep', nomepart);
+                                    btn.setAttribute('data-idp', part[0]);
+                                    btn.setAttribute('data-nomep', part[1]);
                                     btn.onclick = function(){
-                                       $(this).parents('tr').remove();
+                                        let idpart = $(this).data('idp');
+                                        let nomepart = $(this).data('nomep');
+                                        var row = $("<tr>");
+                                        let btn = document.createElement('button');
+                                        let td = document.createElement('td');
+                                        btn.className = 'btn btn-danger botaoM';
+                                        btn.innerHTML = "<i class='fas fa-minus-square'></i>";
+                                        btn.setAttribute('type', 'button');
+                                        btn.setAttribute('data-idp', idpart);
+                                        btn.setAttribute('data-nomep', nomepart);
+                                        btn.onclick = function(){
+                                           $(this).parents('tr').remove();
+                                        }
+                                        td.appendChild(btn);
+
+                                        row.append($("<td>" + idpart + "</td>"))
+                                           .append($("<td>" + nomepart + "</td>"))
+                                           .append(td);
+
+                                        $("#listaMembros tbody").append(row);
                                     }
                                     td.appendChild(btn);
 
-                                    row.append($("<td>" + idpart + "</td>"))
-                                       .append($("<td>" + nomepart + "</td>"))
+                                    row.append($("<td>" + part[0] + "</td>"))
+                                       .append($("<td>" + part[1] + "</td>"))
                                        .append(td);
 
-                                    $("#listaMembros tbody").append(row);
+                                    $("#listaParticipantes").append(row);
                                 }
-                                td.appendChild(btn);
-
-                                row.append($("<td>" + part[0] + "</td>"))
-                                   .append($("<td>" + part[1] + "</td>"))
-                                   .append(td);
-
-                                $("#listaParticipantes").append(row);
                             }
                         }
                         
@@ -104,10 +114,23 @@
                     }
                 });
             }
+            
+            function compararPartMembros(){
+                let participantes = document.getElementsByClassName("botaoP");
+                let membros = document.getElementsByClassName("botaoM");
+                console.log(participantes);
+                for(let part of participantes){
+                    for(let membro of membros){
+                        if($(part).data('idp') === $(membro).data('idp')){
+                            $(part).parents('tr').remove();
+                        }
+                    }
+                }
+            }
         </script>
     </head>
 
-    <body>
+    <body onload="compararPartMembros()">
         <%
             int idUsuario = 3;
             String acao = "alterar";

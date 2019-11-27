@@ -36,11 +36,11 @@ $('document').ready(function(){
            //deleteRow(this.parentNode.parentNode.rowIndex);
         }
         td.appendChild(btn);
-        
+
         row.append($("<td>" + idp + "</td>"))
            .append($("<td>" + nomep + "</td>"))
            .append(td);
-           
+
         $("#listaMembros tbody").append(row);
     });
     
@@ -174,6 +174,7 @@ $('document').ready(function(){
     $('#cancelar').click(function(){
         window.location = "https://www.youtube.com/watch?v=U5vB97L9Aio";
     });
+    
 });
 
 
