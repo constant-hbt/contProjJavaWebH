@@ -53,7 +53,7 @@
                                 $("#modal_titulo").text(responseText);
                                 $('#modalInscricao').modal('show');
                                 $(botaoSub).attr("data-statussub", "1");
-                                $(botaoSub).text("Desinscrever-se");
+                                $(botaoSub).text("Desinscrever equipe");
                                 $(botaoSub).attr("class", "btn btn-outline-danger");
                             },
                             error: function (jqXHR, textStatus, errorThrown) {
@@ -65,19 +65,19 @@
                         });
                     }else{
                         $.ajax({
-                            url: "InscSubevento",
+                            url: "inscequipesub",
                             type: "POST",
                             data: {
                                 idUsuario : 3,
                                 idSubevento : idSub,
-                                idEvento : idEquipe,
+                                idEquipe : idEquipe,
                                 acao : "desinscrever"
                             },
                             success: function(responseText){
                                 $("#modal_titulo").text(responseText);
                                 $("#modal_titulo_div").attr("class", "modal-header text-info");
                                 $("#modal_btn").attr("class", "btn btn-success");
-                                $(botaoSub).text("Inscrever-se");
+                                $(botaoSub).text("Inscrever equipe");
                                 $(botaoSub).attr("class", "btn btn-outline-success");
                                 $(botaoSub).attr("data-inscritoev", "2");
                                 $('#modalInscricao').modal('show');

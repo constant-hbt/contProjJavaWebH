@@ -5,6 +5,7 @@
  */
 package servlets;
 
+import controller.EquipesData;
 import controller.Inscricoes;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -47,53 +48,41 @@ public class InscEquipeSub extends HttpServlet {
             
             String msg = "";
             Inscricoes DAO = new Inscricoes();
+            EquipesData DAOE = new EquipesData();
             int idp = DAO.pegarIdParticipante(idUsuario);
             int idsub = DAO.verificarSubPertEvento(idSubevento, idp);
-            msg = "Servlet funcionando!";
-            /*
+            
             if(acao.equals("inscrever")){
                 if(idsub == idSubevento){
-                    Subeventos subeveAtual = DAO.pegarSubevento(idSubevento, idEvento);
-                    List<Subeventos> subeventos = DAO.listarSubeventosPart(idp);
-                    if(subeveAtual.getQtdemin() == 1 && subeveAtual.getQtdemax() == 1){
-                        if(compararInicioFimSubeventos(subeventos, subeveAtual)){
-                            if(DAO.verificarHistInscSubevento(idp, idSubevento)){
-                                if(DAO.atualizarInscSubevento(idp, idSubevento)){
-                                    msg = "Inscrição no sub-evento realizada com sucesso!";
-                                }else{
-                                    throw new Exception("Erro ao realizar a inscrição");
-                                }
-                            }else{
-                                if(DAO.inscreverSubEvento(idp, idSubevento)){
-                                    msg = "Inscrição no sub-evento realizada com sucesso!";
-                                }else{
-                                    throw new Exception("Erro ao realizar a inscrição");
-                                }
-                            }
+                    if(DAO.verificarHistInscEquipeSubevento(idEquipe, idSubevento)){
+                        if(DAO.atualizarInscEquipeSubevento(idEquipe, idSubevento)){
+                            msg = "Inscrição no sub-evento realizada com sucesso!";
                         }else{
-                            throw new Exception("Você já está inscrito em um sub-evento que tem data/horários que entram em conflito");
+                            throw new Exception("Erro ao realizar a inscrição");
                         }
                     }else{
-                        throw new Exception("Este sub-evento precisa que você faça parte de uma equipe!");
-                    } 
-                }else{
-                    throw new Exception("Você precisa estar inscrito(a) no evento para conseguir participar de um subevento dele" + idsub + ", " + idSubevento);
+                        if(DAO.inscreverEquipeSub(idEquipe, idSubevento)){
+                            msg = "Inscrição no sub-evento realizada com sucesso!";
+                        }else{
+                            throw new Exception("Erro ao realizar a inscrição");
+                        }
+                    }
                 }
             }else{
                 if(idsub == idSubevento){
-                    if(DAO.verificarInscSubevento(idp, idSubevento)){
-                        if(DAO.desinscreverSubevento(idp, idSubevento)){
+                    if(DAO.verificarEquipeInscSub(idEquipe, idSubevento)){
+                        if(DAO.desinscreverEquipeSubevento(idEquipe, idSubevento)){
                             msg = "Desisncrito do sub-evento com sucesso!";
                         }else{
                             throw new Exception("Erro ao se desinscrever!");
                         }
                     }else{
-                        throw new Exception("Erro, você não está inscrito no sub-evento");
+                        throw new Exception("Erro, sua equipe não está inscrito no sub-evento");
                     }
                 }else{
-                    throw new Exception("Você não está inscrito no evento! Inscreva-se nele primeiramente.");
+                    throw new Exception("Sua equipe não está inscrita no evento! Inscreva a sua equipe primeiramente.");
                 }
-            }*/
+            }
             //Timestamp datahoraInicioSubA = converterStringParaTimestamp("16/11/2019 15:00");
             //Timestamp datahoraInicio = converterStringParaTimestamp("16/11/2019 17:00");
             //Timestamp datahoraFimSubA = converterStringParaTimestamp("16/11/2019 14:30");
