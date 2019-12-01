@@ -9,6 +9,8 @@ import controller.EquipesData;
 import controller.Inscricoes;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.Equipes;
 import model.Subeventos;
+import servlets.utils.FormatacaoDatas;
 
 /**
  *
@@ -55,50 +58,58 @@ public class InscEquipeSub extends HttpServlet {
             int idEvento = DAO.pegarIdEvento(idp);
             Subeventos subeventoAtual = DAO.pegarSubevento(idsub, idEvento);
             Equipes equipe = DAOE.getEquipeById(idEquipe);
+            Date dataAtual = new Date();
             
-            if(acao.equals("inscrever")){
-                if(idsub == idSubevento){
-                    int qtdeMembros = DAOE.pegarQtdeMembrosEquipe(idEquipe);
-                    int qtdeEquipes = DAO.pegarQtdeEquipesInscSub(idSubevento);
-                    if(qtdeMembros >= subeventoAtual.getQtdemin() && qtdeMembros <= subeventoAtual.getQtdemax()){
-                        if(qtdeEquipes <= subeventoAtual.getQtdemaxequipes()){
-                            if(DAO.verificarHistInscEquipeSubevento(idEquipe, idSubevento)){
-                                if(DAO.atualizarInscEquipeSubevento(idEquipe, idSubevento)){
-                                    msg = "1 / Inscrição no sub-evento realizada com sucesso!";
+            if(dataAtual.compareTo(subeventoAtual.getDatainicioinsc()) >= 0 && dataAtual.compareTo(subeventoAtual.getDatafiminsc()) <= 0){
+                if(acao.equals("inscrever")){
+                    if(idsub == idSubevento){
+                        int qtdeMembros = DAOE.pegarQtdeMembrosEquipe(idEquipe);
+                        int qtdeEquipes = DAO.pegarQtdeEquipesInscSub(idSubevento);
+                        if(qtdeMembros >= subeventoAtual.getQtdemin() && qtdeMembros <= subeventoAtual.getQtdemax()){
+                            if(qtdeEquipes <= subeventoAtual.getQtdemaxequipes()){
+                                if(DAO.verificarHistInscEquipeSubevento(idEquipe, idSubevento)){
+                                    if(DAO.atualizarInscEquipeSubevento(idEquipe, idSubevento)){
+                                        msg = "1 / Inscrição no sub-evento realizada com sucesso!";
+                                    }else{
+                                        throw new Exception("Erro ao realizar a inscrição");
+                                    }
                                 }else{
-                                    throw new Exception("Erro ao realizar a inscrição");
+                                    if(DAO.inscreverEquipeSub(idEquipe, idSubevento)){
+                                        msg = "Inscrição no sub-evento realizada com sucesso!";
+                                    }else{
+                                        throw new Exception("Erro ao realizar a inscrição");
+                                    }
                                 }
                             }else{
-                                if(DAO.inscreverEquipeSub(idEquipe, idSubevento)){
-                                    msg = "Inscrição no sub-evento realizada com sucesso!";
-                                }else{
-                                    throw new Exception("Erro ao realizar a inscrição");
-                                }
+                                throw new Exception("Não foi possível inscrever a sua equipe no sub-evento, pois já atingiu a quantidade máxima de equipes permitida");
                             }
                         }else{
-                            throw new Exception("Não foi possível inscrever a sua equipe no sub-evento, pois já atingiu a quantidade máxima de equipes permitida");
+                            throw new Exception("A quantidade de membros da sua equipe não condiz com a quantidade permitida para o sub-evento");
+                        }
+                    }
+                }else{
+                    if(idsub == idSubevento){
+                        if(DAO.verificarEquipeInscSub(idEquipe, idSubevento)){
+                            if(DAO.desinscreverEquipeSubevento(idEquipe, idSubevento)){
+                                msg = "Desisncrito do sub-evento com sucesso!";
+                            }else{
+                                throw new Exception("Erro ao se desinscrever!");
+                            }
+                        }else{
+                            throw new Exception("Erro, sua equipe não está inscrito no sub-evento");
                         }
                     }else{
-                        throw new Exception("A quantidade de membros da sua equipe não condiz com a quantidade permitida para o sub-evento");
+                        throw new Exception("Sua equipe não está inscrita no evento! Inscreva a sua equipe primeiramente.");
                     }
                 }
             }else{
-                if(idsub == idSubevento){
-                    if(DAO.verificarEquipeInscSub(idEquipe, idSubevento)){
-                        if(DAO.desinscreverEquipeSubevento(idEquipe, idSubevento)){
-                            msg = "Desisncrito do sub-evento com sucesso!";
-                        }else{
-                            throw new Exception("Erro ao se desinscrever!");
-                        }
-                    }else{
-                        throw new Exception("Erro, sua equipe não está inscrito no sub-evento");
-                    }
-                }else{
-                    throw new Exception("Sua equipe não está inscrita no evento! Inscreva a sua equipe primeiramente.");
-                }
+                throw new Exception("Erro, você não pode inscrever/desinscrever sua equipe do sub-evento pois não está dentro do período permitido");
             }
-            //Timestamp datahoraInicioSubA = converterStringParaTimestamp("16/11/2019 15:00");
-            //Timestamp datahoraInicio = converterStringParaTimestamp("16/11/2019 17:00");
+            
+            //msg = "1 / " + dataAtual;
+            //Timestamp datahoraInicioSubA = FormatacaoDatas.converterStringParaTimestamp("16/11/2019 15:00");
+            //Timestamp datahoraInicio = FormatacaoDatas.converterStringParaTimestamp("10/12/2019 13:00");
+            //msg = "1 / " + (datahoraInicioSubA.before(datahoraInicio));
             //Timestamp datahoraFimSubA = converterStringParaTimestamp("16/11/2019 14:30");
             //Timestamp datahoraFim = converterStringParaTimestamp("16/11/2019 16:30");
             //msg = "datahora no timestamp: " + ((datahoraInicioSubA.compareTo(datahoraFim) <= 0 && datahoraInicioSubA.compareTo(datahoraInicio) >= 0) || 
