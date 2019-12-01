@@ -666,6 +666,105 @@ public class Inscricoes extends Conexao{
         }
         return inscricoes;
     }
+    
+    public boolean inscreverEquipeSub(int idEquipe, int idSubevento) throws Exception{
+        getConexao().setAutoCommit(false);
+        try{
+            /*SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+            String dataString  = dateFormat.format(new Date().getTime());*/
+            String sql = "Insert into INSCRICAO_EQUIPE_SUB (datahora, idequipe, idsubevento, idstatus)"
+                    + " values (CURRENT_TIMESTAMP,?,?,1)";
+            PreparedStatement ps = getConexao().prepareStatement(sql);
+            ps.setInt(1, idEquipe);
+            ps.setInt(2, idSubevento);
+            if(ps.executeUpdate() > 0){
+                getConexao().commit();
+                getConexao().setAutoCommit(true);
+                return true;
+            }
+            getConexao().rollback();
+            getConexao().setAutoCommit(true);
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+    
+    public boolean verificarEquipeInscSub(int idEquipe, int idSubevento) throws Exception{
+        try{
+            String sql = "Select idstatus from INSCRICAO_EQUIPE_SUB where idequipe = ? and idsubevento = ?";
+            PreparedStatement ps = getConexao().prepareStatement(sql);
+            ps.setInt(1, idEquipe);
+            ps.setInt(2, idSubevento);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                if(rs.getInt("idstatus") == 1){
+                    return true;
+                }
+            }
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+    
+    public boolean verificarHistInscEquipeSubevento(int idEquipe, int idSubevento) throws Exception{
+        getConexao().setAutoCommit(false);
+        try{
+            String sql = "select idstatus from INSCRICAO_EQUIPE_SUB where idequipe = ? and idsubevento = ?";
+            PreparedStatement ps = getConexao().prepareStatement(sql);
+            ps.setInt(1, idEquipe);
+            ps.setInt(2, idSubevento);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+                if(rs.getInt("idstatus") == 2){
+                    return true;
+                }
+            }
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+    
+    public boolean atualizarInscEquipeSubevento(int idEquipe, int idSubevento) throws Exception{
+        try{
+            String sql = "update INSCRICAO_EQUIPE_SUB set idstatus = 1, datahora = CURRENT_TIMESTAMP where idequipe = ? and idsubevento = ? and idstatus = 2";
+            PreparedStatement ps = getConexao().prepareStatement(sql);
+            ps.setInt(1, idEquipe);
+            ps.setInt(2, idSubevento);
+            if(ps.executeUpdate() > 0){
+                getConexao().commit();
+                getConexao().setAutoCommit(true);
+                return true;
+            }
+            getConexao().rollback();
+            getConexao().setAutoCommit(true);
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+    
+    public boolean desinscreverEquipeSubevento(int idEquipe, int idSubevento) throws Exception{
+        getConexao().setAutoCommit(false);
+        try{
+            String sql = "Update INSCRICAO_EQUIPE_SUB set idstatus = 2 where idequipe = ? and idsubevento = ?";
+            PreparedStatement ps = getConexao().prepareStatement(sql);
+            ps.setInt(1, idEquipe);
+            ps.setInt(2, idSubevento);
+            if(ps.executeUpdate() > 0){
+                getConexao().commit();
+                getConexao().setAutoCommit(true);
+                return true;
+            }
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        getConexao().rollback();
+        getConexao().setAutoCommit(true);
+        return false;
+    }
       
 }
 

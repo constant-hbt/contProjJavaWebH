@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import model.Equipes;
+import model.InscricaoEquipeSub;
 import model.Participantes;
 import model.Salas;
 import model.Status;
@@ -340,4 +341,116 @@ public class EquipesData extends Conexao{
         }
        return subeventos;
     }
+    
+    public List<Equipes> pegarEquipesPartInsc(int idPart) throws Exception{
+        List<Equipes> equipes = new ArrayList<>();
+        try{
+            String sql = "Select e.* from equipes e inner join PARTICIPANTE_EQUIPE pe on (e.idequipe = pe.idequipe) where e.idstatus = 1 and pe.idparticipante = ? and pe.idstatus = 1";
+            PreparedStatement ps = getConexao().prepareStatement(sql);
+            ps.setInt(1, idPart);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                Equipes equipe = new Equipes();
+                equipe.setIdequipe(rs.getInt("idequipe"));
+                equipe.setNome(rs.getString("nome"));
+                equipe.setDescricao(rs.getString("descricao"));
+                equipe.setIdlider(rs.getInt("idlider"));
+                
+                Status status = new Status();
+                status.setIdstatus(rs.getInt("idStatus"));
+                String sqlStatus = "Select descricao FROM STATUS WHERE idstatus = ?";
+                PreparedStatement psSattus = getConexao().prepareStatement(sqlStatus);
+                psSattus.setInt(1, status.getIdstatus());
+                ResultSet rsStatus = psSattus.executeQuery();
+                if(rsStatus.next()){
+                    status.setDescricao(rsStatus.getString("descricao"));
+                }
+                equipe.setStatus(status);
+                equipes.add(equipe);
+            }
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        return equipes;
+    }
+    
+    public List<Subeventos> listarSubeventosParaEquipes(int idEvento) throws Exception{
+        List<Subeventos> subeventos = new ArrayList<>();
+        try{
+            String sql = "SELECT s.* FROM SUBEVENTOS s inner join EVENTOS e on (s.idevento = e.idevento) where e.idstatus = 1 and s.idstatus = 1 and s.qtdemin > 1 and e.idevento = ?";
+            PreparedStatement ps = getConexao().prepareStatement(sql);
+            ps.setInt(1, idEvento);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                Subeventos subevento = new Subeventos();
+                subevento.setIdsubevento(rs.getInt("idSubevento"));
+                subevento.setNome(rs.getString("nome"));
+                subevento.setDescricao(rs.getString("descricao"));
+                subevento.setDatahorainicio(rs.getString("datahorainicio"));
+                subevento.setDatahorafim(rs.getString("datahorafim"));
+                subevento.setDatainicioinsc(FormatacaoDatas.formataDataBr(rs.getDate("datainicioinsc")));
+                subevento.setDatafiminsc(FormatacaoDatas.formataDataBr(rs.getDate("datafiminsc")));
+                subevento.setQtdemin(rs.getInt("qtdemin"));
+                subevento.setQtdemax(rs.getInt("qtdemax"));
+                subevento.setQtdemaxequipes(rs.getInt("qtdemaxequipes"));
+
+                Status status = new Status();
+                status.setIdstatus(rs.getInt("idStatus"));
+                String sqlStatus = "Select descricao FROM STATUS WHERE idstatus = ?";
+                PreparedStatement psSattus = getConexao().prepareStatement(sqlStatus);
+                psSattus.setInt(1, status.getIdstatus());
+                ResultSet rsStatus = psSattus.executeQuery();
+                if(rsStatus.next()){
+                    status.setDescricao(rsStatus.getString("descricao"));
+                }
+                subevento.setStatus(status);
+
+                Salas sala = new Salas();
+
+                sala.setIdsala(rs.getInt("idsala"));
+                String sqlSala = "SELECT * FROM SALAS WHERE IDSTATUS = 1 AND IDSALA = ?";
+                PreparedStatement psSala = getConexao().prepareStatement(sqlSala);
+                psSala.setInt(1, sala.getIdsala());
+                ResultSet rsSala = psSala.executeQuery();
+                if(rsSala.next()){
+                    sala.setDescricao(rsSala.getString("descricao"));
+                    sala.setCapacidadetotal(rsSala.getInt("capacidadetotal"));
+                    sala.setCapacidadeocupada(rsSala.getInt("capacidadeocupada"));
+
+                    Status statusSala = new Status();
+                    statusSala.setIdstatus(rsSala.getInt("idStatus"));
+                    String sqlStatusSala = "Select descricao FROM STATUS WHERE idstatus = 1";
+                    PreparedStatement psStatusSala = getConexao().prepareStatement(sqlStatusSala);
+                    ResultSet rsStatusSala = psStatusSala.executeQuery();
+                    if(rsStatusSala.next()){
+                        statusSala.setDescricao(rsStatus.getString("descricao"));
+                    }
+                    sala.setStatus(statusSala);
+                    subevento.setSalas(sala);
+                }
+                subeventos.add(subevento);
+            }
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+       return subeventos;
+    }
+    
+    public boolean verificarSeLiderEquipe(int idPart, int idEquipe) throws Exception{
+        try{
+            String sql = "Select idlider from equipes where idequipe = ? and idstatus = 1";
+            PreparedStatement ps = getConexao().prepareStatement(sql);
+            ps.setInt(1, idEquipe);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+                if(rs.getInt("idlider") == idPart){
+                    return true;
+                }
+            } 
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+    
 }
