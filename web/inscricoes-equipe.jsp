@@ -32,71 +32,20 @@
             
             
             $('document').ready(function(){
-                $(".insc-evento").click(function() {
-                    var botao = this;
-                    var idEvento = $(botao).data("idevento");
-                    
-                    if($(botao).text() == "Inscrever-se"){
-                        $.ajax({
-                            url: "InscEvento",
-                            type: "POST",
-                            data: {
-                                idUsuario : 3,
-                                idEvento : idEvento
-                            },
-                            success: function(responseText){
-                                $("#modal_titulo_div").attr("class", "modal-header text-success");
-                                $("#modal_titulo").text(responseText);
-                                $('#modalInscricao').modal('show');
-                                $(botao).attr("data-inscritoev", "1");
-                                $(botao).text("Desinscrever-se");
-                                $(botao).attr("class", "btn btn-danger");
-                            },
-                            error: function (jqXHR, textStatus, errorThrown) {
-                                $("#modal_titulo").text("Erro ao se inscrever!" + errorThrown);
-                                $('#modalInscricao').modal('show');
-                            }
-                        });
-                    }else{
-                        $.ajax({
-                            url: "DesinscEvento",
-                            type: "POST",
-                            data: {
-                                idUsuario : 3,
-                                idEvento : idEvento
-                            },
-                            success: function(responseText){
-                                $("#modal_titulo").text(responseText);
-                                $("#modal_titulo_div").attr("class", "modal-header text-success");
-                                $("#modal_btn").attr("class", "btn btn-success");
-                                $(botao).text("Inscrever-se");
-                                $(botao).attr("class", "btn btn-success");
-                                $(botao).attr("data-inscritoev", "2");
-                                $('#modalInscricao').modal('show');
-                            },
-                            error: function (jqXHR, textStatus, errorThrown) {
-                                $("#modal_titulo").text("Erro ao se desinscrever do evento!");
-                                $("#modal_titulo_div").attr("class", "modal-header text-danger");
-                                $("#modal_btn").attr("class", "btn btn-danger");
-                                $('#modalInscricao').modal('show');
-                            }
-                        });
-                    }
-                });
                 
-                $(".insc-sub").click(function() {
+                $(".insc-equipe-sub").click(function() {
                     var botaoSub = this;
                     var idSub = $(botaoSub).data("idsubevento");
-                    var subIdEvento = $(botaoSub).data("subidevento");
+                    var idEquipe = $(botaoSub).data("idequipe");
                     
-                    if($(botaoSub).text() == "Inscrever-se"){
+                    if($(botaoSub).text() == "Inscrever equipe"){
                         $.ajax({
-                            url: "InscSubevento",
+                            url: "inscequipesub",
                             type: "POST",
                             data: {
                                 idUsuario : 3,
                                 idSubevento : idSub,
-                                idEvento : subIdEvento,
+                                idEquipe : idEquipe,
                                 acao: "inscrever"
                             },
                             success: function(responseText){
@@ -121,7 +70,7 @@
                             data: {
                                 idUsuario : 3,
                                 idSubevento : idSub,
-                                idEvento : subIdEvento,
+                                idEvento : idEquipe,
                                 acao : "desinscrever"
                             },
                             success: function(responseText){
@@ -225,21 +174,12 @@
                                                         <div class="col-md-2">
                                                         <% 
                                                         if(DAOE.verificarSeLiderEquipe(idp, equipe.getIdequipe())){
-                                                            Date dataHoje = new Date();
-                                                            if(dataHoje.compareTo(subevento.getDatainicioinsc()) >= 0 && dataHoje.compareTo(subevento.getDatafiminsc()) <= 0){
-                                                                if(DAO.verificarEquipeInscSub(equipe.getIdequipe(), subevento.getIdsubevento())){ 
-                                                            %>
-                                                                <button class="btn btn-outline-danger insc-sub" id="inscSub<%=subevento.getIdsubevento() %>" data-idsubevento="<%=subevento.getIdsubevento() %>" data-statussub = "1" data-subidequipe="<%= equipe.getIdequipe()%>" >Desinscrever equipe</button>
-                                                            <% }else{ %>
-                                                                <button class="btn btn-outline-primary insc-sub" id="inscSub<%=subevento.getIdsubevento() %>" data-idsubevento="<%=subevento.getIdsubevento() %>" data-statussub = "2" data-subidequipe="<%= equipe.getIdequipe()%>" >Inscrever equipe</button>
-                                                            <%  }
-                                                            }else{
-                                                                if(DAO.verificarEquipeInscSub(equipe.getIdequipe(), subevento.getIdsubevento())){ %>
-                                                                    <button class="btn btn-outline-secondary insc-subexpirada" id="inscSub<%=subevento.getIdsubevento() %>" data-idsubevento="<%=subevento.getIdsubevento() %>" data-statussub = "1" data-subidequipe="<%= equipe.getIdequipe()%>" >Desinscrever equipe</button>
-                                                                <% }else{ %>
-                                                                    <button class="btn btn-outline-secondary insc-subexpirada" id="inscSub<%=subevento.getIdsubevento() %>" data-idsubevento="<%=subevento.getIdsubevento() %>" data-statussub = "2" data-subidequipe="<%= equipe.getIdequipe()%>" >Inscrever equipe</button>
-                                                            <%  } 
-                                                            }
+                                                            if(DAO.verificarEquipeInscSub(equipe.getIdequipe(), subevento.getIdsubevento())){ 
+                                                        %>
+                                                            <button class="btn btn-outline-danger insc-equipe-sub" id="inscSub<%=subevento.getIdsubevento() %>" data-idsubevento="<%=subevento.getIdsubevento() %>" data-statussub = "1" data-idequipe="<%= equipe.getIdequipe()%>" >Desinscrever equipe</button>
+                                                        <% }else{ %>
+                                                            <button class="btn btn-outline-primary insc-equipe-sub" id="inscSub<%=subevento.getIdsubevento() %>" data-idsubevento="<%=subevento.getIdsubevento() %>" data-statussub = "2" data-idequipe="<%= equipe.getIdequipe()%>" >Inscrever equipe</button>
+                                                        <%  }
                                                         }%>
                                                         </div>
                                                     </div>
