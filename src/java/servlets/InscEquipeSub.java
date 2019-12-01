@@ -15,6 +15,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.Equipes;
 import model.Subeventos;
 
 /**
@@ -51,21 +52,34 @@ public class InscEquipeSub extends HttpServlet {
             EquipesData DAOE = new EquipesData();
             int idp = DAO.pegarIdParticipante(idUsuario);
             int idsub = DAO.verificarSubPertEvento(idSubevento, idp);
+            int idEvento = DAO.pegarIdEvento(idp);
+            Subeventos subeventoAtual = DAO.pegarSubevento(idsub, idEvento);
+            Equipes equipe = DAOE.getEquipeById(idEquipe);
             
             if(acao.equals("inscrever")){
                 if(idsub == idSubevento){
-                    if(DAO.verificarHistInscEquipeSubevento(idEquipe, idSubevento)){
-                        if(DAO.atualizarInscEquipeSubevento(idEquipe, idSubevento)){
-                            msg = "Inscrição no sub-evento realizada com sucesso!";
+                    int qtdeMembros = DAOE.pegarQtdeMembrosEquipe(idEquipe);
+                    int qtdeEquipes = DAO.pegarQtdeEquipesInscSub(idSubevento);
+                    if(qtdeMembros >= subeventoAtual.getQtdemin() && qtdeMembros <= subeventoAtual.getQtdemax()){
+                        if(qtdeEquipes <= subeventoAtual.getQtdemaxequipes()){
+                            if(DAO.verificarHistInscEquipeSubevento(idEquipe, idSubevento)){
+                                if(DAO.atualizarInscEquipeSubevento(idEquipe, idSubevento)){
+                                    msg = "1 / Inscrição no sub-evento realizada com sucesso!";
+                                }else{
+                                    throw new Exception("Erro ao realizar a inscrição");
+                                }
+                            }else{
+                                if(DAO.inscreverEquipeSub(idEquipe, idSubevento)){
+                                    msg = "Inscrição no sub-evento realizada com sucesso!";
+                                }else{
+                                    throw new Exception("Erro ao realizar a inscrição");
+                                }
+                            }
                         }else{
-                            throw new Exception("Erro ao realizar a inscrição");
+                            throw new Exception("Não foi possível inscrever a sua equipe no sub-evento, pois já atingiu a quantidade máxima de equipes permitida");
                         }
                     }else{
-                        if(DAO.inscreverEquipeSub(idEquipe, idSubevento)){
-                            msg = "Inscrição no sub-evento realizada com sucesso!";
-                        }else{
-                            throw new Exception("Erro ao realizar a inscrição");
-                        }
+                        throw new Exception("A quantidade de membros da sua equipe não condiz com a quantidade permitida para o sub-evento");
                     }
                 }
             }else{
@@ -91,7 +105,7 @@ public class InscEquipeSub extends HttpServlet {
                         //(datahoraFimSubA.compareTo(datahoraInicio) >= 0 && datahoraFimSubA.compareTo(datahoraFim) <= 0));
             out.println(msg);
         }catch(Exception e){
-            out.println(e.getMessage());
+            out.println("0 / " + e.getMessage());
         }
     }
 

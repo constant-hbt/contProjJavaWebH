@@ -765,6 +765,38 @@ public class Inscricoes extends Conexao{
         getConexao().setAutoCommit(true);
         return false;
     }
+    
+    public int pegarIdEvento(int idPart) throws Exception{
+        int idevento = 0;
+        try{
+            String sql = "Select idevento from inscricao_part_evento where idparticipante = ? and idstatus = 1;";
+            PreparedStatement ps = getConexao().prepareStatement(sql);
+            ps.setInt(1, idPart);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+                idevento = rs.getInt("idevento");
+            }
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        return idevento;
+    }
+    
+    public int pegarQtdeEquipesInscSub(int idSubevento) throws Exception{
+        int qtde = 0;
+        try{
+            String sql = "Select idequipe from INSCRICAO_EQUIPE_SUB where idstatus = 1 and idsubevento = ?";
+            PreparedStatement ps = getConexao().prepareStatement(sql);
+            ps.setInt(1, idSubevento);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                qtde++;
+            }
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        return qtde;
+    }
       
 }
 

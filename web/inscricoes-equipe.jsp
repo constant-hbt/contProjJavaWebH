@@ -49,12 +49,20 @@
                                 acao: "inscrever"
                             },
                             success: function(responseText){
-                                $("#modal_titulo_div").attr("class", "modal-header text-info");
-                                $("#modal_titulo").text(responseText);
-                                $('#modalInscricao').modal('show');
-                                $(botaoSub).attr("data-statussub", "1");
-                                $(botaoSub).text("Desinscrever equipe");
-                                $(botaoSub).attr("class", "btn btn-outline-danger");
+                                let resp = responseText.split(" / ");
+                                if(resp[0] == "1"){
+                                    $("#modal_titulo_div").attr("class", "modal-header text-info");
+                                    $("#modal_titulo").text(resp[1]);
+                                    $('#modalInscricao').modal('show');
+                                    $(botaoSub).attr("data-statussub", "1");
+                                    $(botaoSub).text("Desinscrever equipe");
+                                    $(botaoSub).attr("class", "btn btn-outline-danger");
+                                }else{
+                                    $("#modal_titulo").text(resp[1]);
+                                    $("#modal_titulo_div").attr("class", "modal-header text-danger");
+                                    $("#modal_btn").attr("class", "btn btn-danger");
+                                    $('#modalInscricao').modal('show');
+                                }
                             },
                             error: function (jqXHR, textStatus, errorThrown) {
                                 $("#modal_titulo").text(errorThrown);
@@ -74,13 +82,21 @@
                                 acao : "desinscrever"
                             },
                             success: function(responseText){
-                                $("#modal_titulo").text(responseText);
-                                $("#modal_titulo_div").attr("class", "modal-header text-info");
-                                $("#modal_btn").attr("class", "btn btn-success");
-                                $(botaoSub).text("Inscrever equipe");
-                                $(botaoSub).attr("class", "btn btn-outline-success");
-                                $(botaoSub).attr("data-inscritoev", "2");
-                                $('#modalInscricao').modal('show');
+                                let resp = responseText.split(" / ");
+                                if(resp[0] == "1"){
+                                    $("#modal_titulo").text(resp[1]);
+                                    $("#modal_titulo_div").attr("class", "modal-header text-info");
+                                    $("#modal_btn").attr("class", "btn btn-success");
+                                    $(botaoSub).text("Inscrever equipe");
+                                    $(botaoSub).attr("class", "btn btn-outline-success");
+                                    $(botaoSub).attr("data-inscritoev", "2");
+                                    $('#modalInscricao').modal('show');
+                                }else{
+                                    $("#modal_titulo").text(resp[1]);
+                                    $("#modal_titulo_div").attr("class", "modal-header text-danger");
+                                    $("#modal_btn").attr("class", "btn btn-danger");
+                                    $('#modalInscricao').modal('show');
+                                }
                             },
                             error: function (jqXHR, textStatus, errorThrown) {
                                 $("#modal_titulo").text(errorThrown);

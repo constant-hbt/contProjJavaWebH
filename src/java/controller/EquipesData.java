@@ -453,4 +453,20 @@ public class EquipesData extends Conexao{
         return false;
     }
     
+    public int pegarQtdeMembrosEquipe(int idEquipe) throws Exception{
+        int participantes = 0;
+        try{
+            String sql = "Select idparticipante from participante_equipe where idstatus = 1 and idequipe = ?";
+            PreparedStatement ps = getConexao().prepareStatement(sql);
+            ps.setInt(1, idEquipe);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                participantes++;
+            }
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        return participantes;
+    }
+    
 }
