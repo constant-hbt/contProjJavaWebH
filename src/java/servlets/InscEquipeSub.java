@@ -59,6 +59,27 @@ public class InscEquipeSub extends HttpServlet {
             Subeventos subeventoAtual = DAO.pegarSubevento(idsub, idEvento);
             Equipes equipe = DAOE.getEquipeById(idEquipe);
             Date dataAtual = new Date();
+            Timestamp inicioSubAtual = FormatacaoDatas.converterStringParaTimestamp(subeventoAtual.getDatahorainicio());
+            Timestamp fimSubAtual = FormatacaoDatas.converterStringParaTimestamp(subeventoAtual.getDatahorafim());
+            List<String> membrosEquipe = DAOE.listarMembrosEquipe(idEquipe);
+            
+            boolean flag = true;
+            
+            for(String membro: membrosEquipe){
+                String[] m = membro.split(";");
+                List<Subeventos> subeventos = DAO.listarSubeventosPart(Integer.parseInt(m[1]));
+                for(Subeventos subevento: subeventos){
+                    Timestamp inicio = FormatacaoDatas.converterStringParaTimestamp(subevento.getDatahorainicio());
+                    Timestamp fim = FormatacaoDatas.converterStringParaTimestamp(subevento.getDatahorafim());
+                    if((inicioSubAtual.compareTo(inicio) >= 0 && inicioSubAtual.compareTo(fim) <= 0) || (fimSubAtual.compareTo(inicio) >= 0 && fimSubAtual.compareTo(fim) <= 0)){
+                        flag = false;
+                        break;
+                    }
+                    if(flag = false){
+                        break;
+                    }
+                }
+            }
             
             if(dataAtual.compareTo(subeventoAtual.getDatainicioinsc()) >= 0 && dataAtual.compareTo(subeventoAtual.getDatafiminsc()) <= 0){
                 if(acao.equals("inscrever")){
@@ -67,18 +88,22 @@ public class InscEquipeSub extends HttpServlet {
                         int qtdeEquipes = DAO.pegarQtdeEquipesInscSub(idSubevento);
                         if(qtdeMembros >= subeventoAtual.getQtdemin() && qtdeMembros <= subeventoAtual.getQtdemax()){
                             if(qtdeEquipes <= subeventoAtual.getQtdemaxequipes()){
-                                if(DAO.verificarHistInscEquipeSubevento(idEquipe, idSubevento)){
-                                    if(DAO.atualizarInscEquipeSubevento(idEquipe, idSubevento)){
-                                        msg = "1 / Inscrição no sub-evento realizada com sucesso!";
+                                if(flag){
+                                    if(DAO.verificarHistInscEquipeSubevento(idEquipe, idSubevento)){
+                                        if(DAO.atualizarInscEquipeSubevento(idEquipe, idSubevento)){
+                                            msg = "1 / Inscrição no sub-evento realizada com sucesso!";
+                                        }else{
+                                            throw new Exception("Erro ao realizar a inscrição");
+                                        }
                                     }else{
-                                        throw new Exception("Erro ao realizar a inscrição");
+                                        if(DAO.inscreverEquipeSub(idEquipe, idSubevento)){
+                                            msg = "Inscrição no sub-evento realizada com sucesso!";
+                                        }else{
+                                            throw new Exception("Erro ao realizar a inscrição");
+                                        }
                                     }
                                 }else{
-                                    if(DAO.inscreverEquipeSub(idEquipe, idSubevento)){
-                                        msg = "Inscrição no sub-evento realizada com sucesso!";
-                                    }else{
-                                        throw new Exception("Erro ao realizar a inscrição");
-                                    }
+                                    throw new Exception("Erro ao realizar a inscrição, pois existem um ou mais membros que estão inscritos em sub-eventos que possuem o mesmo horário que este.");
                                 }
                             }else{
                                 throw new Exception("Não foi possível inscrever a sua equipe no sub-evento, pois já atingiu a quantidade máxima de equipes permitida");

@@ -65,7 +65,7 @@
                                 }
                             },
                             error: function (jqXHR, textStatus, errorThrown) {
-                                $("#modal_titulo").text(errorThrown);
+                                $("#modal_titulo").text("Erro");
                                 $("#modal_titulo_div").attr("class", "modal-header text-danger");
                                 $("#modal_btn").attr("class", "btn btn-danger");
                                 $('#modalInscricao').modal('show');
@@ -99,7 +99,7 @@
                                 }
                             },
                             error: function (jqXHR, textStatus, errorThrown) {
-                                $("#modal_titulo").text(errorThrown);
+                                $("#modal_titulo").text("Erro");
                                 $("#modal_titulo_div").attr("class", "modal-header text-danger");
                                 $("#modal_btn").attr("class", "btn btn-danger");
                                 $('#modalInscricao').modal('show');
