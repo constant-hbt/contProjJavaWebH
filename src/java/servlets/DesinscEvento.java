@@ -9,11 +9,13 @@ import controller.Inscricoes;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Date;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.Eventos;
 
 /**
  *
@@ -40,24 +42,31 @@ public class DesinscEvento extends HttpServlet {
             
             int idUsuario = Integer.parseInt(request.getParameter("idUsuario"));
             int idEvento = Integer.parseInt(request.getParameter("idEvento"));
-          
-            Inscricoes DAO = new Inscricoes();
-            int idp = DAO.pegarIdParticipante(idUsuario);
-            int ide = DAO.verificarInscTodosEventos(idp);
-            String msg = "";
             
-            if(ide == idEvento){
-                if(DAO.desinscPartEvento(idp, idEvento)){
-                    msg = "Desinscrito(a) do evento com sucesso!";
+            
+            Inscricoes DAO = new Inscricoes();
+            Eventos evento = DAO.pegarEvento(idEvento);
+            int idp = DAO.pegarIdPart(idUsuario);
+            
+            String msg = "";
+            Date dataAtual = new Date();
+            
+            if(dataAtual.compareTo(evento.getDatainicioinsc()) >= 0 && dataAtual.compareTo(evento.getDatafim()) <= 0){
+                if(DAO.verificarInscEvento(idUsuario, idEvento)){
+                    if(DAO.desinscPartEvento(idp, idEvento)){
+                        msg = "Desinscrito(a) do evento com sucesso!";
+                    }else{
+                        throw new Exception("Erro ao se desinscrever do evento!");
+                    }
                 }else{
-                    msg = "Erro ao se desinscrever do evento!";
+                    throw new Exception("Erro, você não está inscrito(a) no evento!");
                 }
             }else{
-                msg = "Erro, você não está inscrito(a) no evento!" + idUsuario + ", " + idp + ", " + ide + ", " + idEvento;
+                throw new Exception("Erro, você não pode se inscrever/desinscrever no evento, pois não está dentro do período permitido");
             }
             out.println(msg);
         }catch(Exception e){
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            out.println(e.getMessage());
         }
     }
 

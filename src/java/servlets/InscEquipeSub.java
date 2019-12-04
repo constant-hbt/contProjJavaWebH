@@ -69,15 +69,18 @@ public class InscEquipeSub extends HttpServlet {
                 String[] m = membro.split(";");
                 List<Subeventos> subeventos = DAO.listarSubeventosPart(Integer.parseInt(m[1]));
                 for(Subeventos subevento: subeventos){
+                    if(Integer.parseInt(m[1]) == idp && subevento.getIdsubevento() == idsub){
+                        continue;
+                    }
                     Timestamp inicio = FormatacaoDatas.converterStringParaTimestamp(subevento.getDatahorainicio());
                     Timestamp fim = FormatacaoDatas.converterStringParaTimestamp(subevento.getDatahorafim());
                     if((inicioSubAtual.compareTo(inicio) >= 0 && inicioSubAtual.compareTo(fim) <= 0) || (fimSubAtual.compareTo(inicio) >= 0 && fimSubAtual.compareTo(fim) <= 0)){
                         flag = false;
                         break;
                     }
-                    if(flag = false){
-                        break;
-                    }
+                }
+                if(flag == false){
+                    break;
                 }
             }
             
@@ -90,10 +93,20 @@ public class InscEquipeSub extends HttpServlet {
                             if(qtdeEquipes <= subeventoAtual.getQtdemaxequipes()){
                                 if(flag){
                                     if(DAO.verificarHistInscEquipeSubevento(idEquipe, idSubevento)){
-                                        if(DAO.atualizarInscEquipeSubevento(idEquipe, idSubevento)){
-                                            msg = "1 / Inscrição no sub-evento realizada com sucesso!";
-                                        }else{
-                                            throw new Exception("Erro ao realizar a inscrição");
+                                        boolean f = true;
+                                        for(String membro: membrosEquipe){
+                                            String[] m = membro.split(";");
+                                            if(!DAO.inscreverSubEvento(Integer.parseInt(m[1]), idSubevento)){
+                                                f = false;
+                                                break;
+                                            }
+                                        }
+                                        if(f){
+                                            if(DAO.atualizarInscEquipeSubevento(idEquipe, idSubevento)){
+                                                msg = "1 / Inscrição no sub-evento realizada com sucesso!";
+                                            }else{
+                                                throw new Exception("Erro ao realizar a inscrição");
+                                            }
                                         }
                                     }else{
                                         if(DAO.inscreverEquipeSub(idEquipe, idSubevento)){
@@ -114,11 +127,21 @@ public class InscEquipeSub extends HttpServlet {
                     }
                 }else{
                     if(idsub == idSubevento){
+                        boolean band = true;
                         if(DAO.verificarEquipeInscSub(idEquipe, idSubevento)){
-                            if(DAO.desinscreverEquipeSubevento(idEquipe, idSubevento)){
-                                msg = "Desisncrito do sub-evento com sucesso!";
-                            }else{
-                                throw new Exception("Erro ao se desinscrever!");
+                            for(String membro: membrosEquipe){
+                                String[] m = membro.split(";");
+                                if(!DAO.desisncSubevento(Integer.parseInt(m[1]), idSubevento)){
+                                    band = false;
+                                    break;
+                                }
+                            }
+                            if(band){
+                                if(DAO.desinscreverEquipeSubevento(idEquipe, idSubevento)){
+                                    msg = "Desisncrito do sub-evento com sucesso!";
+                                }else{
+                                    throw new Exception("Erro ao se desinscrever!");
+                                }
                             }
                         }else{
                             throw new Exception("Erro, sua equipe não está inscrito no sub-evento");
@@ -131,15 +154,7 @@ public class InscEquipeSub extends HttpServlet {
                 throw new Exception("Erro, você não pode inscrever/desinscrever sua equipe do sub-evento pois não está dentro do período permitido");
             }
             
-            //msg = "1 / " + dataAtual;
-            //Timestamp datahoraInicioSubA = FormatacaoDatas.converterStringParaTimestamp("16/11/2019 15:00");
-            //Timestamp datahoraInicio = FormatacaoDatas.converterStringParaTimestamp("10/12/2019 13:00");
-            //msg = "1 / " + (datahoraInicioSubA.before(datahoraInicio));
-            //Timestamp datahoraFimSubA = converterStringParaTimestamp("16/11/2019 14:30");
-            //Timestamp datahoraFim = converterStringParaTimestamp("16/11/2019 16:30");
-            //msg = "datahora no timestamp: " + ((datahoraInicioSubA.compareTo(datahoraFim) <= 0 && datahoraInicioSubA.compareTo(datahoraInicio) >= 0) || 
-                        //(datahoraFimSubA.compareTo(datahoraInicio) >= 0 && datahoraFimSubA.compareTo(datahoraFim) <= 0));
-            out.println(msg);
+           out.println(msg);
         }catch(Exception e){
             out.println("0 / " + e.getMessage());
         }

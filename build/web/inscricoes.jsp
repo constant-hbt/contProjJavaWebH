@@ -44,15 +44,19 @@
                                 idEvento : idEvento
                             },
                             success: function(responseText){
-                                $("#modal_titulo_div").attr("class", "modal-header text-success");
+                                $("#modal_titulo_div").attr("class", "modal-header text-info");
+                                $("#modal_btn").attr("class", "btn btn-info");
                                 $("#modal_titulo").text(responseText);
                                 $('#modalInscricao').modal('show');
                                 $(botao).attr("data-inscritoev", "1");
                                 $(botao).text("Desinscrever-se");
                                 $(botao).attr("class", "btn btn-danger");
+                                console.log(responseText);
                             },
                             error: function (jqXHR, textStatus, errorThrown) {
                                 $("#modal_titulo").text("Erro ao se inscrever!" + errorThrown);
+                                $("#modal_titulo_div").attr("class", "modal-header text-danger");
+                                $("#modal_btn").attr("class", "btn btn-danger");
                                 $('#modalInscricao').modal('show');
                             }
                         });
@@ -178,7 +182,7 @@
                                     for(Eventos evento: eventos){
                         %>
 
-                        <div class="jumbotron jumbotron-fluid mt-5">
+                        <div class="jumbotron jumbotron-fluid mt-5 p-3">
                             <h1 id="nomeEvento" class="display-4"><%= evento.getNome() %></h1>
                             <p>ID: <span id="idEvento<%= evento.getIdevento() %>"><%= evento.getIdevento() %></span></p>
                             <p id="descEvento" class="lead"><%= evento.getDescricao() %></p>

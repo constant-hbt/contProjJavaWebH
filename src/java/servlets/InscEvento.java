@@ -8,12 +8,18 @@ package servlets;
 import controller.Inscricoes;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.Equipes;
+import model.Eventos;
+import model.Subeventos;
+import servlets.utils.FormatacaoDatas;
 
 /**
  *
@@ -43,33 +49,37 @@ public class InscEvento extends HttpServlet {
             int idEvento = Integer.parseInt(request.getParameter("idEvento"));
           
             Inscricoes DAO = new Inscricoes();
-            int idp = DAO.pegarIdParticipante(idUsuario);
-            int ide = DAO.verificarInscTodosEventos(idp);
+            int idp = DAO.pegarIdPart(idUsuario);
+            int ide = DAO.verificarInscTodosEventos(idEvento);
             String msg = "";
             
-            if(ide == 0){
-                if(DAO.inscreverEvento(idUsuario, idEvento)){
-                    msg = "Inscrição realizada com sucesso!";
-                    response.setStatus(HttpServletResponse.SC_CREATED);
+            Eventos eventoAtual = DAO.pegarEvento(idEvento);
+            Date dataAtual = new Date();
+            msg = "" + idp + "idusuario: " + idUsuario+ "idevento: " + idEvento;
+            if(dataAtual.compareTo(eventoAtual.getDatainicioinsc()) >= 0 && dataAtual.compareTo(eventoAtual.getDatafim()) <= 0){
+                if(ide == 0){
+                    if(DAO.verificarHistEvento(idp, idEvento)){
+                        if(DAO.atualizarInscEvento(idp, ide, idEvento)){
+                            msg = "Inscrição realizada com sucesso!";
+                        }else{
+                            throw new Exception("Erro ao realizar a inscrição!");
+                        }
+                    }else{
+                        if(DAO.inscreverEvento(idUsuario, idEvento)){
+                            msg = "Inscrição realizada com sucesso!";
+                        }else{
+                            throw new Exception("Erro ao realizar a inscrição!");
+                        }
+                    } 
                 }else{
-                    msg = "Erro ao realizar a inscrição!";
-                    response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                    throw new Exception("Se desinscreva do evento que está inscrito primeiramente!");
                 }
             }else{
-                if(ide > 0){
-                    if(DAO.atualizarInscEvento(idp, ide, idEvento)){
-                        response.setStatus(HttpServletResponse.SC_OK);
-                        msg = "Inscrito no evento com sucesso! \nSua outra inscrição foi inativada!";
-                    }else{
-                        msg = "Erro ao realizar a inscrição!";
-                        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                    }
-                }
+                throw new Exception("Erro, você não pode se inscrever/desinscrever no evento, pois não está dentro do período permitido");
             }
             out.println(msg);
         }catch(Exception e){
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            out.println("Erro: " + e.getMessage());
+            out.println(e.getMessage());
         }
             
     }

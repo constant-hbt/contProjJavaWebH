@@ -26,8 +26,7 @@ public class Inscricoes extends Conexao{
             ps.setInt(1, idUsuario);
             ResultSet rs = ps.executeQuery();
             if(rs.next()){
-                int idPart = rs.getInt("idparticipante");
-                return idPart;
+                return rs.getInt("idparticipante");
             }
         }catch(SQLException e){
             e.printStackTrace();
@@ -69,6 +68,40 @@ public class Inscricoes extends Conexao{
             e.printStackTrace();
         }
         return eventos;
+    }
+    
+    public Eventos pegarEvento(int idEvento) throws Exception{
+        Eventos evento = new Eventos();
+        try{
+            String sql = "SELECT * FROM EVENTOS WHERE IDSTATUS = 1 AND IDEVENTO = ?";
+            PreparedStatement ps = getConexao().prepareStatement(sql);
+            ps.setInt(1, idEvento);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                evento.setIdevento(rs.getInt("idevento"));
+                evento.setNome(rs.getString("nome"));
+                evento.setDescricao(rs.getString("descricao"));
+                evento.setLocal(rs.getString("local"));
+                evento.setDatainicio(rs.getDate("dataInicio"));
+                evento.setDatafim(rs.getDate("dataFim"));
+                evento.setDatainicioinsc(rs.getDate("datainicioinsc"));
+                evento.setDatafiminsc(rs.getDate("dataFimInsc"));
+
+                Status status = new Status();
+                status.setIdstatus(rs.getInt("idStatus"));
+                String sqlStatus = "Select descricao FROM STATUS WHERE idstatus = ?";
+                PreparedStatement psSattus = getConexao().prepareStatement(sqlStatus);
+                psSattus.setInt(1, status.getIdstatus());
+                ResultSet rsStatus = psSattus.executeQuery();
+                if(rsStatus.next()){
+                    status.setDescricao(rsStatus.getString("descricao"));
+                }
+                evento.setStatus(status);
+            }
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        return evento;
     }
     
     public List<Subeventos> listarSubeventos(int idEvento) throws Exception{
@@ -133,26 +166,26 @@ public class Inscricoes extends Conexao{
        return subeventos;
     }
     
+    
+    
     public boolean inscreverEvento(int idUsuario, int idEvento) throws Exception{
         try{
             getConexao().setAutoCommit(false);
-            int idpart = pegarIdParticipante(idUsuario);
-            if(idpart == 0){
                 String sql = "INSERT INTO PARTICIPANTES (IDUSUARIO, IDEVENTO) VALUES (?, ?)";
                 PreparedStatement ps = getConexao().prepareStatement(sql);
                 ps.setInt(1, idUsuario);
                 ps.setInt(2, idEvento);
                 if(ps.executeUpdate() > 0){
-                    String sqlPart = "SELECT MAX(IDPARTICIPANTE) AS IDPARTICIPANTE FROM PARTICIPANTES";
+                    String sqlPart = "SELECT IDPARTICIPANTE FROM PARTICIPANTES WHERE IDUSUARIO = ?";
                     PreparedStatement psPart = getConexao().prepareStatement(sqlPart);
+                    psPart.setInt(1, idUsuario);
                     ResultSet rsPart = psPart.executeQuery();
                     if(rsPart.next()){
                         int idParticipante = rsPart.getInt("IDPARTICIPANTE");
-                        String sqlInsc = "INSERT INTO INSCRICAO_PART_EVENTO(DATAHORA, IDPARTICIPANTE, IDEVENTO, IDSTATUS) VALUES (?,?,?,1)";
+                        String sqlInsc = "INSERT INTO INSCRICAO_PART_EVENTO(DATAHORA, IDPARTICIPANTE, IDEVENTO, IDSTATUS) VALUES (CURRENT_TIMESTAMP,?,?,1)";
                         PreparedStatement psInsc = getConexao().prepareStatement(sqlInsc);
-                        psInsc.setTimestamp(1, new Timestamp(System.currentTimeMillis()));
-                        psInsc.setInt(2, idParticipante);
-                        psInsc.setInt(3, idEvento);
+                        psInsc.setInt(1, idParticipante);
+                        psInsc.setInt(2, idEvento);
                         if(psInsc.executeUpdate() > 0){
                             getConexao().commit();
                             getConexao().setAutoCommit(true);
@@ -160,42 +193,6 @@ public class Inscricoes extends Conexao{
                         }
                     }
                 }
-            }else{
-                if(verificarFoiInscEvento(idpart, idEvento)){
-                    String sqlup = "Update inscricao_part_evento set idstatus = 1 where idevento = ? and idparticipante = ?";
-                    PreparedStatement psup = getConexao().prepareStatement(sqlup);
-                    psup.setInt(1, idEvento);
-                    psup.setInt(2, idpart);
-                    if(psup.executeUpdate() > 0){
-                        String sqlup2 = "Update participantes set idevento = ? where idparticipante = ?";
-                        PreparedStatement psup2 = getConexao().prepareStatement(sqlup2);
-                        psup2.setInt(1, idEvento);
-                        psup2.setInt(2, idpart);
-                        if(psup2.executeUpdate() > 0){
-                            getConexao().commit();
-                            getConexao().setAutoCommit(true);
-                            return true;
-                        }
-                    }
-                }else{
-                    String sql2 = "Insert into inscricao_part_evento (INSERT INTO INSCRICAO_PART_EVENTO(DATAHORA, IDPARTICIPANTE, IDEVENTO, IDSTATUS) VALUES (?,?,?,1)";
-                    PreparedStatement ps2 = getConexao().prepareStatement(sql2);
-                    ps2.setTimestamp(1, new Timestamp(System.currentTimeMillis()));
-                    ps2.setInt(2, idpart);
-                    ps2.setInt(3, idEvento);
-                    if(ps2.executeUpdate() > 0){
-                        String sql3 = "Update participantes set idevento = ? where idparticipante = ?";
-                        PreparedStatement ps3 = getConexao().prepareStatement(sql3);
-                        ps3.setInt(1, idEvento);
-                        ps3.setInt(2, idpart);
-                        if(ps3.executeUpdate() > 0){
-                            getConexao().commit();
-                            getConexao().setAutoCommit(true);
-                            return true;
-                        }
-                    }
-                }
-            }
             getConexao().rollback();
             getConexao().setAutoCommit(true);
         }catch(SQLException e){
@@ -204,6 +201,7 @@ public class Inscricoes extends Conexao{
         return false;
     }
     
+    
     public boolean verificarFoiInscEvento(int idPart, int idEvento) throws Exception{
         try{
             String sql = "Select idstatus from inscricao_part_evento where idparticipante = ? and idevento = ?";
@@ -211,32 +209,38 @@ public class Inscricoes extends Conexao{
             ps.setInt(1, idPart);
             ps.setInt(2, idEvento);
             ResultSet rs = ps.executeQuery();
-            while(rs.next()){
-                if(rs.getInt("idstatus") == 2){
-                    return true;
-                }
+            if(rs.next()){
+                return true;
             }
         }catch(SQLException e){
             e.printStackTrace();
         }
         return false;
     }
-    //TODO - erro
+    
     public boolean atualizarInscEvento(int idPart, int ide_antigo, int idEvento) throws Exception{
         try{
             getConexao().setAutoCommit(false);
             if(verificarFoiInscEvento(idPart, idEvento)){
-                String sqlup = "Update inscricao_part_evento set idstatus = 1 where idevento = ? and idparticipante = ?";
-                PreparedStatement psup = getConexao().prepareStatement(sqlup);
-                psup.setInt(1, idEvento);
-                psup.setInt(2, idPart);
-                if(psup.executeUpdate() > 0){
-                    String sqlup2 = "Update participante set idevento = ? where idparticipante = ?";
-                    PreparedStatement psup2 = getConexao().prepareStatement(sqlup2);
-                    if(psup2.executeUpdate() > 0){
-                        getConexao().commit();
-                        getConexao().setAutoCommit(true);
-                        return true;
+                String sqlupa = "Update inscricao_part_evento set idstatus = 2 where idevento = ? and idparticipante = ?";
+                PreparedStatement psupa = getConexao().prepareStatement(sqlupa);
+                psupa.setInt(1, ide_antigo);
+                psupa.setInt(2, idPart);
+                if(psupa.executeUpdate() > 0){
+                    String sqlup = "Update inscricao_part_evento set idstatus = 1 where idevento = ? and idparticipante = ?";
+                    PreparedStatement psup = getConexao().prepareStatement(sqlup);
+                    psup.setInt(1, idEvento);
+                    psup.setInt(2, idPart);
+                    if(psup.executeUpdate() > 0){
+                        String sqlup2 = "Update participante set idevento = ? where idparticipante = ?";
+                        PreparedStatement psup2 = getConexao().prepareStatement(sqlup2);
+                        psup2.setInt(1, idEvento);
+                        psup2.setInt(2, idPart);
+                        if(psup2.executeUpdate() > 0){
+                            getConexao().commit();
+                            getConexao().setAutoCommit(true);
+                            return true;
+                        }
                     }
                 }
             }else{
@@ -247,13 +251,13 @@ public class Inscricoes extends Conexao{
                 if(ps.executeUpdate() > 0){
                     String sqli = "INSERT INTO INSCRICAO_PART_EVENTO (datahora, idparticipante, idevento, idstatus) VALUES (CURRENT_TIMESTAMP, ?, ?, 1)";
                     PreparedStatement ps2 = getConexao().prepareStatement(sqli);
-                    ps.setInt(1, idPart);
-                    ps.setInt(2, idEvento);
-                    if(ps.executeUpdate() > 0){
+                    ps2.setInt(1, idPart);
+                    ps2.setInt(2, idEvento);
+                    if(ps2.executeUpdate() > 0){
                         String sqlu = "UPDATE PARTICIPANTES SET idevento = ? WHERE idparticipante = ?";
                         PreparedStatement ps3 = getConexao().prepareStatement(sqlu);
-                        ps.setInt(1, idEvento);
-                        ps.setInt(2, idPart);
+                        ps3.setInt(1, idEvento);
+                        ps3.setInt(2, idPart);
                         if(ps3.executeUpdate() > 0){
                             getConexao().commit();
                             getConexao().setAutoCommit(true);
@@ -263,6 +267,23 @@ public class Inscricoes extends Conexao{
                 }
             }
             getConexao().rollback();
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+    
+    public boolean verificarHistEvento(int idPart, int idEvento) throws Exception{
+        getConexao().setAutoCommit(false);
+        try{
+            String sql = "select idstatus from inscricao_part_evento where idparticipante = ? and idevento = ?";
+            PreparedStatement ps = getConexao().prepareStatement(sql);
+            ps.setInt(1, idPart);
+            ps.setInt(2, idEvento);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+                return true; 
+            }
         }catch(SQLException e){
             e.printStackTrace();
         }
@@ -304,7 +325,7 @@ public class Inscricoes extends Conexao{
     
     public boolean verificarInscEvento(int idUsuario, int idEvento) throws Exception{
         try{
-            int idp = pegarIdParticipante(idUsuario);
+            int idp = pegarIdPart(idUsuario);
             if(idp != 0){
                 String sql = "SELECT idstatus FROM INSCRICAO_PART_EVENTO WHERE idparticipante = ? AND idevento = ?";
                 PreparedStatement ps = getConexao().prepareStatement(sql);
@@ -420,24 +441,6 @@ public class Inscricoes extends Conexao{
             e.printStackTrace();
         }
         return subevento;
-    }
-    
-    private boolean verificarDataHoraSub(int idPart, int idSubevento) throws Exception{
-        String sql = "select s.datahorainicio, s.datahorafim from subeventos s INNER JOIN "
-                + "inscricao_part_subeve i ON (s.idsubevento = i.idsubevento) WHERE i.idstatus = 1 AND i.idparticipante = ?";
-        PreparedStatement ps = getConexao().prepareStatement(sql);
-        ps.setInt(1, idPart);
-        ResultSet rs = ps.executeQuery();
-        String sql2 = "select datahorainicio, datahorafim from subeventos where idsubevento = ?";
-        PreparedStatement ps2 = getConexao().prepareStatement(sql2);
-        ps2.setInt(1, idSubevento);
-        ResultSet rs2 = ps2.executeQuery();
-        /*Date dataAtual = new Date();
-        SimpleDateFormat d = new SimpleDateFormat("");
-        while(rs.next()){
-            
-        }*/
-        return true;
     }
     
     public boolean inscreverSubEvento(int idPart, int idSubevento) throws Exception{
